@@ -1,6 +1,6 @@
 import { app, ipcMain, BrowserWindow } from "electron";
 import path, { dirname } from "path";
-import require$$0 from "fs";
+import fs from "fs";
 import require$$2 from "util";
 import { fileURLToPath } from "url";
 function getDefaultExportFromCjs(x) {
@@ -88,14 +88,14 @@ function requireBindings() {
   if (hasRequiredBindings) return bindings.exports;
   hasRequiredBindings = 1;
   (function(module, exports) {
-    var fs = require$$0, path$1 = path, fileURLToPath2 = requireFileUriToPath(), join = path$1.join, dirname2 = path$1.dirname, exists = fs.accessSync && function(path2) {
+    var fs$1 = fs, path$1 = path, fileURLToPath2 = requireFileUriToPath(), join = path$1.join, dirname2 = path$1.dirname, exists = fs$1.accessSync && function(path2) {
       try {
-        fs.accessSync(path2);
+        fs$1.accessSync(path2);
       } catch (e) {
         return false;
       }
       return true;
-    } || fs.existsSync || path$1.existsSync, defaults = {
+    } || fs$1.existsSync || path$1.existsSync, defaults = {
       arrow: process.env.NODE_BINDINGS_ARROW || " → ",
       compiled: process.env.NODE_BINDINGS_COMPILED_DIR || "compiled",
       platform: process.platform,
@@ -378,11 +378,11 @@ var hasRequiredBackup;
 function requireBackup() {
   if (hasRequiredBackup) return backup;
   hasRequiredBackup = 1;
-  const fs = require$$0;
+  const fs$1 = fs;
   const path$1 = path;
   const { promisify } = require$$2;
   const { cppdb } = requireUtil();
-  const fsAccess = promisify(fs.access);
+  const fsAccess = promisify(fs$1.access);
   backup = async function backup2(filename, options) {
     if (options == null) options = {};
     if (typeof filename !== "string") throw new TypeError("Expected first argument to be a string");
@@ -700,7 +700,7 @@ var hasRequiredDatabase;
 function requireDatabase() {
   if (hasRequiredDatabase) return database;
   hasRequiredDatabase = 1;
-  const fs = require$$0;
+  const fs$1 = fs;
   const path$1 = path;
   const util2 = requireUtil();
   const SqliteError = requireSqliteError();
@@ -745,7 +745,7 @@ function requireDatabase() {
       addon.setErrorConstructor(SqliteError);
       addon.isInitialized = true;
     }
-    if (!anonymous && !fs.existsSync(path$1.dirname(filename))) {
+    if (!anonymous && !fs$1.existsSync(path$1.dirname(filename))) {
       throw new TypeError("Cannot open database because the directory does not exist");
     }
     Object.defineProperties(this, {
@@ -781,18 +781,58 @@ function requireLib() {
 }
 var libExports = requireLib();
 const Database = /* @__PURE__ */ getDefaultExportFromCjs(libExports);
+function initDatabase() {
+  const userDataPath = path.join(app.getPath("appData"), "Electron");
+  const dbDir = path.join(userDataPath, "databases");
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+    console.log("- Carpeta databases creada en:", dbDir);
+  }
+  const dbPath = path.join(dbDir, "chifa.db");
+  console.log("- Ruta de base de datos:", dbPath);
+  if (fs.existsSync(dbPath)) {
+    fs.unlinkSync(dbPath);
+    console.log("- Base de datos anterior eliminada.");
+  }
+  const db2 = new Database(dbPath);
+  db2.prepare(`
+    CREATE TABLE productos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre TEXT NOT NULL,
+      descripcion TEXT,
+      precio REAL NOT NULL,
+      categoria TEXT NOT NULL
+    )
+  `).run();
+  const insert = db2.prepare(`
+    INSERT INTO productos (nombre, descripcion, precio, categoria)
+    VALUES (?, ?, ?, ?)
+  `);
+  const productos = [
+    ["Arroz Chaufa Especial", "Arroz frito con pollo, cerdo y langostinos", 22.5, "platos_principales"],
+    ["Taypa", "Salteado de carnes mixtas con verduras", 26, "platos_principales"]
+    // ... agrega más productos si deseas
+  ];
+  const insertMany = db2.transaction((productos2) => {
+    for (const p of productos2) {
+      insert.run(p);
+    }
+  });
+  insertMany(productos);
+  console.log("- Base de datos inicializada.");
+  db2.close();
+}
 const __filename$1 = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename$1);
 let mainWindow;
-const userDataPath = path.join(app.getPath("appData"), "Electron");
-const dbDir = path.join(userDataPath, "databases");
-if (!require$$0.existsSync(dbDir)) {
-  require$$0.mkdirSync(dbDir, { recursive: true });
-  console.log("Carpeta databases creada en:", dbDir);
+let db;
+function connectDatabase() {
+  const userDataPath = path.join(app.getPath("appData"), "Electron");
+  const dbDir = path.join(userDataPath, "databases");
+  const dbPath = path.join(dbDir, "chifa.db");
+  console.log("📌 Conectando a base de datos en:", dbPath);
+  db = new Database(dbPath);
 }
-const dbPath = path.join(dbDir, "chifa.db");
-console.log("Ruta de base de datos:", dbPath);
-const db = new Database(dbPath);
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
@@ -823,7 +863,15 @@ ipcMain.handle("getProductosByCategoria", (event, categoria) => {
     return [];
   }
 });
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  try {
+    initDatabase();
+    connectDatabase();
+    createWindow();
+  } catch (error) {
+    console.error(error);
+  }
+});
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });

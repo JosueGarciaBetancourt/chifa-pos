@@ -9,16 +9,15 @@ export function initDatabase() {
 
   if (!fs.existsSync(dbDir)) {
     fs.mkdirSync(dbDir, { recursive: true });
-    console.log('📂 Carpeta databases creada en:', dbDir);
+    console.log('- Carpeta databases creada en:', dbDir);
   }
 
   const dbPath = path.join(dbDir, 'chifa.db');
-  console.log('📌 Ruta de base de datos:', dbPath);
+  console.log('- Ruta de base de datos:', dbPath);
 
-  // Si quieres eliminarla y crearla siempre desde cero:
   if (fs.existsSync(dbPath)) {
     fs.unlinkSync(dbPath);
-    console.log('🗑️ Base de datos anterior eliminada.');
+    console.log('- Base de datos anterior eliminada.');
   }
 
   const db = new Database(dbPath);
@@ -41,7 +40,7 @@ export function initDatabase() {
   const productos = [
     ['Arroz Chaufa Especial', 'Arroz frito con pollo, cerdo y langostinos', 22.50, 'platos_principales'],
     ['Taypa', 'Salteado de carnes mixtas con verduras', 26.00, 'platos_principales'],
-    // etc...
+    // ... agrega más productos si deseas
   ];
 
   const insertMany = db.transaction((productos) => {
@@ -51,7 +50,7 @@ export function initDatabase() {
   });
 
   insertMany(productos);
-  console.log('✅ Base de datos inicializada.');
+  console.log('- Base de datos inicializada.');
 
   db.close();
 }

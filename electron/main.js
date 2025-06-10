@@ -4,26 +4,24 @@ import Database from 'better-sqlite3';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { initDatabase } from './init-db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 let mainWindow;
+let db;
 
-const userDataPath = path.join(app.getPath('appData'), 'Electron');
-const dbDir = path.join(userDataPath, 'databases');
+function connectDatabase() {
+  const userDataPath = path.join(app.getPath('appData'), 'Electron');
+  const dbDir = path.join(userDataPath, 'databases');
+  const dbPath = path.join(dbDir, 'chifa.db');
+  
+  console.log('📌 Conectando a base de datos en:', dbPath);
 
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-  console.log('Carpeta databases creada en:', dbDir);
+  db = new Database(dbPath);
 }
 
-const dbPath = path.join(dbDir, 'chifa.db');
-console.log('Ruta de base de datos:', dbPath);
-
-const db = new Database(dbPath);
-
-// 📦 Función para crear ventana
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
@@ -43,7 +41,6 @@ function createWindow() {
   }
 }
 
-// 📦 Manejar eventos IPC
 ipcMain.handle('test', () => {
   return 'Funciona desde Electron!';
 });
@@ -59,10 +56,20 @@ ipcMain.handle('getProductosByCategoria', (event, categoria) => {
   }
 });
 
-// 📦 Cuando la app esté lista
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  try {
+    // Inicializar desde cero en cada arranque
+    initDatabase();
 
-// 📦 Cerrar app en todas las plataformas
+    // Conectar base de datos
+    connectDatabase();
+
+    createWindow();
+  } catch  (error) {
+    console.error(error);
+  }
+});
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
