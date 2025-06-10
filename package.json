@@ -1,0 +1,43 @@
+{
+  "name": "chifa-pos",
+  "private": true,
+  "version": "0.0.0",
+  "main": "electron/main.js",
+  "type": "module",
+  "scripts": {
+    "rebuild": "electron-rebuild",
+    "init-db": "electron electron/init-db.js",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "electron:dev": "concurrently -k \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "vite build && electron-builder"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.8",
+    "better-sqlite3": "^11.10.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sqlite3": "^5.1.7",
+    "tailwindcss": "^4.1.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react-swc": "^3.9.0",
+    "concurrently": "^9.1.2",
+    "electron": "^36.4.0",
+    "electron-builder": "^26.0.12",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "vite": "^6.3.5",
+    "vite-plugin-electron": "^0.29.0",
+    "wait-on": "^8.0.3"
+  }
+}
