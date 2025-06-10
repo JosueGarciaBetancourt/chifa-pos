@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { api } from './services/electronAPI';
 
 function App() {
   const [productos, setProductos] = useState([]);
@@ -10,16 +11,12 @@ function App() {
       try {
         console.log('Verificando electronAPI...');
 
-        if (!window.electronAPI) {
+        if (!api) {
           throw new Error('electronAPI no está disponible');
         }
 
-        // Test de la API
-        const testResult = await window.electronAPI.test();
-        console.log('Test API:', testResult);
-
         // Cargar productos de platos principales
-        const productosData = await window.electronAPI.getProductosByCategoria('platos_principales');
+        const productosData = await api.getProductosByCategoria('platos_principales');
         console.log('Productos cargados:', productosData);
 
         setProductos(productosData);
@@ -73,7 +70,7 @@ function App() {
                 <p className="text-gray-600 text-sm mt-1">{item.descripcion}</p>
               )}
               <p className="text-red-600 font-bold text-xl mt-2">S/. {item.precio.toFixed(2)}</p>
-              <button className="mt-3 w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors">
+              <button className="mt-3 w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors cursor-pointer">
                 Agregar al Pedido
               </button>
             </div>
