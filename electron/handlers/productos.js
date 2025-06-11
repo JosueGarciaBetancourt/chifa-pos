@@ -7,12 +7,30 @@ import { ipcMain } from 'electron';
 export function productosHandlers(db) {
   ipcMain.handle('getProductosByCategoria', (event, categoria) => {
     try {
-      const stmt = db.prepare('SELECT id, nombre, descripcion, precio FROM productos WHERE categoria = ?');
+      const stmt = db.prepare(
+        'SELECT id, nombre, descripcion, precio FROM productos WHERE categoria = ?'
+      );
       const productos = stmt.all(categoria);
       return productos;
     } catch (error) {
-      console.error('Error consultando productos:', error);
+      console.error('Error consultando productos por categoría:', error);
       return [];
     }
   });
+
+  // ✅ NUEVO HANDLER: buscar por nombre
+  ipcMain.handle('buscarProductosPorNombre', (event, nombre) => {
+    try {
+      const stmt = db.prepare(
+        'SELECT id, nombre, descripcion, precio FROM productos WHERE nombre LIKE ?'
+      );
+      const productos = stmt.all(`%${nombre}%`);
+      return productos;
+    } catch (error) {
+      console.error('Error buscando productos por nombre:', error);
+      return [];
+    }
+  });
+
+
 }
