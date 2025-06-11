@@ -2,7 +2,7 @@ export function seedProductos(db) {
 	const productos = [
 		['Arroz Chaufa Especial', 'Arroz frito con pollo, cerdo y langostinos', 22.50, 'platos_principales'],
 		['Taypa', 'Salteado de carnes mixtas con verduras', 26.00, 'platos_principales'],
-		// puedes seguir agregando aquí
+		['Nombre de Ejemplo', 'Descripcion de ejemplo', 10.00, 'Categoria de ejemplo'],
 	];
 
 	const insert = db.prepare(`

@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { initDatabase } from './database/initDatabase.js';
-import { connectDatabase } from './database/connectDatabase.js';
+import { connection } from './database/connection.js';
 import { productosHandlers } from './handlers/productos.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +37,7 @@ app.whenReady().then(() => {
     initDatabase();
 
     // Conectar base de datos
-    db = connectDatabase();
+    db = connection();
 
     // Registrar handlers
     productosHandlers(db);

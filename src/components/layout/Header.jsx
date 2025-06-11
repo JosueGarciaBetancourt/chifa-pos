@@ -10,7 +10,7 @@ const Header = () => {
           <p className="text-xs">Admin</p>
         </div>
         <img
-          src="https://i.pravatar.cc/40"
+          src="https://i.pravatar.cc/40" 
           alt="Avatar"
           className="w-10 h-10 rounded-full border"
         />

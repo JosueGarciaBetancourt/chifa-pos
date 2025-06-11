@@ -3,7 +3,7 @@ import fs from 'fs';
 import Database from 'better-sqlite3';
 import { app } from 'electron';
 
-export function connectDatabase() {
+export function connection() {
   const userDataPath = path.join(app.getPath('appData'), 'Electron');
   const dbDir = path.join(userDataPath, 'databases');
   const dbPath = path.join(dbDir, 'chifa.db');

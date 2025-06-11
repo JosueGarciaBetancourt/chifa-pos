@@ -18,7 +18,6 @@ export function productosHandlers(db) {
     }
   });
 
-  // ✅ NUEVO HANDLER: buscar por nombre
   ipcMain.handle('buscarProductosPorNombre', (event, nombre) => {
     try {
       const stmt = db.prepare(

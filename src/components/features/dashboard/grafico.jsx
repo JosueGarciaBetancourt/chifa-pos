@@ -1,0 +1,1 @@
+/* En cada carpeta de feature irán todos los componentes q conforman el módulo y se exportarán para usarlo en pages */
