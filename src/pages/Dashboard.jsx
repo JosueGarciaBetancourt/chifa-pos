@@ -44,7 +44,7 @@ export default function Dashboard() {
             </h3>
             <p className="text-sm text-gray-600 mb-3">Procesar ventas, generar tickets y enviar pedidos a cocina</p>
             <button
-              onClick={() => navigate('/chifa-pos/src/pages/Caja')}
+              onClick={() => navigate('/caja')}
               className="bg-red-600 text-white px-4 py-2 rounded w-full"
             >
               Abrir Caja
@@ -55,8 +55,15 @@ export default function Dashboard() {
             <h3 className="text-xl text-orange-600 font-semibold flex items-center gap-2">
               <Utensils size={20} /> Panel de Cocina
             </h3>
-            <p className="text-sm text-gray-600 mb-3">Ver pedidos pendientes y actualizar estados</p>
-            <button className="bg-orange-500 text-white px-4 py-2 rounded w-full">Ver Cocina</button>
+            <p className="text-sm text-gray-600 mb-3">
+              Ver pedidos pendientes y actualizar estados
+            </p>
+            <button
+              onClick={() => navigate('/cocina')}
+              className="bg-orange-500 text-white px-4 py-2 rounded w-full"
+            >
+              Ver Cocina
+            </button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">
@@ -80,7 +87,12 @@ export default function Dashboard() {
               <Box size={20} /> Inventario
             </h3>
             <p className="text-sm text-gray-600 mb-3">Control de insumos y stock de productos</p>
-            <button className="bg-purple-600 text-white px-4 py-2 rounded w-full">Ver Inventario</button>
+            <button 
+              onClick={() => navigate('/inventario')}
+              className="bg-purple-600 text-white px-4 py-2 rounded w-full"
+            >
+              Ver Inventario
+            </button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">

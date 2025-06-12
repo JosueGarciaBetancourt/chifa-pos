@@ -34,3 +34,6 @@ dist-ssr
 
 # Mantener solo el ejemplo
 !.env.example
+
+#Ignorar dist-electron
+dist-electron/
