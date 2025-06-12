@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Caja from './pages/Caja';
 import Inventario from './pages/Inventario'; 
 import Cocina from './pages/Cocina'; 
+import Mozos from './pages/Mozos'; 
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/caja" element={<Caja />} />
       <Route path="/inventario" element={<Inventario />} />
       <Route path="/cocina" element={<Cocina />} />
+      <Route path="/mozos" element={<Mozos />} />
     </Routes>
   );
 }

@@ -71,7 +71,10 @@ export default function Dashboard() {
               <Tablet size={20} /> Tablet Mozos
             </h3>
             <p className="text-sm text-gray-600 mb-3">Tomar pedidos de mesa y gestionar mesas</p>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded w-full">Abrir Tablet</button>
+            <button 
+            onClick={() => navigate('/mozos')}
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full" >
+              Abrir Tablet</button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">
