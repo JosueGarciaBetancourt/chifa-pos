@@ -82,7 +82,12 @@ export default function Dashboard() {
               <Truck size={20} /> Delivery
             </h3>
             <p className="text-sm text-gray-600 mb-3">Gestionar pedidos de delivery y repartidores</p>
-            <button className="bg-green-600 text-white px-4 py-2 rounded w-full">Ver Delivery</button>
+            <button 
+                onClick={() => navigate('/delivery')}
+                className="bg-green-600 text-white px-4 py-2 rounded w-full"
+              >
+                Ver Delivery
+              </button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">
@@ -103,7 +108,12 @@ export default function Dashboard() {
               <BarChart size={20} /> Reportes
             </h3>
             <p className="text-sm text-gray-600 mb-3">Reportes de ventas, productos más vendidos</p>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded w-full">Ver Reportes</button>
+            <button 
+              onClick={() => navigate('/reportes')}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded w-full transition-colors"
+            >
+              Ver Reportes
+            </button>
           </div>
         </div>
       </main>
