@@ -1,12 +1,30 @@
-import path from 'path';
-import fs from 'fs';
+// electron/database/connection.js
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import Database from 'better-sqlite3';
-import { app } from 'electron';
 
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/** Devuelve la ruta absoluta al archivo chifa.db según el entorno */
+function resolveDbPath() {
+  // 🖥️  Estamos *dentro* de Electron → usa la carpeta del usuario
+  if (process.versions?.electron) {
+    const { app } = require('electron');          // CJS dinámico ⇒ no crashea en backend
+    const userData = path.join(app.getPath('appData'), 'Electron', 'databases');
+    return path.join(userData, 'chifa.db');
+  }
+
+  // 🛠️  Backend puro / tests → guarda dentro del proyecto
+  return path.join(__dirname, '../../data', 'chifa.db');
+}
+
+/** Devuelve una instancia de better-sqlite3 */
 export function connection() {
-  const userDataPath = path.join(app.getPath('appData'), 'Electron');
-  const dbDir = path.join(userDataPath, 'databases');
-  const dbPath = path.join(dbDir, 'chifa.db');
+  const dbPath = resolveDbPath();
+  const dbDir  = path.dirname(dbPath);
 
   if (!fs.existsSync(dbDir)) {
     fs.mkdirSync(dbDir, { recursive: true });
@@ -14,6 +32,5 @@ export function connection() {
   }
 
   console.log('- Conectando a base de datos en:', dbPath);
-  console.log('\n');
   return new Database(dbPath);
 }

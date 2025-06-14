@@ -25,6 +25,7 @@ dist-ssr
 
 # Variables de entorno - TODAS las variantes
 .env
+./backend/.env
 .env.local
 .env.main
 .env.renderer

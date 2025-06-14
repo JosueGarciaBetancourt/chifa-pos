@@ -1,23 +1,22 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
-import electron from 'vite-plugin-electron'
-import path from 'path'
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import tailwindcss from '@tailwindcss/vite';
+import electron  from 'vite-plugin-electron';
+import path from 'node:path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  root: path.resolve(__dirname, 'frontend'), // raíz del proyecto frontend
   plugins: [
     react(),
     tailwindcss(),
-
-    // Configuración de Electron para main y preload
     electron({
       main: {
         entry: 'electron/main.js',
         vite: {
           build: {
             outDir: 'dist-electron',
-            emptyOutDir: true, // limpia el directorio antes de cada build
+            emptyOutDir: true,
           },
         },
       },
@@ -28,13 +27,13 @@ export default defineConfig({
         vite: {
           build: {
             outDir: 'dist-electron',
-            emptyOutDir: false, // evitar limpiar dist-electron otra vez
+            emptyOutDir: false,
           },
         },
       },
-    }),
+    })
   ],
   build: {
-    outDir: 'dist', // donde se genera el build del frontend
+    outDir: 'dist',
   },
-})
+});

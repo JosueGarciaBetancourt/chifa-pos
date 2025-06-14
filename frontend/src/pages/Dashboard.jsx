@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart2, Clock, Users, Package, ShoppingCart, Utensils, Tablet, Truck, Box, BarChart } from 'lucide-react';
+import productosService from '../services/productosService.js';
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const productos = await window.electronAPI.getProductos();
+        console.log(productos);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    };
+  
+    fetchProductos();
+  }, []);
+  
+  const handleProbarApi = async () => {
+    try {
+      const productos = await productosService.getProductos();
+      console.log('[✔️ API OK] Productos:', productos);
+      alert(`✅ API OK - ${productos.length} productos recibidos`);
+    } catch (error) {
+      console.error('[❌ API Error]', error);
+      alert('❌ Error al conectar con la API. ' + error);
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-red-50">
       {/* Header */}
       <header className="bg-red-600 text-white p-6 text-2xl font-bold flex items-center">
         <span className="mr-2">🍜</span> CHIFA IMPERIO - Sistema POS
+        <button
+          onClick={handleProbarApi}
+          className="ml-10 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-sm text-white font-semibold rounded-lg shadow-md cursor-pointer transition"
+        >
+          Probar API
+        </button>
       </header>
 
       {/* Panel Principal */}

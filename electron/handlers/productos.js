@@ -1,10 +1,21 @@
 import { ipcMain } from 'electron';
+import { Producto } from '../database/models/Producto.js';
 
 /**
  * Registra los handlers IPC para productos.
  * @param {Database} db La conexión a la base de datos.
  */
 export function productosHandlers(db) {
+  ipcMain.handle('getProductos', (event) => {
+    try {
+      const productos = Producto.selectAll();
+      return productos;
+    } catch (error) {
+      console.error('Error consultando todos los productos:', error);
+      return [];
+    }
+  });
+
   ipcMain.handle('getProductosByCategoria', (event, categoria) => {
     try {
       const stmt = db.prepare(

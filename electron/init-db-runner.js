@@ -2,6 +2,6 @@ import { app } from 'electron';
 import { initDatabase } from './database/initDatabase.js';
 
 app.whenReady().then(() => {
-  initDatabase();
+  initDatabase(true);
   app.quit();
 });

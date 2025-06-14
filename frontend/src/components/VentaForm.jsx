@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { api } from '../services/electronAPI';
 
 const VentaForm = () => {
 
@@ -11,7 +10,7 @@ const VentaForm = () => {
 
   const buscarProducto = async () => {
     try {
-      const resultados = await api.buscarProductosPorNombre(busqueda.trim());
+      const resultados = await window.electronAPI.buscarProductosPorNombre(busqueda.trim());
       console.log("🔎 Resultados desde la base de datos:", resultados); // <- MUY IMPORTANTE
       setProductos(resultados);
     } catch (error) {
