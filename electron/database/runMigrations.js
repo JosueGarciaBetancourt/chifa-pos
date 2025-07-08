@@ -1,59 +1,60 @@
-// electron/database/runMigrations.js
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { up as upUsuarios } from './migrations/001_create_usuarios_table.js';
+import { up as upClientes } from './migrations/002_create_clientes_table.js';
+import { up as upProductos } from './migrations/003_create_productos_table.js';
+import { up as upMesas } from './migrations/004_create_mesas_table.js';
+import { up as upPedidos } from './migrations/005_create_pedidos_table.js';
+import { up as upReservas } from './migrations/006_create_reservas_table.js';
+import { up as upDetallesPedido } from './migrations/007_create_detalles_pedido_table.js';
 
-/* --------------------------------------------------------------------------
- *  Obtener __dirname en ESM
- * ------------------------------------------------------------------------ */
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
-
-/* --------------------------------------------------------------------------
- *  Ejecuta las migraciones directamente embebidas (sin archivos externos)
- * ------------------------------------------------------------------------ */
+/**
+ * Orquesta todas las migraciones en orden y registra su aplicación.
+ */
 export async function runMigrations(db) {
-  /* 1. Tabla de control --------------------------------------------------- */
+  // Asegúrate de que las claves foráneas estén activadas
+  db.pragma('foreign_keys = ON;');
+
+  // Crea tabla de control de migraciones si no existe
   db.prepare(`
     CREATE TABLE IF NOT EXISTS migrations (
-      id      INTEGER PRIMARY KEY AUTOINCREMENT,
-      name    TEXT NOT NULL UNIQUE,
-      run_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      run_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `).run();
 
+  // Obtiene migraciones ya aplicadas
   const applied = new Set(
     db.prepare('SELECT name FROM migrations').all().map(r => r.name)
   );
 
-  console.log('- Ejecutando migraciones integradas');
+  console.log('🔄 Ejecutando migraciones pendientes...\n');
 
-  /* 2. Migración: crear tabla productos ---------------------------------- */
-  const MIGRATION_NAME = '001_create_productos_table';
+  // Lista de migraciones en orden
+  const migrations = [
+    { name: '001_create_usuarios_table', fn: upUsuarios },
+    { name: '002_create_clientes_table', fn: upClientes },
+    { name: '003_create_productos_table', fn: upProductos },
+    { name: '004_create_mesas_table', fn: upMesas },
+    { name: '005_create_pedidos_table', fn: upPedidos },
+    { name: '006_create_reservas_table', fn: upReservas },
+    { name: '007_create_detalles_pedido_table', fn: upDetallesPedido },
+  ];
 
-  if (!applied.has(MIGRATION_NAME)) {
-    try {
-      console.log('MIGRACIÓN creando tabla productos...');
-
-      db.prepare(`
-        CREATE TABLE IF NOT EXISTS productos (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nombre TEXT NOT NULL,
-          descripcion TEXT,
-          precio REAL NOT NULL,
-          categoria TEXT NOT NULL
-        );
-      `).run();
-
-      db.prepare('INSERT INTO migrations (name) VALUES (?)').run(MIGRATION_NAME);
-      console.log(`- Migracion ${MIGRATION_NAME} aplicada.`);
-    } catch (err) {
-      console.error(`- Error ejecutando ${MIGRATION_NAME}:`, err);
-      throw err;
+  for (const migration of migrations) {
+    if (!applied.has(migration.name)) {
+      try {
+        console.log(`🚀 Ejecutando ${migration.name}...`);
+        migration.fn(db);
+        db.prepare('INSERT INTO migrations (name) VALUES (?)').run(migration.name);
+        console.log(`✅ Migración ${migration.name} aplicada.\n`);
+      } catch (err) {
+        console.error(`❌ Error ejecutando ${migration.name}:`, err);
+        throw err;
+      }
+    } else {
+      console.log(`⏭️  Migración ${migration.name} ya aplicada. Se omite.\n`);
     }
-  } else {
-    console.log(`- Migracion ${MIGRATION_NAME} ya estaba aplicada.`);
   }
 
-  // Puedes agregar más migraciones aquí abajo
+  console.log('🎉 Todas las migraciones completadas.');
 }
