@@ -1,4 +1,4 @@
-// vite.config.js
+import 'dotenv/config.js';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
@@ -33,6 +33,12 @@ export default defineConfig({
       },
     })
   ],
+  server: {
+    host: '0.0.0.0', // Acepta conexiones externas
+    origin: process.env.FRONTEND_URL,
+    strictPort: true,
+    port: Number(process.env.FRONTEND_PORT) // Asegúrate de usar el mismo puerto que configuras en ngrok
+  },
   build: {
     outDir: 'dist',
   },

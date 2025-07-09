@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { Producto } from '../database/models/Producto.js';
+import { Producto } from '../database/models/Productos.js';
 
 /**
  * Registra los handlers IPC para productos.

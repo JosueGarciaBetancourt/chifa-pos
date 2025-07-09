@@ -9,8 +9,8 @@ import loggerMiddleware from './logger.js';
 const app = express();
 
 // SETTINGS
-app.set('url',  process.env.API_DEV_SERVER_URL || 'http://localhost');
-app.set('port', process.env.API_DEV_PORT || 4000);
+app.set('url',  process.env.API_URL || 'http://localhost');
+app.set('port', process.env.API_PORT || 4000);
 
 // MIDDLEWARES
 /* app.use(
