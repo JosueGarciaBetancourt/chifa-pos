@@ -1,10 +1,18 @@
+// electron/database/runMigrations.js
 import { up as upUsuarios } from './migrations/001_create_usuarios_table.js';
 import { up as upClientes } from './migrations/002_create_clientes_table.js';
 import { up as upProductos } from './migrations/003_create_productos_table.js';
-import { up as upMesas } from './migrations/004_create_mesas_table.js';
-import { up as upPedidos } from './migrations/005_create_pedidos_table.js';
-import { up as upReservas } from './migrations/006_create_reservas_table.js';
+import { up as upInsumos } from './migrations/004_create_insumos_table.js';
+import { up as upMesas } from './migrations/005_create_mesas_table.js';
+import { up as upPedidos } from './migrations/006_create_pedidos_table.js';
 import { up as upDetallesPedido } from './migrations/007_create_detalles_pedido_table.js';
+import { up as upRecetas } from './migrations/008_create_recetas_table.js';
+import { up as upReservas } from './migrations/009_create_reservas_table.js';
+import { up as upComprobantes } from './migrations/010_create_comprobantes_table.js';
+import { up as upMovimientosCaja } from './migrations/011_create_movimientos_caja_table.js';
+import { up as upInventarioMovimientos } from './migrations/012_create_inventario_movimientos_table.js';
+import { up as upCotizaciones } from './migrations/013_create_cotizaciones_table.js';
+import { up as upDispositivos } from './migrations/014_create_dispositivos_table.js';
 
 /**
  * Orquesta todas las migraciones en orden y registra su aplicación.
@@ -29,15 +37,22 @@ export async function runMigrations(db) {
 
   console.log('🔄 Ejecutando migraciones pendientes...\n');
 
-  // Lista de migraciones en orden
+  // Lista de migraciones en orden con sus dependencias
   const migrations = [
     { name: '001_create_usuarios_table', fn: upUsuarios },
     { name: '002_create_clientes_table', fn: upClientes },
     { name: '003_create_productos_table', fn: upProductos },
-    { name: '004_create_mesas_table', fn: upMesas },
-    { name: '005_create_pedidos_table', fn: upPedidos },
+    { name: '004_create_insumos_table', fn: upInsumos },
+    { name: '005_create_mesas_table', fn: upMesas },
     { name: '006_create_reservas_table', fn: upReservas },
-    { name: '007_create_detalles_pedido_table', fn: upDetallesPedido },
+    { name: '007_create_pedidos_table', fn: upPedidos },
+    { name: '008_create_detalles_pedido_table', fn: upDetallesPedido },
+    { name: '009_create_comprobantes_table', fn: upComprobantes },
+    { name: '010_create_movimientos_caja_table', fn: upMovimientosCaja },
+    { name: '011_create_recetas_table', fn: upRecetas },
+    { name: '012_create_inventario_movimientos_table', fn: upInventarioMovimientos },
+    { name: '013_create_cotizaciones_table', fn: upCotizaciones },
+    { name: '014_create_dispositivos_table', fn: upDispositivos },
   ];
 
   for (const migration of migrations) {

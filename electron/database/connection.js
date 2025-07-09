@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 function resolveDbPath() {
   // 🖥️  Estamos *dentro* de Electron → usa la carpeta del usuario
   if (process.versions?.electron) {
-    const { app } = require('electron');          // CJS dinámico ⇒ no crashea en backend
+    const { app } = require('electron');
     const userData = path.join(app.getPath('appData'), 'Electron', 'databases');
     return path.join(userData, 'chifa.db');
   }

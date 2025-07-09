@@ -3,13 +3,11 @@ export function up(db) {
   db.prepare(`
     CREATE TABLE IF NOT EXISTS detalles_pedido (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      pedido_id INTEGER,
-      producto_id INTEGER,
+      pedido_id INTEGER NOT NULL REFERENCES pedidos(id) ON DELETE CASCADE,
+      producto_id INTEGER NOT NULL REFERENCES productos(id),
       cantidad INTEGER NOT NULL,
       precio_unitario REAL NOT NULL,
-      subtotal REAL,
-      FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
-      FOREIGN KEY (producto_id) REFERENCES productos(id)
+      subtotal REAL GENERATED ALWAYS AS (cantidad * precio_unitario) VIRTUAL
     );
   `).run();
 }

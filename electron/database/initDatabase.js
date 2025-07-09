@@ -1,3 +1,4 @@
+// electron/database/initDatabase.js
 import path from 'path';
 import fs from 'fs';
 import Database from 'better-sqlite3';
@@ -8,8 +9,8 @@ import { runSeeders } from './runSeeders.js';
 export async function initDatabase(reset = false) {
   console.log("- Inicializando base de datos...");
 
-  const userDataPath = path.join(app.getPath('appData'), 'Electron');
-  const dbDir = path.join(userDataPath, 'databases');
+  const userDataPath = app.getPath('appData');
+  const dbDir = path.join(userDataPath, 'Electron', 'databases');
 
   if (!fs.existsSync(dbDir)) {
     fs.mkdirSync(dbDir, { recursive: true });
@@ -43,5 +44,5 @@ export async function initDatabase(reset = false) {
     console.log('- Base de datos verificada');
   }
 
-  db.close();
+  return db;
 }
