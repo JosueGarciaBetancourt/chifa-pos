@@ -1,5 +1,5 @@
 export function up(db) {
-    console.log('[MIGRACIÓN] creando tabla dispositivos...');
+    console.log('[MIGRACION] creando tabla dispositivos...');
     db.prepare(`
         CREATE TABLE IF NOT EXISTS dispositivos (
           id INTEGER PRIMARY KEY AUTOINCREMENT,

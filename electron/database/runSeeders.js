@@ -2,13 +2,13 @@
 import { seed as seedAll } from './seeders/index.js';
 
 export function runSeeders(db) {
-  console.log('\n🌱 Ejecutando seeders...\n');
+  console.log('\n- Ejecutando seeders...\n');
   
   try {
     seedAll(db);
-    console.log('\n🎉 Todos los seeders ejecutados correctamente.');
+    console.log('\nTodos los seeders ejecutados correctamente.');
   } catch (err) {
-    console.error('❌ Error ejecutando seeders:', err);
+    console.error('X Error ejecutando seeders:', err);
     throw err;
   }
 }

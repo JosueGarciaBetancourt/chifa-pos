@@ -1,5 +1,5 @@
 export function up(db) {
-    console.log('[MIGRACIÓN] creando tabla inventario_movimientos...');
+    console.log('[MIGRACION] creando tabla inventario_movimientos...');
     db.prepare(`
         CREATE TABLE IF NOT EXISTS inventario_movimientos (
           id INTEGER PRIMARY KEY AUTOINCREMENT,

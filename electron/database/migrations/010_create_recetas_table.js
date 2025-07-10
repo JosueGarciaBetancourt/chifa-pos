@@ -1,5 +1,5 @@
 export function up(db) {
-  console.log('[MIGRACIÓN] creando tabla recetas...');
+  console.log('[MIGRACION] creando tabla recetas...');
   db.prepare(`
     CREATE TABLE IF NOT EXISTS recetas (
       producto_id INTEGER NOT NULL REFERENCES productos(id) ON DELETE CASCADE,

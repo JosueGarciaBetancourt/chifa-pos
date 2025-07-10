@@ -1,5 +1,5 @@
 export function up(db) {
-    console.log('[MIGRACIÓN] creando tabla comprobantes...');
+    console.log('[MIGRACION] creando tabla comprobantes...');
     db.prepare(`
         CREATE TABLE IF NOT EXISTS comprobantes (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
