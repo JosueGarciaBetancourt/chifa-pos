@@ -4,7 +4,7 @@ export function up(db) {
   db.prepare(`
     CREATE TABLE IF NOT EXISTS roles (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nombre TEXT NOT NULL 
+      nombre TEXT UNIQUE NOT NULL 
     );
   `).run();
 }

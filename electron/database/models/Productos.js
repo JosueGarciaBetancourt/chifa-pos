@@ -1,28 +1,34 @@
 import { connection } from '../connection.js';
 const db = connection();
 
+// Paso 1: Extraer SELECT base (evita duplicación)
+const baseSelect = `
+  SELECT 
+    p.id, 
+    p.codigo, 
+    p.nombre, 
+    p.descripcion, 
+    p.precio, 
+    p.categoria_id,
+    c.nombre AS categoria_nombre,
+    c.descripcion AS categoria_descripcion,
+    p.tiempo_preparacion_min, 
+    p.activo 
+  FROM productos p
+  JOIN categorias c ON p.categoria_id = c.id
+`;
+
 const sql = Object.freeze({
-  selectAll: `
-    SELECT id, codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo 
-    FROM productos
-  `,
-  selectActive: `
-    SELECT * 
-    FROM productos 
-    WHERE activo = 1
-  `,
-  selectById: `
-    SELECT * 
-    FROM productos 
-    WHERE id = ?
-  `,
+  selectAll: `${baseSelect}`,
+  selectActive: `${baseSelect} WHERE p.activo = 1`,
+  selectById: `${baseSelect} WHERE p.id = ?`,
   insert: `
-    INSERT INTO productos (codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo) 
+    INSERT INTO productos (codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `,
   update: `
     UPDATE productos 
-    SET codigo = ?, nombre = ?, descripcion = ?, precio = ?, categoria = ?, tiempo_preparacion = ?, activo = ? 
+    SET codigo = ?, nombre = ?, descripcion = ?, precio = ?, categoria_id = ?, tiempo_preparacion_min = ?, activo = ? 
     WHERE id = ?
   `,
   delete: `
@@ -31,29 +37,48 @@ const sql = Object.freeze({
   `,
 });
 
+// Paso 2: Transformar el resultado para anidar categoría como objeto
+function formatProducto(row) {
+  return {
+    id: row.id,
+    codigo: row.codigo,
+    nombre: row.nombre,
+    descripcion: row.descripcion,
+    precio: row.precio,
+    tiempo_preparacion_min: row.tiempo_preparacion_min,
+    activo: row.activo,
+    categoria_id: row.categoria_id,
+    categoria: {
+      nombre: row.categoria_nombre,
+      descripcion: row.categoria_descripcion
+    }
+  };
+}
+
 export const Producto = {
   selectAll() {
-    return db.prepare(sql.selectAll).all();
+    return db.prepare(sql.selectAll).all().map(formatProducto);
   },
 
   selectActive() {
-    return db.prepare(sql.selectActive).all();
+    return db.prepare(sql.selectActive).all().map(formatProducto);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatProducto(row) : null;
   },
 
-  create({ codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo = 1 }) {
+  create({ codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo = 1 }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo
+      codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo }) {
+  update(id, { codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo }) {
     db.prepare(sql.update).run(
-      codigo, nombre, descripcion, precio, categoria, tiempo_preparacion, activo, id
+      codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo, id
     );
     return this.findById(id);
   },

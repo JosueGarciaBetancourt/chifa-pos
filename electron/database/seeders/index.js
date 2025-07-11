@@ -1,9 +1,14 @@
+import { seed as seedEmpresaLocal } from './empresa_localSeeder.js';
+import { seed as seedSedeLocal } from './sede_localSeeder.js';
 import { seed as seedRoles } from './rolesSeeder.js';
+import { seed as seedPermisos } from './permisosSeeder.js';
+import { seed as seedRolesPermisos } from './roles_permisosSeeder.js';
 import { seed as seedUsuarios } from './usuariosSeeder.js';
 import { seed as seedClientes } from './clientesSeeder.js';
 import { seed as seedCategorias } from './categoriasSeeder.js';
 import { seed as seedInsumos } from './insumosSeeder.js';
 import { seed as seedProductos } from './productosSeeder.js';
+import { seed as seedEstadosMesas } from './estados_MesasSeeder.js';
 import { seed as seedMesas } from './mesasSeeder.js';
 import { seed as seedRecetas } from './recetasSeeder.js';
 import { seed as seedPedidos } from './pedidosSeeder.js';
@@ -17,14 +22,19 @@ import { seed as seedDispositivos } from './dispositivosSeeder.js';
 
 export function seed(db) {
   // Ejecutar en orden para mantener las relaciones
+  seedEmpresaLocal(db);
+  seedSedeLocal(db);
   seedRoles(db);
+  seedPermisos(db);
+  seedRolesPermisos(db);
   seedUsuarios(db);
   seedClientes(db);
   seedCategorias(db);
   seedInsumos(db);
   seedProductos(db);
-  seedMesas(db);
   seedRecetas(db);
+  seedEstadosMesas(db);
+  seedMesas(db);
   seedPedidos(db);
   seedDetallesPedido(db);
   seedReservas(db);

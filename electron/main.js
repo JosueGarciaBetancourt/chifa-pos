@@ -55,12 +55,15 @@ app.whenReady().then(async () => {
     db = connection();
     productosHandlers(db);
 
+    // API
     const URL = expressApp.get('url') || 'http://localhost';
     const PORT = expressApp.get('port') || 4000;
     server = expressApp.listen(PORT, '0.0.0.0', () =>
       console.log(`- API REST (Express) ${URL}:${PORT}/api`)
     );
 
+    // Websockets
+    
     createWindow();
   } catch (error) {
     console.error('Error durante el arranque:', error);

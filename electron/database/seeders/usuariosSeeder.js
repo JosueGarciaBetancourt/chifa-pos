@@ -31,7 +31,5 @@ export function seed(db) {
   });
 
   insertMany(usuarios);
-  
-  const cantUsuarios = usuarios.length;
-  console.log(`[SEEDER] ${cantUsuarios} usuarios insertados`);
+  console.log(`[SEEDER] ${usuarios.length} usuarios insertados`);
 }

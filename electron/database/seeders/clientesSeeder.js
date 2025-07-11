@@ -39,6 +39,5 @@ export function seed(db) {
   });
 
   insertMany(clientes);
-
   console.log(`[SEEDER] ${clientes.length} clientes insertados`);
 }

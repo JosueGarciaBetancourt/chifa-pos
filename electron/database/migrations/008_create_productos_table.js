@@ -7,12 +7,10 @@ export function up(db) {
 		  nombre TEXT NOT NULL,
 		  descripcion TEXT,
 		  precio REAL NOT NULL,
-		  categoria_id INTEGER NOT NULL,
+		  categoria_id INTEGER NOT NULL REFERENCES categorias(id) ON DELETE CASCADE,
 		  tiempo_preparacion_min INTEGER NOT NULL,
-		  activo BOOLEAN NOT NULL DEFAULT 1,
-
-		  FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+		  activo BOOLEAN NOT NULL DEFAULT 1
 		);
 	  `).run();
-  }
+}
   

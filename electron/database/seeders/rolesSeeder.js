@@ -1,4 +1,3 @@
-// electron/database/seeders/01_usuarios.js
 export function seed(db) {
   console.log('[SEEDER] Insertando roles...');
   
@@ -20,7 +19,5 @@ export function seed(db) {
   });
 
   insertMany(roles);
-  
-  const cantUsuarios = roles.length;
-  console.log(`[SEEDER] ${cantUsuarios} roles insertados`);
+  console.log(`[SEEDER] ${roles.length} roles insertados`);
 }

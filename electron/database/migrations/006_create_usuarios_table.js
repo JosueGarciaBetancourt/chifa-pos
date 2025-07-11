@@ -7,14 +7,10 @@ export function up(db) {
       dni TEXT UNIQUE NOT NULL,
       nombre TEXT NOT NULL,
       apellido TEXT NOT NULL,
-      rol_id INTEGER NOT NULL,
+      rol_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
       username TEXT NOT NULL,
       password TEXT NOT NULL,
-      activo BOOLEAN NOT NULL DEFAULT 1,
-
-      FOREIGN KEY (rol_id) REFERENCES roles(id)
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }
-
-// rol TEXT NOT NULL CHECK(rol IN ('cajero', 'mozo', 'supervisor', 'admin', 'cocina')),

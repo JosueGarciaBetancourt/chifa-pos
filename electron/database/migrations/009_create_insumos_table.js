@@ -10,5 +10,5 @@ export function up(db) {
 		  costo REAL NOT NULL
 		);
 	  `).run();
-  }
+}
   

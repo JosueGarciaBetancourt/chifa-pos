@@ -5,7 +5,8 @@ export function up(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       numero TEXT UNIQUE NOT NULL,
       capacidad INTEGER NOT NULL,
-      estado TEXT NOT NULL CHECK(estado IN ('libre', 'ocupada', 'reservada', 'inactiva')) DEFAULT 'libre'
+      estado_mesa_id INTEGER NOT NULL REFERENCES estados_mesas(id) ON DELETE CASCADE,
+      sede_id INTEGER NOT NULL REFERENCES sede_local(id) ON DELETE CASCADE
     );
   `).run();
 }

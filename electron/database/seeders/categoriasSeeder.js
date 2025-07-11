@@ -22,7 +22,5 @@ export function seed(db) {
   });
 
   insertMany(categorias);
-
-  const cantCategorias = categorias.length;
-  console.log(`[SEEDER] ${cantCategorias} categorias insertadas`);
+  console.log(`[SEEDER] ${categorias.length} categorias insertadas`);
 }
