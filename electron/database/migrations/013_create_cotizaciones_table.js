@@ -3,7 +3,7 @@ export function up(db) {
     db.prepare(`
         CREATE TABLE IF NOT EXISTS cotizaciones (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          cliente_id INTEGER REFERENCES clientes(id),
+          cliente_id INTEGER NOT NULL REFERENCES clientes(id),
           usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
           fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           validez_dias INTEGER NOT NULL,

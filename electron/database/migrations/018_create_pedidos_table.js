@@ -12,6 +12,7 @@ export function up(db) {
       direccion_entrega TEXT,
       total REAL NOT NULL DEFAULT 0,
       observaciones_generales TEXT,
+      cotizacion_id INTEGER REFERENCES cotizaciones(id),
       sede_id INTEGER NOT NULL REFERENCES sede_local(id) ON DELETE CASCADE
     );
   `).run();

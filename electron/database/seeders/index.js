@@ -4,38 +4,49 @@ import { seed as seedRoles } from './rolesSeeder.js';
 import { seed as seedPermisos } from './permisosSeeder.js';
 import { seed as seedRolesPermisos } from './roles_permisosSeeder.js';
 import { seed as seedUsuarios } from './usuariosSeeder.js';
-import { seed as seedClientes } from './clientesSeeder.js';
+import { seed as seedJornadasLaborales } from './jornadas_laboralesSeeder.js';
 import { seed as seedCategorias } from './categoriasSeeder.js';
-import { seed as seedInsumos } from './insumosSeeder.js';
 import { seed as seedProductos } from './productosSeeder.js';
+import { seed as seedInsumos } from './insumosSeeder.js';
+import { seed as seedRecetas } from './recetasSeeder.js';
+import { seed as seedClientes } from './clientesSeeder.js';
+import { seed as seedCotizaciones } from './cotizacionesSeeder.js';
 import { seed as seedEstadosMesas } from './estados_MesasSeeder.js';
 import { seed as seedMesas } from './mesasSeeder.js';
-import { seed as seedRecetas } from './recetasSeeder.js';
 import { seed as seedTiposPedidos } from './tipos_PedidosSeeder.js';
 import { seed as seedEstadosPedidos } from './estados_PedidosSeeder.js';
 import { seed as seedPedidos } from './pedidosSeeder.js';
 import { seed as seedEstadosDetallesPedidos } from './estados_detalles_PedidosSeeder.js';
 import { seed as seedDetallesPedido } from './detalles_pedidosSeeder.js';
-import { seed as seedReservas } from './reservasSeeder.js';
+import { seed as seedMetodosPago } from './metodos_pagoSeeder.js';
+import { seed as seedEstadosComprobantes } from './estados_comprobantesSeeder.js';
+import { seed as seedTiposComprobantes } from './tipos_comprobantesSeeder.js';
 import { seed as seedComprobantes } from './comprobantesSeeder.js';
-import { seed as seedMovimientosCaja } from './movimientos_cajaSeeder.js';
+import { seed as seedReservas } from './reservasSeeder.js';
 import { seed as seedInventarioMovimientos } from './inventario_movimientosSeeder.js';
-import { seed as seedCotizaciones } from './cotizacionesSeeder.js';
+import { seed as seedProveedores } from './proveedoresSeeder.js';
+import { seed as seedComprasInsumosProveedores } from './compras_insumos_proveedoresSeeder.js';
+import { seed as seedMovimientosCaja } from './movimientos_cajaSeeder.js';
 import { seed as seedDispositivos } from './dispositivosSeeder.js';
+import { seed as seedTiposNotificaciones } from './tipos_NotificacionesSeeder.js';
+import { seed as seedNotificaciones } from './notificacionesSeeder.js';
+import { seed as seedLogsSistema } from './logs_sistemaSeeder.js';
+
 
 export function seed(db) {
-  // Ejecutar en orden para mantener las relaciones
   seedEmpresaLocal(db);
   seedSedeLocal(db);
   seedRoles(db);
   seedPermisos(db);
   seedRolesPermisos(db);
   seedUsuarios(db);
-  seedClientes(db);
+  seedJornadasLaborales(db);
   seedCategorias(db);
-  seedInsumos(db);
   seedProductos(db);
+  seedInsumos(db);
   seedRecetas(db);
+  seedClientes(db);
+  seedCotizaciones(db); // Va aquí, justo después de clientes
   seedEstadosMesas(db);
   seedMesas(db);
   seedTiposPedidos(db);
@@ -43,12 +54,20 @@ export function seed(db) {
   seedPedidos(db);
   seedEstadosDetallesPedidos(db);
   seedDetallesPedido(db);
-  seedReservas(db);
+  seedMetodosPago(db);
+  seedEstadosComprobantes(db);
+  seedTiposComprobantes(db);
   seedComprobantes(db);
-  seedMovimientosCaja(db);
+  seedReservas(db);
   seedInventarioMovimientos(db);
-  seedCotizaciones(db);
+  seedProveedores(db);
+  seedComprasInsumosProveedores(db);
+  seedMovimientosCaja(db);
   seedDispositivos(db);
-  
+  seedTiposNotificaciones(db);
+  seedNotificaciones(db);
+  seedLogsSistema(db);
+
   console.log('[SEEDER] Todos los datos iniciales insertados correctamente');
 }
+
