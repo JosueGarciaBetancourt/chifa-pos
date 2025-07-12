@@ -2,19 +2,19 @@ export function seed(db) {
   console.log('[SEEDER] Insertando permisos...');
   
   const stmt = db.prepare(`
-    INSERT INTO permisos (nombre)
-    VALUES (?)
+    INSERT INTO permisos (id, nombre)
+    VALUES (?, ?)
   `);
 
   // Por ahora permisos básicos por módulos
   const permisos = [
-    ['all'],
-    ['caja'],
-    ['cocina'],
-    ['pedidos'],
-    ['inventario'],
-    ['delivery'],
-    ['reportes'],
+    [1, 'all'],
+    [2, 'caja'],
+    [3, 'cocina'],
+    [4, 'pedidos'],
+    [5, 'inventario'],
+    [6, 'delivery'],
+    [7, 'reportes'],
   ];
 
   const insertMany = db.transaction((permisos) => {

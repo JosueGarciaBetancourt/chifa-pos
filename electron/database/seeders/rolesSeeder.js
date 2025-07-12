@@ -1,17 +1,17 @@
 export function seed(db) {
   console.log('[SEEDER] Insertando roles...');
-  
+
   const stmt = db.prepare(`
-    INSERT INTO roles (nombre)
-    VALUES (?)
+    INSERT INTO roles (id, nombre)
+    VALUES (?, ?)
   `);
 
   const roles = [
-    ['admin'],
-    ['supervisor'],
-    ['cajero'],
-    ['cocinero'],
-    ['mozo'],
+    [1, 'admin'],
+    [2, 'supervisor'],
+    [3, 'cajero'],
+    [4, 'cocinero'],
+    [5, 'mozo'],
   ];
 
   const insertMany = db.transaction((roles) => {

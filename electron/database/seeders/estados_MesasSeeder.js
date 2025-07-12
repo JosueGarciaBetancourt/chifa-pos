@@ -1,17 +1,17 @@
 export function seed(db) {
   console.log('[SEEDER] Insertando estados_mesas...');
-  
+
   const stmt = db.prepare(`
-    INSERT INTO estados_mesas (nombre, descripcion)
-    VALUES (?, ?)
+    INSERT INTO estados_mesas (id, nombre, descripcion)
+    VALUES (?, ?, ?)
   `);
 
   const estados_mesas = [
-    ['disponible', 'Mesa libre, lista para ser ocupada'],
-    ['ocupado', 'Actualmente con clientes o un pedido activo'],
-    ['reservado', 'Apartada por una reserva futura'],
-    ['en_limpieza', 'Ha sido desocupada, pero aún no está lista para el próximo cliente'],
-    ['fuera_servicio', 'Mesa dañada, fuera de uso temporal o permanente']
+    [1, 'disponible', 'Mesa libre, lista para ser ocupada'],
+    [2, 'ocupado', 'Actualmente con clientes o un pedido activo'],
+    [3, 'reservado', 'Apartada por una reserva futura'],
+    [4, 'en_limpieza', 'Ha sido desocupada, pero aún no está lista para el próximo cliente'],
+    [5, 'fuera_servicio', 'Mesa dañada, fuera de uso temporal o permanente']
   ];
 
   const insertMany = db.transaction((estados_mesas) => {
@@ -19,5 +19,5 @@ export function seed(db) {
   });
 
   insertMany(estados_mesas);
-  console.log(`[SEEDER] ${estados_mesas} estados_mesas insertadas`);
+  console.log(`[SEEDER] ${estados_mesas.length} estados_mesas insertadas`);
 }

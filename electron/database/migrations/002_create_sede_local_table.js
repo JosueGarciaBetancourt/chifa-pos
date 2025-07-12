@@ -12,7 +12,8 @@ export function up(db) {
       telefono TEXT,
       serie_boleta TEXT,
       serie_factura TEXT,
-      serie_ticket TEXT
+      serie_ticket TEXT,
+      usa_web_central BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

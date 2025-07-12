@@ -11,14 +11,17 @@ import { up as upRecetas } from './migrations/010_create_recetas_table.js';
 import { up as upClientes } from './migrations/011_create_clientes_table.js';
 import { up as upEstadosMesas } from './migrations/012_create_estados_mesas_table.js';
 import { up as upMesas } from './migrations/013_create_mesas_table.js';
-import { up as upPedidos } from './migrations/014_create_pedidos_table.js';
-import { up as upDetallesPedido } from './migrations/015_create_detalles_pedido_table.js';
-import { up as upComprobantes } from './migrations/016_create_comprobantes_table.js';
-import { up as upReservas } from './migrations/017_create_reservas_table.js';
-import { up as upInventarioMovimientos } from './migrations/018_create_inventario_movimientos_table.js';
-import { up as upMovimientosCaja } from './migrations/019_create_movimientos_caja_table.js';
-import { up as upCotizaciones } from './migrations/020_create_cotizaciones_table.js';
-import { up as upDispositivos } from './migrations/021_create_dispositivos_table.js';
+import { up as upTiposPedidos } from './migrations/014_create_tipos_pedidos_table.js';
+import { up as upEstadosPedidos } from './migrations/015_create_estados_pedidos_table.js';
+import { up as upPedidos } from './migrations/016_create_pedidos_table.js';
+import { up as upEstadosDetallesPedidos } from './migrations/017_create_estados_detalles_pedidos_table.js';
+import { up as upDetallesPedidos } from './migrations/018_create_detalles_pedidos_table.js';
+import { up as upComprobantes } from './migrations/019_create_comprobantes_table.js';
+import { up as upReservas } from './migrations/020_create_reservas_table.js';
+import { up as upInventarioMovimientos } from './migrations/021_create_inventario_movimientos_table.js';
+import { up as upMovimientosCaja } from './migrations/022_create_movimientos_caja_table.js';
+import { up as upCotizaciones } from './migrations/023_create_cotizaciones_table.js';
+import { up as upDispositivos } from './migrations/024_create_dispositivos_table.js';
 
 /**
  * Orquesta todas las migraciones en orden y registra su aplicación.
@@ -58,14 +61,17 @@ export async function runMigrations(db) {
     { name: '011_create_clientes_table', fn: upClientes },
     { name: '012_create_estados_mesas_table', fn: upEstadosMesas },
     { name: '013_create_mesas_table', fn: upMesas },
-    { name: '014_create_pedidos_table', fn: upPedidos },
-    { name: '015_create_detalles_pedido_table', fn: upDetallesPedido },
-    { name: '016_create_comprobantes_table', fn: upComprobantes },
-    { name: '017_create_reservas_table', fn: upReservas },
-    { name: '018_create_inventario_movimientos_table', fn: upInventarioMovimientos },
-    { name: '019_create_movimientos_caja_table', fn: upMovimientosCaja },
-    { name: '020_create_cotizaciones_table', fn: upCotizaciones },
-    { name: '021_create_dispositivos_table', fn: upDispositivos },
+    { name: '014_create_tipos_pedidos_table', fn: upTiposPedidos },
+    { name: '015_create_estados_pedidos_table', fn: upEstadosPedidos },
+    { name: '016_create_pedidos_table', fn: upPedidos },
+    { name: '017_create_estados_detalles_pedidos_table', fn: upEstadosDetallesPedidos },
+    { name: '018_create_detalles_pedidos_table', fn: upDetallesPedidos },
+    { name: '019_create_comprobantes_table', fn: upComprobantes },
+    { name: '020_create_reservas_table', fn: upReservas },
+    { name: '021_create_inventario_movimientos_table', fn: upInventarioMovimientos },
+    { name: '022_create_movimientos_caja_table', fn: upMovimientosCaja },
+    { name: '023_create_cotizaciones_table', fn: upCotizaciones },
+    { name: '024_create_dispositivos_table', fn: upDispositivos },
   ];
 
   for (const migration of migrations) {

@@ -2,12 +2,13 @@ export function seed(db) {
   console.log('[SEEDER] Insertando empresa_local...');
   
   const stmt = db.prepare(`
-    INSERT INTO empresa_local (ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO empresa_local (id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const empresa_local = [
-    [
+    [ 
+      1,
       '20481234567',                             // RUC válido ficticio
       'Chifa Samsen S.A.C.',                     // Razón social
       'Chifa Samsen',                            // Nombre comercial

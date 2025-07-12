@@ -3,13 +3,14 @@ export function seed(db) {
 
   const stmt = db.prepare(`
     INSERT INTO sede_local (
-      empresa_id, nombre, direccion, ciudad, distrito, telefono,
-      serie_boleta, serie_factura, serie_ticket
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      id, empresa_id, nombre, direccion, ciudad, distrito, telefono,
+      serie_boleta, serie_factura, serie_ticket, usa_web_central
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const sedes = [
     [
+      1,
       1,
       'Chifa Samsen - Sede Miraflores',
       'Calle Sabores Orientales 456',
@@ -18,7 +19,8 @@ export function seed(db) {
       '+51 987 654 322',                   
       'B001',
       'F001',
-      'T001'
+      'T001',
+      1
     ]
   ];
 
