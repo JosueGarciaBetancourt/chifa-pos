@@ -12,7 +12,7 @@ export function seed(db) {
     [3, 'Fideos', 'kg', 40, 8, 4.0],
     [4, 'Carne de Res', 'kg', 25, 5, 12.0],
     [5, 'Cerdo', 'kg', 20, 4, 10.0],
-    [6, 'Camaron', 'kg', 15, 3, 25.0],
+    [6, 'Camarón', 'kg', 15, 3, 25.0],
     [7, 'Huevos', 'unidad', 300, 60, 0.5],
 
     [8, 'Inca Kola 500ml', 'unidad', 200, 50, 2.0],

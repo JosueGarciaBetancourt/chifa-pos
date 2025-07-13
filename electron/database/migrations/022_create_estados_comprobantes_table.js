@@ -3,7 +3,8 @@ export function up(db) {
     db.prepare(`
         CREATE TABLE IF NOT EXISTS estados_comprobantes (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nombre TEXT UNIQUE NOT NULL
+          nombre TEXT UNIQUE NOT NULL,
+          descripcion TEXT
         );
       `).run();
   }

@@ -4,6 +4,7 @@ export function up(db) {
         CREATE TABLE IF NOT EXISTS movimientos_caja (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
+          jornada_laboral_id INTEGER NOT NULL REFERENCES jornadas_laborales(id),
           tipo TEXT NOT NULL CHECK(tipo IN ('apertura', 'cierre', 'venta', 'gasto')),
           fecha_hora_inicio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           fecha_hora_cierre DATETIME,

@@ -4,20 +4,28 @@ export function seed(db) {
   const stmt = db.prepare(`
     INSERT INTO pedidos (
       id, cliente_id, usuario_id, mesa_id, tipo_id, estado_id, 
-      fecha_hora, direccion_entrega, total, observaciones_generales, sede_id
+      fecha_hora, direccion_entrega, subTotal, igv, total, observaciones_generales, sede_id
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   function toSQLiteDatetime(date) {
     return date.toISOString().slice(0, 19).replace('T', ' ');
   }
 
+  function calcularSubtotal(total) {
+    return parseFloat((total / 1.18).toFixed(2)); // precio sin IGV
+  }
+
+  function calcularIGV(subtotal, total) {
+    return parseFloat((total - subtotal).toFixed(2)); // diferencia exacta
+  }
+
   const ahora = new Date();
   const ayer = new Date(ahora - 86400000);
   const semanaPasada = new Date(ahora - 7 * 86400000);
 
-  const pedidos = [
+  const pedidosOriginales = [
     [1, 1, 2, 1, 1, 5, toSQLiteDatetime(ahora), null, 85.0, 'Atender rápido', 1],
     [2, 3, 1, 4, 3, 4, toSQLiteDatetime(ahora), 'Calle Los Pinos 456', 68.5, 'Llamar antes de llegar', 1],
     [3, 2, 3, null, 2, 3, toSQLiteDatetime(ahora), null, 42.0, 'Para recoger en 30 min', 1],
@@ -26,14 +34,12 @@ export function seed(db) {
     [6, 16, 1, 2, 1, 5, toSQLiteDatetime(ahora), null, 74.0, 'Aniversario', 1],
     [7, 17, 3, 9, 1, 3, toSQLiteDatetime(ahora), null, 66.0, null, 1],
     [8, 18, 2, null, 2, 4, toSQLiteDatetime(ahora), null, 38.5, 'Sin ají', 1],
-
     [9, 6, 2, 3, 1, 5, toSQLiteDatetime(ayer), null, 75.0, 'Mesa decorada', 1],
     [10, 7, 1, 8, 3, 4, toSQLiteDatetime(ayer), 'Calle Las Magnolias 101', 52.5, 'Dejar en portería', 1],
     [11, 8, 3, null, 2, 4, toSQLiteDatetime(ayer), null, 36.0, 'Pago en efectivo', 1],
     [12, 19, 1, 5, 1, 5, toSQLiteDatetime(ayer), null, 84.0, 'Sin sal', 1],
     [13, 20, 2, null, 3, 4, toSQLiteDatetime(ayer), 'Jr. Amazonas 111', 97.5, 'Urgente', 1],
     [14, 21, 3, 10, 2, 5, toSQLiteDatetime(ayer), null, 65.0, 'Recojo 1pm', 1],
-
     [15, 9, 2, 2, 1, 5, toSQLiteDatetime(semanaPasada), null, 120.0, 'Celebración familiar', 1],
     [16, 10, 1, 5, 3, 4, toSQLiteDatetime(semanaPasada), 'Av. Los Incas 222', 88.0, 'Timbre azul', 1],
     [17, 11, 3, null, 2, 4, toSQLiteDatetime(semanaPasada), null, 45.5, 'Solicita factura', 1],
@@ -46,9 +52,29 @@ export function seed(db) {
   ];
 
   const insertMany = db.transaction((pedidos) => {
-    for (const p of pedidos) stmt.run(p);
+    for (const p of pedidos) {
+      const [id, cliente_id, usuario_id, mesa_id, tipo_id, estado_id, fecha_hora, direccion_entrega, total, observaciones, sede_id] = p;
+      const subTotal = calcularSubtotal(total);
+      const igv = calcularIGV(subTotal, total);
+
+      stmt.run([
+        id,
+        cliente_id,
+        usuario_id,
+        mesa_id,
+        tipo_id,
+        estado_id,
+        fecha_hora,
+        direccion_entrega,
+        subTotal,
+        igv,
+        total,
+        observaciones,
+        sede_id
+      ]);
+    }
   });
 
-  insertMany(pedidos);
-  console.log(`[SEEDER] ${pedidos.length} pedidos insertados`);
+  insertMany(pedidosOriginales);
+  console.log(`[SEEDER] ${pedidosOriginales.length} pedidos insertados con subtotal, IGV y total`);
 }

@@ -2,24 +2,20 @@ export function seed(db) {
   console.log('[SEEDER] Insertando estados_comprobantes...');
 
   const stmt = db.prepare(`
-    INSERT INTO estados_comprobantes (id, nombre)
-    VALUES (?, ?)
+    INSERT INTO estados_comprobantes (id, nombre, descripcion)
+    VALUES (?, ?, ?)
   `);
 
   const estados_comprobantes = [
-    [1, 'emitido'],
-    [2, 'anulado'],
-    [3, 'pendiente'],
-    [4, 'observado'],
-    [5, 'rechazado'],
-    [6, 'enviado'],
-    [7, 'aceptado'],
-    [8, 'por_anular'],
-    [9, 'borrador'],
+    [1, 'borrador', 'Comprobante en edición, aún no se emite'],
+    [2, 'emitido', 'Comprobante generado internamente y entregado a cliente, listo para envío a SUNAT'],
+    [3, 'enviado', 'Comprobante enviado electrónicamente a SUNAT'],
+    [4, 'aceptado', 'Comprobante aceptado por SUNAT (válido legalmente)'],
+    [5, 'anulado', 'Comprobante anulado por error o corrección'],
   ];
 
-  const insertMany = db.transaction((estados_comprobantes) => {
-    for (const ec of estados_comprobantes) stmt.run(ec);
+  const insertMany = db.transaction((estados) => {
+    for (const ec of estados) stmt.run(ec);
   });
 
   insertMany(estados_comprobantes);

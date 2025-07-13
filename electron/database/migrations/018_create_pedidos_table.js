@@ -10,7 +10,9 @@ export function up(db) {
       estado_id INTEGER NOT NULL REFERENCES estados_pedidos(id) ON DELETE CASCADE,
       fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       direccion_entrega TEXT,
-      total REAL NOT NULL DEFAULT 0,
+      subTotal REAL NOT NULL DEFAULT 0, -- sin IGV
+      igv REAL NOT NULL DEFAULT 0,
+      total REAL NOT NULL DEFAULT 0, -- con IGV
       observaciones_generales TEXT,
       cotizacion_id INTEGER REFERENCES cotizaciones(id),
       sede_id INTEGER NOT NULL REFERENCES sede_local(id) ON DELETE CASCADE

@@ -112,6 +112,96 @@ export function seed(db) {
     [82, 39, 14, 0.01], // Jengibre
     [83, 39, 16, 0.1], // Aceite Vegetal
     [84, 39, 7, 1],    // Huevos
+
+    // P051 - Combo Chaufa + Wantán (ID: 51)
+    [85, 51, 1, 0.3],   // Arroz
+    [86, 51, 2, 0.15],  // Pollo
+    [87, 51, 7, 2],     // Huevos
+    [88, 51, 12, 0.05], // Cebolla
+    [89, 51, 15, 0.03], // Sillao
+    [90, 51, 16, 0.03], // Aceite Vegetal
+    [91, 51, 34, 6],    // Wantán (masa)
+    [92, 51, 5, 0.05],  // Cerdo relleno
+
+    // P052 - Combo Tallarín Saltado + Bebida (ID: 52)
+    [93, 52, 3, 0.25],  // Fideos
+    [94, 52, 2, 0.2],   // Pollo
+    [95, 52, 12, 0.05], // Cebolla
+    [96, 52, 23, 0.05], // Tomate
+    [97, 52, 15, 0.03], // Sillao
+    [98, 52, 16, 0.03], // Aceite Vegetal
+
+    // P053 - Combo Chaufa Especial + Sopa Wantán (ID: 53)
+    [99, 53, 1, 0.3],   // Arroz
+    [100, 53, 2, 0.15], // Pollo
+    [101, 53, 5, 0.1],  // Cerdo
+    [102, 53, 6, 0.05], // Camaron
+    [103, 53, 7, 2],    // Huevos
+    [104, 53, 12, 0.05], // Cebolla
+    [105, 53, 34, 8],   // Wantán
+    [106, 53, 22, 0.03], // Cebolla China
+
+    // P054 - Combo Pollo Tipakay + Gaseosa (ID: 54)
+    [107, 54, 2, 0.25], // Pollo
+    [108, 54, 24, 0.05], // Zanahoria
+    [109, 54, 25, 0.03], // Vainitas
+    [110, 54, 13, 0.01], // Ajo
+    [111, 54, 15, 0.03], // Sillao
+    [112, 54, 16, 0.03], // Aceite Vegetal
+
+    // P055 - Combo Aeropuerto + Bebida (ID: 55)
+    [113, 55, 1, 0.2],  // Arroz
+    [114, 55, 3, 0.2],  // Fideos
+    [115, 55, 2, 0.15], // Pollo
+    [116, 55, 7, 1],    // Huevos
+    [117, 55, 12, 0.03], // Cebolla
+    [118, 55, 15, 0.03], // Sillao
+    [119, 55, 16, 0.03], // Aceite Vegetal
+
+    // P056 - Combo Chijaukay + Wantán (ID: 56)
+    [120, 56, 2, 0.25], // Pollo
+    [121, 56, 7, 1],    // Huevos
+    [122, 56, 29, 0.05], // Piña
+    [123, 56, 15, 0.02], // Sillao
+    [124, 56, 16, 0.05], // Aceite Vegetal
+    [125, 56, 34, 6],   // Wantán
+    [126, 56, 5, 0.05], // Cerdo
+
+    // P057 - Combo Chaufa + Infusión (ID: 57)
+    [127, 57, 1, 0.3],  // Arroz
+    [128, 57, 2, 0.15], // Pollo
+    [129, 57, 7, 2],    // Huevos
+    [130, 57, 12, 0.05], // Cebolla
+    [131, 57, 15, 0.03], // Sillao
+    [132, 57, 16, 0.03], // Aceite Vegetal
+
+    // P058 - Combo Tipakay + Chaufa (ID: 58)
+    [133, 58, 2, 0.3],  // Pollo
+    [134, 58, 1, 0.25], // Arroz
+    [135, 58, 7, 2],    // Huevos
+    [136, 58, 12, 0.05], // Cebolla
+    [137, 58, 15, 0.04], // Sillao
+    [138, 58, 16, 0.04], // Aceite Vegetal
+
+    // P059 - Combo Chaufa + Wantán + Gaseosa (ID: 59)
+    [139, 59, 1, 0.3],  // Arroz
+    [140, 59, 2, 0.15], // Pollo
+    [141, 59, 7, 2],    // Huevos
+    [142, 59, 12, 0.05], // Cebolla
+    [143, 59, 15, 0.03], // Sillao
+    [144, 59, 16, 0.03], // Aceite Vegetal
+    [145, 59, 34, 6],   // Wantán
+    [146, 59, 5, 0.05], // Cerdo
+
+    // P060 - Combo Tipakay + Sopa Wantán (ID: 60)
+    [147, 60, 2, 0.25], // Pollo
+    [148, 60, 24, 0.05], // Zanahoria
+    [149, 60, 25, 0.03], // Vainitas
+    [150, 60, 13, 0.01], // Ajo
+    [151, 60, 15, 0.03], // Sillao
+    [152, 60, 16, 0.03], // Aceite Vegetal
+    [153, 60, 34, 6],   // Wantán
+    [154, 60, 5, 0.05], // Cerdo
   ];
 
   const insertMany = db.transaction((recetas) => {

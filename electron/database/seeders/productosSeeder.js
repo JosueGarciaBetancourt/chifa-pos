@@ -66,6 +66,18 @@ export function seed(db) {
     [48, 'EX005', 'Arroz blanco (porción)', '', 3.00, 8, 0, 1],
     [49, 'EX006', 'Nabo encurtido', '', 5.00, 8, 0, 1],
     [50, 'EX007', 'Huevitos de codorniz (porción)', '', 4.00, 8, 0, 1],
+
+    // 9: combos
+    [51, 'C001', 'Combo Chaufa + Gaseosa', 'Arroz chaufa especial + gaseosa de 500ml', 28.0, 9, 15, 1],
+    [52, 'C002', 'Combo Tallarín Saltado + Inca Kola', 'Tallarín saltado de pollo + Inca Kola 500ml', 25.0, 9, 15, 1],
+    [53, 'C003', 'Combo Wantán + Chaufa + Bebida', 'Wantán frito (6 und) + chaufa de pollo + gaseosa', 30.0, 9, 20, 1],
+    [54, 'C004', 'Combo Pareja Oriental', 'Chaufa especial + Tallarín tres delicias + 2 bebidas', 50.0, 9, 20, 1],
+    [55, 'C005', 'Combo Ejecutivo', 'Tallarín + sopa individual + gaseosa', 26.0, 9, 18, 1],
+    [56, 'C006', 'Combo Chancho Asado + Wantán', 'Chancho asado + wantán frito + bebida', 29.0, 9, 20, 1],
+    [57, 'C007', 'Combo Familiar (3 personas)', '2 chaufa + 1 sopa wantán completa + 3 bebidas', 75.0, 9, 25, 1],
+    [58, 'C008', 'Combo Vegetariano', 'Chaufa vegetariano + sopa de verduras + bebida', 24.0, 9, 18, 1],
+    [59, 'C009', 'Combo Pollo Curry + Entrada', 'Tallarín con pollo en salsa curry + wantán frito (4 und)', 26.0, 9, 18, 1],
+    [60, 'C010', 'Combo Niño Feliz', 'Chaufa de pollo + jugo natural + postre pequeño', 22.0, 9, 15, 1],
   ];
 
   const insertMany = db.transaction((productos) => {

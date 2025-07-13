@@ -9,9 +9,11 @@ export function up(db) {
           fecha DATE NOT NULL,
           hora TIME NOT NULL,
           numero_personas INTEGER NOT NULL,
+          fecha_vencimiento DATE NOT NULL,
+          hora_vencimiento TIME NOT NULL,
           estado TEXT NOT NULL CHECK(estado IN ('pendiente', 'confirmada', 'cancelada', 'cumplida')),
           observaciones TEXT,
-          created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+          created_at DATETIME NOT NULL
         );
       `).run();
   }

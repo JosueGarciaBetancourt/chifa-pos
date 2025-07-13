@@ -10,16 +10,18 @@ export function seed(db) {
   `);
 
   const comprobantes = [
-    [1, 1, 1, 'B001', '0001', '2023-07-01 12:45:00', 'Ejemplo 1 de observación en un comprobante', null, 1, 1, 1],
-    [2, 2, 2, 'T001', '0001', '2023-07-01 14:00:00', null, null, 1, 1, 1],
-    [3, 3, 1, 'B001', '0002', '2023-07-02 13:20:00', null, null, 1, 1, 1],
-    [4, 4, 3, 'F001', '0001', '2023-07-02 14:30:00', null, 'base64_xml_data', 1, 1, 1],
-    [5, 5, 1, 'B001', '0003', '2023-07-03 19:15:00', null, null, 1, 1, 1],
-    [6, 6, 2, 'T001', '0002', '2023-07-04 20:00:00', null, null, 1, 1, 1],
-    [7, 7, 1, 'B001', '0004', '2023-07-05 12:45:00', null, null, 1, 1, 1],
-    [8, 8, 2, 'T001', '0003', '2023-07-06 13:30:00', null, null, 1, 2, 1],
-    [9, 9, 3, 'F001', '0002', '2023-07-07 14:20:00', 'Ejemplo 2 de observación en un comprobante', 'base64_xml_data', 1, 1, 1],
-    [10, 10, 1, 'B001', '0005', '2023-07-08 18:45:00', null, null, 1, 1, 1]
+    // ID | PEDIDO | TIPO | SERIE | NÚMERO | FECHA | OBS | XML | MÉTODO_PAGO | ESTADO | SEDE
+
+    [1, 1, 1, 'B001', '0001', '2023-07-01 12:45:00', 'Ejemplo 1 de observación en un comprobante', null, 1, 2, 1], // emitido
+    [2, 2, 2, 'T001', '0001', '2023-07-01 14:00:00', null, null, 1, 3, 1], // enviado
+    [3, 3, 1, 'B001', '0002', '2023-07-02 13:20:00', null, null, 1, 4, 1], // aceptado
+    [4, 4, 3, 'F001', '0001', '2023-07-02 14:30:00', null, 'base64_xml_data', 1, 4, 1], // aceptado
+    [5, 5, 1, 'B001', '0003', '2023-07-03 19:15:00', null, null, 1, 2, 1], // emitido
+    [6, 6, 2, 'T001', '0002', '2023-07-04 20:00:00', null, null, 1, 1, 1], // borrador
+    [7, 7, 1, 'B001', '0004', '2023-07-05 12:45:00', null, null, 1, 2, 1], // emitido
+    [8, 8, 2, 'T001', '0003', '2023-07-06 13:30:00', null, null, 1, 5, 1], // anulado
+    [9, 9, 3, 'F001', '0002', '2023-07-07 14:20:00', 'Ejemplo 2 de observación en un comprobante', 'base64_xml_data', 1, 3, 1], // enviado
+    [10, 10, 1, 'B001', '0005', '2023-07-08 18:45:00', null, null, 1, 2, 1], // emitido
   ];
 
   const insertMany = db.transaction((comprobantes) => {
