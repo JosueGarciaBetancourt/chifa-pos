@@ -19,6 +19,7 @@ import { dirname } from 'node:path';
 import { initDatabase } from './database/initDatabase.js';
 import { connection } from './database/connection.js';
 import { productosHandlers } from './handlers/productos.js';
+import { insumosHandlers } from './handlers/inventario.js';
 
 import expressApp from '../backend/src/app.js'; 
 
@@ -54,6 +55,7 @@ app.whenReady().then(async () => {
     await initDatabase();
     db = connection();
     productosHandlers(db);
+    insumosHandlers(db);
 
     // API
     const URL = expressApp.get('url') || 'http://localhost';

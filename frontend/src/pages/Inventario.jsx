@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InventoryHeader from '../components/features/inventario/InventoryHeader';
 import InventoryStats from '../components/features/inventario/InventoryStats';
 import LowStockAlert from '../components/features/inventario/LowStockAlert';
@@ -11,99 +11,32 @@ const Inventario = () => {
   const [view, setView] = useState('list');
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [inventoryData, setInventoryData] = useState([]);
 
-  const [inventoryData, setInventoryData] = useState([
-    {
-      id: 1,
-      nombre: "Arroz",
-      categoria: "Granos",
-      stock_actual: 50,
-      stock_minimo: 20,
-      unidad: "kg",
-      precio_unitario: 3.50,
-      proveedor: "Distribuidora Lima",
-      status: "Stock OK"
-    },
-    {
-      id: 2,
-      nombre: "Pollo",
-      categoria: "Carnes",
-      stock_actual: 15,
-      stock_minimo: 25,
-      unidad: "kg",
-      precio_unitario: 8.50,
-      proveedor: "Avícola San Fernando",
-      status: "Stock Bajo"
-    },
-    {
-      id: 3,
-      nombre: "Carne de Res",
-      categoria: "Carnes",
-      stock_actual: 8,
-      stock_minimo: 15,
-      unidad: "kg",
-      precio_unitario: 18.00,
-      proveedor: "Carnes Premium",
-      status: "Stock Bajo"
-    },
-    {
-      id: 4,
-      nombre: "Cebolla China",
-      categoria: "Verduras",
-      stock_actual: 3,
-      stock_minimo: 5,
-      unidad: "kg",
-      precio_unitario: 4.00,
-      proveedor: "Mercado Central",
-      status: "Stock Bajo"
-    },
-    {
-      id: 5,
-      nombre: "Sillao",
-      categoria: "Condimentos",
-      stock_actual: 5,
-      stock_minimo: 8,
-      unidad: "L",
-      precio_unitario: 7.50,
-      proveedor: "Importadora Oriental",
-      status: "Stock Bajo"
-    },
-    {
-      id: 6,
-      nombre: "Aceite de Sésamo",
-      categoria: "Condimentos",
-      stock_actual: 12,
-      stock_minimo: 6,
-      unidad: "L",
-      precio_unitario: 15.00,
-      proveedor: "Importadora Oriental",
-      status: "Stock OK"
-    },
-    {
-      id: 7,
-      nombre: "Fideos de Arroz",
-      categoria: "Granos",
-      stock_actual: 25,
-      stock_minimo: 10,
-      unidad: "kg",
-      precio_unitario: 5.50,
-      proveedor: "Distribuidora Lima",
-      status: "Stock OK"
-    },
-    {
-      id: 8,
-      nombre: "Brócoli",
-      categoria: "Verduras",
-      stock_actual: 7,
-      stock_minimo: 5,
-      unidad: "kg",
-      precio_unitario: 6.00,
-      proveedor: "Mercado Central",
-      status: "Stock OK"
-    }
-  ]);
+  const categories = ['Todos', 'Granos', 'Carnes', 'Condimentos', 'Verduras', 'Otros'];
 
-    const categories = ['Todos', 'Granos', 'Carnes', 'Condimentos', 'Verduras', 'Otros'];
+  useEffect(() => {
+    const fetchInsumos = async () => {
+      try {
+        const insumos = await window.electronAPI.getInsumos();
+        
+        const mapped = insumos.map(i => ({
+          ...i,
+          categoria: 'Otros',
+          proveedor: 'Proveedor Genérico',
+          precio_unitario: i.costo,
+          unidad: i.unidad_medida,
+          status: i.stock_actual < i.stock_minimo ? 'Stock Bajo' : 'Stock OK'
+        }));
+
+        setInventoryData(mapped);
+      } catch (error) {
+        console.error('Error al cargar insumos:', error);
+      }
+    };
+
+    fetchInsumos();
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
