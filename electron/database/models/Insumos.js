@@ -1,50 +1,77 @@
+// database/models/Insumos.js
 import { connection } from '../connection.js';
 const db = connection();
 
+// SELECT base con JOIN
+const baseSelect = `
+  SELECT
+    i.id,
+    i.nombre,
+    i.tipo_id,
+    t.nombre AS tipo_nombre,
+    t.descripcion AS tipo_descripcion,
+    i.unidad_medida,
+    i.stock_actual,
+    i.stock_minimo,
+    i.costo
+  FROM insumos i
+  JOIN tipos_insumos t ON i.tipo_id = t.id
+`;
+
 const sql = Object.freeze({
-  selectAll: `
-    SELECT id, nombre, unidad_medida, stock_actual, stock_minimo, costo 
-    FROM insumos
-  `,
-  selectById: `
-    SELECT * 
-    FROM insumos 
-    WHERE id = ?
-  `,
+  selectAll: `${baseSelect}`,
+  selectById: `${baseSelect} WHERE i.id = ?`,
   insert: `
-    INSERT INTO insumos (nombre, unidad_medida, stock_actual, stock_minimo, costo) 
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo)
+    VALUES (?, ?, ?, ?, ?, ?)
   `,
   update: `
-    UPDATE insumos 
-    SET nombre = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?, costo = ? 
+    UPDATE insumos
+    SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?, costo = ?
     WHERE id = ?
   `,
   delete: `
-    DELETE FROM insumos 
-    WHERE id = ?
-  `,
+    DELETE FROM insumos WHERE id = ?
+  `
 });
+
+// Mapea el resultado como hace Productos.js
+function formatInsumo(row) {
+  return {
+    id: row.id,
+    nombre: row.nombre,
+    unidad: row.unidad_medida,
+    stock_actual: row.stock_actual,
+    stock_minimo: row.stock_minimo,
+    costo: row.costo,
+    tipo_id: row.tipo_id,
+    categoria: {
+      nombre: row.tipo_nombre,
+      descripcion: row.tipo_descripcion
+    }
+  };
+}
 
 export const Insumo = {
   selectAll() {
-    return db.prepare(sql.selectAll).all();
+    return db.prepare(sql.selectAll).all().map(formatInsumo);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatInsumo(row) : null;
   },
 
-  create({ nombre, unidad_medida, stock_actual = 0, stock_minimo = 0, costo }) {
+  create({ nombre, tipo_id, unidad_medida, stock_actual = 0, stock_minimo = 0, costo }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      nombre, unidad_medida, stock_actual, stock_minimo, costo
+      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { nombre, unidad_medida, stock_actual, stock_minimo, costo }) {
+  update(id, { nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo }) {
     db.prepare(sql.update).run(
-      nombre, unidad_medida, stock_actual, stock_minimo, costo, id
+      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo, id
     );
     return this.findById(id);
   },

@@ -17,4 +17,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('buscarInsumosPorNombre', nombre),
 
   getInsumosBajoStock: () => ipcRenderer.invoke('getInsumosBajoStock'),
+
+  // Tipos de Insumos
+  getTiposInsumos: () => ipcRenderer.invoke('getTiposInsumos'),
 });

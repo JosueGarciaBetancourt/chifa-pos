@@ -10,10 +10,11 @@ export function seed(db) {
     [1, 'Granos', 'Insumos como arroz, fideos y similares.'],
     [2, 'Carnes y proteínas', 'Carnes rojas, blancas, mariscos, huevos.'],
     [3, 'Bebidas', 'Bebidas embotelladas como gaseosas o agua.'],
-    [4, 'Vegetales y condimentos', 'Verduras, especias, aliños, hierbas.'],
-    [5, 'Salsas y líquidos', 'Salsas como sillao, aceite, vinagre, etc.'],
-    [6, 'Frutas', 'Frutas frescas o procesadas.'],
-    [7, 'Frutos secos y semillas', 'Castañas, nueces, semillas.']
+    [4, 'Condimentos', 'especias, aliños, hierbas.'],
+    [5, 'Vegetales', 'Verduras.'],
+    [6, 'Salsas y líquidos', 'Salsas como sillao, aceite, vinagre, etc.'],
+    [7, 'Frutas', 'Frutas frescas o procesadas.'],
+    [8, 'Frutos secos y semillas', 'Castañas, nueces, semillas.']
   ];
 
   const insertMany = db.transaction(() => {

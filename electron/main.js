@@ -25,6 +25,7 @@ import { productosHandlers } from './handlers/productos.js';
 import { insumosHandlers } from './handlers/insumos.js';
 
 import expressApp from '../backend/src/app.js'; 
+import { tiposInsumosHandlers } from './handlers/tiposInsumos.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -59,6 +60,7 @@ app.whenReady().then(async () => {
     db = connection();
     productosHandlers(db);
     insumosHandlers(db);
+    tiposInsumosHandlers(db);
 
     // API
     const URL = expressApp.get('url') || 'http://localhost';
