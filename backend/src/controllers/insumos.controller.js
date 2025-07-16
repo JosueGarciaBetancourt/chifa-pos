@@ -1,5 +1,5 @@
 // backend/src/controllers/insumos.controller.js
-import { Insumo } from '../../../electron/database/models/Insumos.js';
+import { Insumo } from '../../../electron/database/models/Insumo.js';
 
 export const insumosController = {
   getInsumos(req, res) {

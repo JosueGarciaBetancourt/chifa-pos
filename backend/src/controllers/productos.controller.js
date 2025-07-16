@@ -1,5 +1,5 @@
 // backend/src/controllers/productos.controller.js
-import { Producto } from '../../../electron/database/models/Productos.js';
+import { Producto } from '../../../electron/database/models/Producto.js';
 
 export const productosController = {
   getProductos(req, res) {

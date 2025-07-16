@@ -1,6 +1,6 @@
 // insumosHandler.js
 import { ipcMain } from 'electron';
-import { Insumo } from '../database/models/Insumos.js';
+import { Insumo } from '../database/models/Insumo.js';
 
 /**
  * Registra los handlers IPC para insumos.

@@ -1,7 +1,7 @@
-import { TipoInsumo } from '../../../electron/database/models/TiposInsumos.js';
+import { TipoInsumo } from '../../../electron/database/models/TipoInsumo.js';
 
 export const tiposInsumosController = {
-  gettiposInsumos(req, res) {
+  getTiposInsumos(req, res) {
     try {
       const tiposInsumos = TipoInsumo.selectAll() || [];
       res.json(tiposInsumos);

@@ -1,6 +1,6 @@
 // tiposInsumosHandler.js
 import { ipcMain } from 'electron';
-import { TipoInsumo } from '../database/models/TiposInsumos.js';
+import { TipoInsumo } from '../database/models/TipoInsumo.js';
 
 /**
  * Registra los handlers IPC para tipos de insumos.

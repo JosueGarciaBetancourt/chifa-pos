@@ -31,7 +31,7 @@ const sql = Object.freeze({
   `,
 });
 
-export const DetallePedido = {
+export const DetallesPedido = {
   findByPedidoId(pedido_id) {
     return db.prepare(sql.selectByPedido).all(pedido_id);
   },
