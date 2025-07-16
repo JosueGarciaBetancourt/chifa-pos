@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart2, Clock, Users, Package, ShoppingCart, Utensils, Tablet, Truck, Box, BarChart } from 'lucide-react';
-import productosService from '../services/productosService.js';
+import productosUnifiedService from '../services/productosUnifiedService';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -9,8 +9,8 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const productos = await window.electronAPI.getProductos();
-        console.log(productos);
+        const productos = await productosUnifiedService.getProductos();
+        console.log('✅ Productos:', productos);
       } catch (error) {
         console.error('Error al obtener productos:', error);
       }
@@ -21,12 +21,11 @@ export default function Dashboard() {
   
   const handleProbarApi = async () => {
     try {
-      const productos = await productosService.getProductos();
-      console.log('[✔️ API OK] Productos:', productos);
-      alert(`✅ API OK - ${productos.length} productos recibidos`);
+      const productos = await productosUnifiedService.getProductos();
+      console.log('[✔️ Unified API OK] Productos:', productos);
+      alert(`✅ ${productos.length} productos recibidos`);
     } catch (error) {
-      console.error('[❌ API Error]', error);
-      alert('❌ Error al conectar con la API. ' + error);
+      alert('❌ Error al obtener productos');
     }
   };
   

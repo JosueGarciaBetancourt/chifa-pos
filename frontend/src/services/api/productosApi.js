@@ -1,6 +1,6 @@
-import api from './axiosInstance';
+import api from '../axiosInstance';
 
-const productosService = {
+const productosApi = {
   getProductos: async () => {
     try {
       const data = await api.get('/api/productos');
@@ -12,4 +12,4 @@ const productosService = {
   }
 };
 
-export default productosService;
+export default productosApi;

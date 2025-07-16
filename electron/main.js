@@ -1,4 +1,7 @@
-// electron/main.js (ES Modules)
+if (process.env.NODE_ENV === 'development') {
+  process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+}
+
 process.on('uncaughtException', (err) => {
   if (
     err.message.includes('VideoProcessorGetOutputExtension') ||
@@ -19,7 +22,7 @@ import { dirname } from 'node:path';
 import { initDatabase } from './database/initDatabase.js';
 import { connection } from './database/connection.js';
 import { productosHandlers } from './handlers/productos.js';
-import { insumosHandlers } from './handlers/inventario.js';
+import { insumosHandlers } from './handlers/insumos.js';
 
 import expressApp from '../backend/src/app.js'; 
 
@@ -41,7 +44,7 @@ function createWindow() {
     },
   });
 
-  if (process.env.FRONTEND_URL) {
+  if (process.env.FRONTEND_URL && process.env.NODE_ENV === 'development') {
     mainWindow.loadURL(process.env.FRONTEND_URL);
     mainWindow.webContents.openDevTools();
   } else {

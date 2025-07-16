@@ -9,7 +9,7 @@ import { Insumo } from '../database/models/Insumos.js';
 export function insumosHandlers(db) {
   ipcMain.handle('getInsumos', () => {
     try {
-      return Insumo.selectAll();
+      return Insumo.selectAll() || [];
     } catch (error) {
       console.error('Error consultando todos los insumos:', error);
       return [];

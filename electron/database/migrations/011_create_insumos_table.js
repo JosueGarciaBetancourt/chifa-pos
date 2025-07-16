@@ -4,6 +4,7 @@ export function up(db) {
 		CREATE TABLE IF NOT EXISTS insumos (
 		  id INTEGER PRIMARY KEY AUTOINCREMENT,
 		  nombre TEXT UNIQUE NOT NULL,
+		  tipo_id INTEGER NOT NULL REFERENCES tipos_insumos(id) ON DELETE CASCADE ,
 		  unidad_medida TEXT NOT NULL CHECK(unidad_medida IN ('kg', 'g', 'l', 'ml', 'unidad')),
 		  stock_actual REAL NOT NULL DEFAULT 0,
 		  stock_minimo REAL NOT NULL DEFAULT 0,

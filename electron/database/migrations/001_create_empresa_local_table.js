@@ -1,3 +1,5 @@
+console.log('⚠️ Módulo 001 cargado');
+
 export function up(db) {
   console.log('[MIGRACION] Creando tabla empresa_local...');
 

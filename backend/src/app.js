@@ -4,6 +4,8 @@ import express from 'express';
 //import morgan from 'morgan';
 import cors from 'cors';
 import productosRouter  from './routes/productos.js';
+import insumosRouter  from './routes/insumos.js';
+import routes from './routes/index.js'
 import loggerMiddleware from './logger.js';
 
 const app = express();
@@ -27,6 +29,8 @@ app.use(cors());
 app.use(express.json());
 
 // ROUTES
-app.use('/api/productos', productosRouter);
+/* app.use('/api/productos', productosRouter);
+app.use('/api/insumos', insumosRouter); */
+routes.forEach(({ path, router }) => app.use(path, router)); // ✅ Uso dinámico
 
 export default app;

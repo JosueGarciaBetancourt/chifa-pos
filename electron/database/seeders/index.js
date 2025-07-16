@@ -7,6 +7,7 @@ import { seed as seedUsuarios } from './usuariosSeeder.js';
 import { seed as seedJornadasLaborales } from './jornadas_laboralesSeeder.js';
 import { seed as seedCategorias } from './categoriasSeeder.js';
 import { seed as seedProductos } from './productosSeeder.js';
+import { seed as seedTiposInsumos } from './tipos_insumosSeeder.js';
 import { seed as seedInsumos } from './insumosSeeder.js';
 import { seed as seedRecetas } from './recetasSeeder.js';
 import { seed as seedClientes } from './clientesSeeder.js';
@@ -43,10 +44,11 @@ export function seed(db) {
   seedJornadasLaborales(db);
   seedCategorias(db);
   seedProductos(db);
+  seedTiposInsumos(db);
   seedInsumos(db);
   seedRecetas(db);
   seedClientes(db);
-  seedCotizaciones(db); // Va aquí, justo después de clientes
+  seedCotizaciones(db);
   seedEstadosMesas(db);
   seedMesas(db);
   seedTiposPedidos(db);

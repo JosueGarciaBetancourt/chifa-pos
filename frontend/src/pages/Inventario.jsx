@@ -5,6 +5,7 @@ import LowStockAlert from '../components/features/inventario/LowStockAlert';
 import InventoryFilters from '../components/features/inventario/InventoryFilters';
 import InventoryGrid from '../components/features/inventario/InventoryGrid';
 import InventoryItemDetail from '../components/features/inventario/InventoryItemDetail';
+import insumosUnifiedService from '../services/insumosUnifiedService';
 
 const Inventario = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -18,8 +19,8 @@ const Inventario = () => {
   useEffect(() => {
     const fetchInsumos = async () => {
       try {
-        const insumos = await window.electronAPI.getInsumos();
-        
+        const insumos = await insumosUnifiedService.getInsumos();
+
         const mapped = insumos.map(i => ({
           ...i,
           categoria: 'Otros',
