@@ -5,7 +5,7 @@ import { seed as seedPermisos } from './permisosSeeder.js';
 import { seed as seedRolesPermisos } from './roles_permisosSeeder.js';
 import { seed as seedUsuarios } from './usuariosSeeder.js';
 import { seed as seedJornadasLaborales } from './jornadas_laboralesSeeder.js';
-import { seed as seedCategorias } from './categoriasSeeder.js';
+import { seed as seeedCategoriasProductos } from './categorias_ProductosSeeder.js';
 import { seed as seedProductos } from './productosSeeder.js';
 import { seed as seedTiposInsumos } from './tipos_insumosSeeder.js';
 import { seed as seedInsumos } from './insumosSeeder.js';
@@ -42,7 +42,7 @@ export function seed(db) {
   seedRolesPermisos(db);
   seedUsuarios(db);
   seedJornadasLaborales(db);
-  seedCategorias(db);
+  seeedCategoriasProductos(db);
   seedProductos(db);
   seedTiposInsumos(db);
   seedInsumos(db);

@@ -1,5 +1,3 @@
-console.log('⚠️ Módulo 001 cargado');
-
 export function up(db) {
   console.log('[MIGRACION] Creando tabla empresa_local...');
 
@@ -9,7 +7,7 @@ export function up(db) {
       ruc TEXT NOT NULL,
       razon_social TEXT NOT NULL,
       nombre_comercial TEXT,
-      direccion TEXT,
+      direccion TEXT NOT NULL,
       telefono TEXT,
       email TEXT,
       logo_base64 TEXT

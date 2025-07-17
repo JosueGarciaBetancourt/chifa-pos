@@ -5,7 +5,7 @@ import { up as upPermisos } from './migrations/004_create_permisos_table.js';
 import { up as upRolesPermisos } from './migrations/005_create_roles_permisos_table.js';
 import { up as upUsuarios } from './migrations/006_create_usuarios_table.js';
 import { up as upJornadasLaborales } from './migrations/007_create_jornadas_laborales_table.js';
-import { up as upCategorias } from './migrations/008_create_categorias_table.js';
+import { up as upCategoriasProductos } from './migrations/008_create_categorias_productos_table.js';
 import { up as upProductos } from './migrations/009_create_productos_table.js';
 import { up as upTiposInsumos } from './migrations/010_create_tipos_insumos_table.js';
 import { up as upInsumos } from './migrations/011_create_insumos_table.js';
@@ -58,7 +58,7 @@ export async function runMigrations(db) {
     { name: '005_create_roles_permisos_table', fn: upRolesPermisos },
     { name: '006_create_usuarios_table', fn: upUsuarios },
     { name: '007_create_jornadas_laborales_table', fn: upJornadasLaborales },
-    { name: '008_create_categorias_table', fn: upCategorias },
+    { name: '008_create_categorias_productos_table', fn: upCategoriasProductos },
     { name: '009_create_productos_table', fn: upProductos },
     { name: '010_create_tipos_insumos_table', fn: upTiposInsumos },
     { name: '011_create_insumos_table', fn: upInsumos },

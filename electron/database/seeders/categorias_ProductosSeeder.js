@@ -1,12 +1,12 @@
 export function seed(db) {
-  console.log('[SEEDER] Insertando categorias...');
+  console.log('[SEEDER] Insertando categorias_productos...');
 
   const stmt = db.prepare(`
-    INSERT INTO categorias (id, nombre, descripcion)
+    INSERT INTO categorias_productos (id, nombre, descripcion)
     VALUES (?, ?, ?)
   `);
 
-  const categorias = [
+  const categorias_productos = [
     [1, 'platos_principales', 'Platos principales o de fondo.'], 
     [2, 'sopas', 'Platos de cuchara como sopa wantán (individual o completa)'], 
     [3, 'entradas', 'Platos ligeros servidos antes del plato principal.'],
@@ -18,10 +18,10 @@ export function seed(db) {
     [9, 'combos', 'Conjunto de platos y más económico.']
   ];
 
-  const insertMany = db.transaction((categorias) => {
-    for (const c of categorias) stmt.run(c);
+  const insertMany = db.transaction((categorias_productos) => {
+    for (const cp of categorias_productos) stmt.run(cp);
   });
 
-  insertMany(categorias);
-  console.log(`[SEEDER] ${categorias.length} categorias insertadas`);
+  insertMany(categorias_productos);
+  console.log(`[SEEDER] ${categorias_productos.length} categorias_productos insertadas`);
 }

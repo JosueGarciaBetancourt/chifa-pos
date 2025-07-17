@@ -15,7 +15,7 @@ const baseSelect = `
     p.tiempo_preparacion_min, 
     p.activo 
   FROM productos p
-  JOIN categorias c ON p.categoria_id = c.id
+  JOIN categorias_productos c ON p.categoria_id = c.id
 `;
 
 const sql = Object.freeze({
