@@ -1,53 +1,83 @@
 import { connection } from '../connection.js';
 const db = connection();
 
+// SELECT enriquecido con joins
+const baseSelect = `
+  SELECT 
+    m.id,
+    m.insumo_id,
+    i.nombre AS insumo_nombre,
+    i.unidad_medida AS insumo_unidad,
+    m.tipo,
+    m.cantidad,
+    m.fecha_hora,
+    m.usuario_id,
+    u.nombre AS usuario_nombre,
+    u.apellido AS usuario_apellido,
+    m.pedido_id
+  FROM inventario_movimientos m
+  JOIN insumos i ON m.insumo_id = i.id
+  JOIN usuarios u ON m.usuario_id = u.id
+`;
+
 const sql = Object.freeze({
-  selectByInsumo: `
-    SELECT id, insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id 
-    FROM inventario_movimientos 
-    WHERE insumo_id = ?
-  `,
-  selectById: `
-    SELECT * 
-    FROM inventario_movimientos 
-    WHERE id = ?
-  `,
+  selectAll: `${baseSelect} ORDER BY m.fecha_hora DESC`,
+  selectByInsumo: `${baseSelect} WHERE m.insumo_id = ? ORDER BY m.fecha_hora DESC`,
+  selectByUsuario: `${baseSelect} WHERE m.usuario_id = ? ORDER BY m.fecha_hora DESC`,
   insert: `
-    INSERT INTO inventario_movimientos (insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id) 
-    VALUES (?, ?, ?, ?, ?, ?)
-  `,
-  update: `
-    UPDATE inventario_movimientos 
-    SET insumo_id = ?, tipo = ?, cantidad = ?, fecha_hora = ?, usuario_id = ?, pedido_id = ? 
-    WHERE id = ?
+    INSERT INTO inventario_movimientos (
+      insumo_id, tipo, cantidad, usuario_id, pedido_id
+    ) VALUES (?, ?, ?, ?, ?)
   `,
   delete: `
-    DELETE FROM inventario_movimientos 
+    DELETE FROM inventario_movimientos
     WHERE id = ?
-  `,
+  `
 });
 
+// Formateador
+function formatMovimiento(row) {
+  return {
+    id: row.id,
+    insumo_id: row.insumo_id,
+    tipo: row.tipo,
+    cantidad: row.cantidad,
+    fecha_hora: row.fecha_hora,
+    usuario_id: row.usuario_id,
+    pedido_id: row.pedido_id,
+    insumo: {
+      nombre: row.insumo_nombre,
+      unidad: row.insumo_unidad
+    },
+    usuario: {
+      nombre: row.usuario_nombre,
+      apellido: row.usuario_apellido
+    }
+  };
+}
+
 export const InventarioMovimiento = {
-  findByInsumoId(insumo_id) {
-    return db.prepare(sql.selectByInsumo).all(insumo_id);
+  selectAll() {
+    return db.prepare(sql.selectAll).all().map(formatMovimiento);
   },
 
-  findById(id) {
-    return db.prepare(sql.selectById).get(id);
+  findByInsumo(insumo_id) {
+    return db.prepare(sql.selectByInsumo).all(insumo_id).map(formatMovimiento);
   },
 
-  create({ insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id = null }) {
+  findByUsuario(usuario_id) {
+    return db.prepare(sql.selectByUsuario).all(usuario_id).map(formatMovimiento);
+  },
+
+  create({ insumo_id, tipo, cantidad, usuario_id, pedido_id = null }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id
+      insumo_id,
+      tipo,
+      cantidad,
+      usuario_id,
+      pedido_id
     );
-    return this.findById(lastInsertRowid);
-  },
-
-  update(id, { insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id }) {
-    db.prepare(sql.update).run(
-      insumo_id, tipo, cantidad, fecha_hora, usuario_id, pedido_id, id
-    );
-    return this.findById(id);
+    return { id: lastInsertRowid };
   },
 
   delete(id) {

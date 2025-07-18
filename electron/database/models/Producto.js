@@ -47,8 +47,8 @@ function formatProducto(row) {
     precio: row.precio,
     tiempo_preparacion_min: row.tiempo_preparacion_min,
     activo: row.activo,
-    categoria_id: row.categoria_id,
     categoria: {
+      id: row.categoria_id,
       nombre: row.categoria_nombre,
       descripcion: row.categoria_descripcion
     }

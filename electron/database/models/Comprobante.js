@@ -1,24 +1,50 @@
 import { connection } from '../connection.js';
 const db = connection();
 
+// JOIN enriquecido para mostrar nombres descriptivos
+const baseSelect = `
+  SELECT 
+    c.id,
+    c.pedido_id,
+    c.tipo_id,
+    tc.nombre AS tipo_nombre,
+    tc.serie_letras_iniciales AS tipo_serie,
+    c.serie,
+    c.numero,
+    c.fecha_hora_emision,
+    c.observaciones,
+    c.xml_base64,
+    c.metodo_pago_id,
+    mp.nombre AS metodo_pago_nombre,
+    c.estado_id,
+    ec.nombre AS estado_nombre,
+    ec.descripcion AS estado_descripcion,
+    c.sede_id
+  FROM comprobantes c
+  JOIN tipos_comprobantes tc ON c.tipo_id = tc.id
+  JOIN metodos_pago mp ON c.metodo_pago_id = mp.id
+  JOIN estados_comprobantes ec ON c.estado_id = ec.id
+`;
+
 const sql = Object.freeze({
-  selectByPedido: `
-    SELECT id, pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64, estado 
-    FROM comprobantes 
-    WHERE pedido_id = ?
+  selectAll: `${baseSelect} ORDER BY c.fecha_hora_emision DESC`,
+  selectById: `${baseSelect} WHERE c.id = ?`,
+  selectByPedido: `${baseSelect} WHERE c.pedido_id = ?`,
+  insert: `
+    INSERT INTO comprobantes (
+      pedido_id, tipo_id, serie, numero,
+      observaciones, xml_base64,
+      metodo_pago_id, estado_id, sede_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
-  selectById: `
-    SELECT * 
-    FROM comprobantes 
+  updateEstado: `
+    UPDATE comprobantes 
+    SET estado_id = ? 
     WHERE id = ?
   `,
-  insert: `
-    INSERT INTO comprobantes (pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64, estado) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `,
-  update: `
-    UPDATE comprobantes 
-    SET pedido_id = ?, tipo = ?, serie = ?, numero = ?, fecha_hora_emision = ?, xml_base64 = ?, estado = ? 
+  updateXML: `
+    UPDATE comprobantes
+    SET xml_base64 = ?
     WHERE id = ?
   `,
   delete: `
@@ -27,26 +53,81 @@ const sql = Object.freeze({
   `,
 });
 
+// Formateador estructurado
+function formatComprobante(row) {
+  return {
+    id: row.id,
+    pedido_id: row.pedido_id,
+    tipo: {
+      id: row.tipo_id,
+      nombre: row.tipo_nombre,
+      serie_letras_iniciales: row.tipo_serie
+    },
+    serie: row.serie,
+    numero: row.numero,
+    fecha_hora_emision: row.fecha_hora_emision,
+    observaciones: row.observaciones,
+    xml_base64: row.xml_base64,
+    metodo_pago: {
+      id: row.metodo_pago_id,
+      nombre: row.metodo_pago_nombre
+    },
+    estado: {
+      id: row.estado_id,
+      nombre: row.estado_nombre,
+      descripcion: row.estado_descripcion
+    },
+    sede_id: row.sede_id
+  };
+}
+
 export const Comprobante = {
-  findByPedidoId(pedido_id) {
-    return db.prepare(sql.selectByPedido).get(pedido_id);
+  selectAll() {
+    return db.prepare(sql.selectAll).all().map(formatComprobante);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatComprobante(row) : null;
   },
 
-  create({ pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64 = null, estado }) {
+  findByPedidoId(pedido_id) {
+    const row = db.prepare(sql.selectByPedido).get(pedido_id);
+    return row ? formatComprobante(row) : null;
+  },
+
+  create({
+    pedido_id,
+    tipo_id,
+    serie,
+    numero,
+    observaciones = null,
+    xml_base64 = null,
+    metodo_pago_id,
+    estado_id,
+    sede_id
+  }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64, estado
+      pedido_id,
+      tipo_id,
+      serie,
+      numero,
+      observaciones,
+      xml_base64,
+      metodo_pago_id,
+      estado_id,
+      sede_id
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64, estado }) {
-    db.prepare(sql.update).run(
-      pedido_id, tipo, serie, numero, fecha_hora_emision, xml_base64, estado, id
-    );
+  updateEstado(id, estado_id) {
+    db.prepare(sql.updateEstado).run(estado_id, id);
+    return this.findById(id);
+  },
+
+  updateXML(id, xml_base64) {
+    db.prepare(sql.updateXML).run(xml_base64, id);
     return this.findById(id);
   },
 

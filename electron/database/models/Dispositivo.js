@@ -5,39 +5,57 @@ const sql = Object.freeze({
   selectAll: `
     SELECT id, nombre, mac_address, ip_address, tipo, ultima_conexion 
     FROM dispositivos
+    ORDER BY nombre
   `,
   selectById: `
-    SELECT * 
-    FROM dispositivos 
-    WHERE id = ?
+    SELECT * FROM dispositivos WHERE id = ?
+  `,
+  selectByMac: `
+    SELECT * FROM dispositivos WHERE mac_address = ?
   `,
   insert: `
-    INSERT INTO dispositivos (nombre, mac_address, ip_address, tipo, ultima_conexion) 
+    INSERT INTO dispositivos (nombre, mac_address, ip_address, tipo, ultima_conexion)
     VALUES (?, ?, ?, ?, ?)
   `,
   update: `
-    UPDATE dispositivos 
-    SET nombre = ?, mac_address = ?, ip_address = ?, tipo = ?, ultima_conexion = ? 
-    WHERE id = ?
+    UPDATE dispositivos
+    SET nombre = ?, ip_address = ?, tipo = ?, ultima_conexion = ?
+    WHERE mac_address = ?
+  `,
+  updateConectado: `
+    UPDATE dispositivos
+    SET ip_address = ?, ultima_conexion = ?
+    WHERE mac_address = ?
   `,
   delete: `
-    DELETE FROM dispositivos 
-    WHERE id = ?
-  `,
-  updateConexion: `
-    UPDATE dispositivos 
-    SET ultima_conexion = ? 
-    WHERE id = ?
-  `,
+    DELETE FROM dispositivos WHERE id = ?
+  `
 });
+
+function formatDispositivo(row) {
+  return {
+    id: row.id,
+    nombre: row.nombre,
+    mac_address: row.mac_address,
+    ip_address: row.ip_address,
+    tipo: row.tipo,
+    ultima_conexion: row.ultima_conexion
+  };
+}
 
 export const Dispositivo = {
   selectAll() {
-    return db.prepare(sql.selectAll).all();
+    return db.prepare(sql.selectAll).all().map(formatDispositivo);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatDispositivo(row) : null;
+  },
+
+  findByMac(mac) {
+    const row = db.prepare(sql.selectByMac).get(mac);
+    return row ? formatDispositivo(row) : null;
   },
 
   create({ nombre, mac_address, ip_address = null, tipo, ultima_conexion = null }) {
@@ -47,16 +65,15 @@ export const Dispositivo = {
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { nombre, mac_address, ip_address, tipo, ultima_conexion }) {
-    db.prepare(sql.update).run(
-      nombre, mac_address, ip_address, tipo, ultima_conexion, id
-    );
-    return this.findById(id);
+  update(mac_address, { nombre, ip_address, tipo, ultima_conexion = null }) {
+    db.prepare(sql.update).run(nombre, ip_address, tipo, ultima_conexion, mac_address);
+    return this.findByMac(mac_address);
   },
 
-  updateConexion(id, ultima_conexion) {
-    db.prepare(sql.updateConexion).run(ultima_conexion, id);
-    return this.findById(id);
+  actualizarConexion(mac_address, ip_address) {
+    const now = new Date().toISOString();
+    db.prepare(sql.updateConectado).run(ip_address, now, mac_address);
+    return this.findByMac(mac_address);
   },
 
   delete(id) {

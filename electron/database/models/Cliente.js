@@ -1,23 +1,32 @@
 import { connection } from '../connection.js';
 const db = connection();
 
+// SELECT base (para consistencia y orden)
+const baseSelect = `
+  SELECT 
+    id,
+    dni,
+    digitoVerificador,
+    nombre,
+    apellido,
+    direccion,
+    telefono,
+    verificado_reniec
+  FROM clientes
+`;
+
 const sql = Object.freeze({
-  selectAll: `
-    SELECT id, dni, nombre, apellido, direccion, telefono, verificado_reniec 
-    FROM clientes
-  `,
-  selectById: `
-    SELECT * 
-    FROM clientes 
-    WHERE id = ?
-  `,
+  selectAll: `${baseSelect} ORDER BY apellido ASC, nombre ASC`,
+  selectById: `${baseSelect} WHERE id = ?`,
+  selectByDni: `${baseSelect} WHERE dni = ?`,
   insert: `
-    INSERT INTO clientes (dni, nombre, apellido, direccion, telefono, verificado_reniec) 
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO clientes (
+      dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
   `,
   update: `
     UPDATE clientes 
-    SET dni = ?, nombre = ?, apellido = ?, direccion = ?, telefono = ?, verificado_reniec = ? 
+    SET dni = ?, digitoVerificador = ?, nombre = ?, apellido = ?, direccion = ?, telefono = ?, verificado_reniec = ?
     WHERE id = ?
   `,
   delete: `
@@ -26,25 +35,45 @@ const sql = Object.freeze({
   `,
 });
 
+// Formateo del cliente (si luego se requiere enriquecer, queda preparado)
+function formatCliente(row) {
+  return {
+    id: row.id,
+    dni: row.dni,
+    digitoVerificador: row.digitoVerificador,
+    nombre: row.nombre,
+    apellido: row.apellido,
+    direccion: row.direccion,
+    telefono: row.telefono,
+    verificado_reniec: !!row.verificado_reniec
+  };
+}
+
 export const Cliente = {
   selectAll() {
-    return db.prepare(sql.selectAll).all();
+    return db.prepare(sql.selectAll).all().map(formatCliente);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatCliente(row) : null;
   },
 
-  create({ dni, nombre, apellido, direccion = null, telefono = null, verificado_reniec = 0 }) {
+  findByDni(dni) {
+    const row = db.prepare(sql.selectByDni).get(dni);
+    return row ? formatCliente(row) : null;
+  },
+
+  create({ dni, digitoVerificador = null, nombre, apellido, direccion = null, telefono = null, verificado_reniec = 1 }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      dni, nombre, apellido, direccion, telefono, verificado_reniec
+      dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { dni, nombre, apellido, direccion, telefono, verificado_reniec }) {
+  update(id, { dni, digitoVerificador = null, nombre, apellido, direccion, telefono, verificado_reniec = 1 }) {
     db.prepare(sql.update).run(
-      dni, nombre, apellido, direccion, telefono, verificado_reniec, id
+      dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec, id
     );
     return this.findById(id);
   },
