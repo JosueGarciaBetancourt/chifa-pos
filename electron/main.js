@@ -1,101 +1,75 @@
-if (process.env.NODE_ENV === 'development') {
-  process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-}
+import { app as electronApp, BrowserWindow } from "electron";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-process.on('uncaughtException', (err) => {
-  if (
-    err.message.includes('VideoProcessorGetOutputExtension') ||
-    err.message.includes('Autofill')
-  ) {
-    // Silencia errores molestos del sistema
-    return;
-  }
+import { initDatabase } from "./database/initDatabase.js";
+import { connection } from "./database/connection.js";
+import { productosHandlers } from "./handlers/productos.js";
+import { insumosHandlers } from "./handlers/insumos.js";
+import { tiposInsumosHandlers } from "./handlers/tiposInsumos.js";
 
-  console.error('- Error no manejado:', err);
-});
-
-import { app, BrowserWindow } from 'electron';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-
-import { initDatabase } from './database/initDatabase.js';
-import { connection } from './database/connection.js';
-import { productosHandlers } from './handlers/productos.js';
-import { insumosHandlers } from './handlers/insumos.js';
-
-import expressApp from '../backend/src/app.js'; 
-import { tiposInsumosHandlers } from './handlers/tiposInsumos.js';
+import { app as expressApp, server } from "../backend/src/app.js"; // renombrado para no colisionar
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 let mainWindow;
 let db;
-let server;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
-  if (process.env.FRONTEND_URL && process.env.NODE_ENV === 'development') {
+  if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {
     mainWindow.loadURL(process.env.FRONTEND_URL);
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
   }
 }
 
-app.whenReady().then(async () => {
+electronApp.whenReady().then(async () => {
   try {
-    // Opcional: inicializar y conectar base local para uso desde Electron (via IPC)
     await initDatabase();
     db = connection();
     productosHandlers(db);
     insumosHandlers(db);
     tiposInsumosHandlers(db);
 
-    // API
-    const URL = expressApp.get('url') || 'http://localhost';
-    const PORT = expressApp.get('port') || 4000;
-    server = expressApp.listen(PORT, '0.0.0.0', () =>
-      console.log(`- API REST (Express) ${URL}:${PORT}/api`)
-    );
+    const URL = expressApp.get("url") || "http://localhost";
+    const PORT = expressApp.get("port") || 4000;
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`- API REST (Express) ${URL}:${PORT}/api`);
+    });
 
-    // Websockets
-    
     createWindow();
   } catch (error) {
-    console.error('Error durante el arranque:', error);
+    console.error("Error durante el arranque:", error);
   }
 });
 
-/* =============== cierre limpio =============== */
 function closeGracefully() {
-  console.log('\n- Cerrando servidor…');
+  console.log("\n- Cerrando servidor…");
   server?.close(() => {
-    console.log('- Servidor cerrado correctamente');
-    // Si quieres cerrar la BD:
-    // db?.close();
-    app.quit();             // termina Electron
+    console.log("- Servidor cerrado correctamente");
+    electronApp.quit();
   });
 }
 
-process.on('SIGINT',  closeGracefully); // Ctrl-C
-process.on('SIGTERM', closeGracefully); // kill / cierre SO
+process.on("SIGINT", closeGracefully);
+process.on("SIGTERM", closeGracefully);
 
-app.on('window-all-closed', () => {
-  // No uses backendProcess?.kill() porque ya no existe
-  if (process.platform !== 'darwin') closeGracefully();
+electronApp.on("window-all-closed", () => {
+  if (process.platform !== "darwin") closeGracefully();
 });
 
-app.on('activate', () => {
+electronApp.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });

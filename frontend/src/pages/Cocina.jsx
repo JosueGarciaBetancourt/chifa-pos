@@ -1,157 +1,287 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import HeaderCocina from '../components/features/cocina/HeaderCocina';
-import ResumenEstados from '../components/features/cocina/ResumenEstados';
-import KanbanBoard from '../components/features/cocina/KanbanBoard';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useSocket from "../hooks/useSocket";
+import HeaderCocina from "../components/features/cocina/HeaderCocina";
+import ResumenEstados from "../components/features/cocina/ResumenEstados";
+import KanbanBoard from "../components/features/cocina/KanbanBoard";
 
 const Cocina = () => {
   const navigate = useNavigate();
-  const [pedidos, setPedidos] = useState([
-    {
-      id: '001',
-      numero: '#001',
-      cliente: 'Juan Pérez',
-      telefono: '987654321',
-      hora: '14:30',
-      tiempoEspera: '5 min',
-      items: ['Arroz Chaufa de Pollo', 'Wantán Frito', 'Sopa Wantán'],
-      total: 45.00,
-      estado: 'pendiente',
-      tipo: 'delivery',
-      fechaCreacion: new Date(Date.now() - 5 * 60 * 1000), // 5 minutos atrás
-      fechaActualizacion: new Date()
-    },
-    {
-      id: '002',
-      numero: '#002',
-      cliente: 'María García',
-      telefono: '',
-      hora: '14:25',
-      tiempoEspera: '10 min',
-      items: ['Tallarín Saltado de Carne', 'Pollo Chi Jau Kay'],
-      total: 45.00,
-      estado: 'preparando',
-      tipo: 'delivery',
-      fechaCreacion: new Date(Date.now() - 10 * 60 * 1000), // 10 minutos atrás
-      fechaActualizacion: new Date()
-    },
-    {
-      id: '003',
-      numero: '#003',
-      cliente: 'Mesa 5 - Carlos López',
-      telefono: '',
-      hora: '14:20',
-      tiempoEspera: '15 min',
-      items: ['Cerdo Agridulce', 'Arroz Chaufa Especial', 'Kam Lu Wantán'],
-      total: 74.00,
-      estado: 'listo',
-      tipo: 'mesa',
-      fechaCreacion: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
-      fechaActualizacion: new Date()
-    },
-    {
-      id: '004',
-      numero: '#004',
-      cliente: 'Ana Ruiz',
-      telefono: '912345678',
-      hora: '14:35',
-      tiempoEspera: '2 min',
-      items: ['Arroz Chaufa Especial', 'Pollo Chi Jau Kay'],
-      total: 47.00,
-      estado: 'pendiente',
-      tipo: 'delivery',
-      fechaCreacion: new Date(Date.now() - 2 * 60 * 1000), // 2 minutos atrás
-      fechaActualizacion: new Date()
+  const [pedidos, setPedidos] = useState([]);
+
+  // 🔥 MEJORADO: Manejo más robusto del socket
+  const socketRef = useSocket((eventoRecibido) => {
+    console.log("📥 Evento recibido en cocina:", eventoRecibido);
+
+    // 🔥 CAMBIO: Verificar si es un pedido nuevo (con items) o actualización de estado
+    if (eventoRecibido.estado && eventoRecibido.id && !eventoRecibido.items) {
+      // Es una actualización de estado desde otra instancia de cocina
+      console.log("🔄 Actualizando estado de pedido:", eventoRecibido);
+
+      setPedidos((prev) =>
+        prev.map((pedido) =>
+          pedido.id === eventoRecibido.id
+            ? {
+                ...pedido,
+                estado: eventoRecibido.estado,
+                fechaActualizacion: new Date(),
+              }
+            : pedido
+        )
+      );
+      return;
     }
-  ]);
 
-  // Función para mover pedidos entre estados
-  const moverPedido = (pedidoId, nuevoEstado) => {
-    setPedidos(prev => 
-      prev.map(pedido => {
-        if (pedido.id === pedidoId) {
-          // Actualizar timestamps según el estado
-          const actualizaciones = {
-            fechaActualizacion: new Date()
-          };
+    // Es un pedido nuevo (viene con items)
+    if (eventoRecibido.items) {
+      const nuevo = {
+        ...eventoRecibido,
+        id:
+          typeof eventoRecibido.id === "string"
+            ? parseInt(eventoRecibido.id, 10)
+            : eventoRecibido.id,
+        fechaCreacion: new Date(),
+        fechaActualizacion: new Date(),
+        tiempoEspera: calcularTiempoEspera(new Date()),
+      };
 
-          switch (nuevoEstado) {
-            case 'preparando':
-              actualizaciones.fechaPreparacion = new Date();
-              break;
-            case 'listo':
-              actualizaciones.fechaListo = new Date();
-              break;
-            default:
-              break;
-          }
+      console.log("📥 Nuevo pedido procesado:", nuevo);
 
-          // Mostrar notificación del cambio
-          showNotification(`Pedido ${pedido.numero} movido a ${nuevoEstado}`);
-
-          return { 
-            ...pedido, 
-            estado: nuevoEstado,
-            ...actualizaciones
-          };
+      setPedidos((prev) => {
+        // Evitar duplicados
+        const existe = prev.some((p) => p.id === nuevo.id);
+        if (existe) {
+          console.warn("⚠️ Pedido duplicado ignorado:", nuevo.id);
+          return prev;
         }
-        return pedido;
-      })
-    );
+        return [...prev, nuevo];
+      });
 
-    // Aquí podrías agregar la lógica para actualizar la base de datos
-    // updatePedidoEstado(pedidoId, nuevoEstado);
+      showNotification(`🍽️ Nuevo pedido recibido: ${eventoRecibido.numero}`);
+    }
+  });
+
+  // 🔥 MEJORADO: Función para mover pedidos con mejor manejo de errores
+  const moverPedido = (pedidoId, nuevoEstado) => {
+    console.log(`🎯 Moviendo pedido ${pedidoId} a estado ${nuevoEstado}`);
+
+    // Usar función callback para obtener el estado más actualizado
+    setPedidos((pedidosActuales) => {
+      // Asegurar que el ID sea numérico para búsqueda consistente
+      const idNumerico =
+        typeof pedidoId === "string" ? parseInt(pedidoId, 10) : pedidoId;
+
+      if (isNaN(idNumerico)) {
+        console.warn(`❌ ID de pedido inválido: ${pedidoId}`);
+        return pedidosActuales;
+      }
+
+      const pedidoExistente = pedidosActuales.find((p) => p.id === idNumerico);
+
+      if (!pedidoExistente) {
+        console.warn(`❌ Pedido con ID ${idNumerico} no encontrado`);
+        console.log(
+          `📋 Pedidos disponibles:`,
+          pedidosActuales.map((p) => `${p.id} - ${p.numero}`)
+        );
+        return pedidosActuales;
+      }
+
+      // Evitar mover si ya está en el estado deseado
+      if (pedidoExistente.estado === nuevoEstado) {
+        console.info(
+          `ℹ️ Pedido ${pedidoExistente.numero} ya está en estado ${nuevoEstado}`
+        );
+        return pedidosActuales;
+      }
+
+      const actualizaciones = {
+        fechaActualizacion: new Date(),
+      };
+
+      if (nuevoEstado === "preparando") {
+        actualizaciones.fechaPreparacion = new Date();
+      } else if (nuevoEstado === "listo") {
+        actualizaciones.fechaListo = new Date();
+      }
+
+      // 🔥 MEJORADO: Crear el evento para enviar al mozo
+      const eventoParaMozo = {
+        id: idNumerico,
+        estado: nuevoEstado,
+        tipo: pedidoExistente.tipo, // mesa o llevar
+        cliente: pedidoExistente.cliente,
+        numero: pedidoExistente.numero,
+        ...actualizaciones,
+      };
+
+      // 🔁 Emitimos el cambio al mozo con el evento correcto
+      if (socketRef?.current) {
+        socketRef.current.emit("estadoPedidoActualizado", eventoParaMozo);
+        console.log("📤 Estado enviado al mozo:", eventoParaMozo);
+      }
+
+      showNotification(`✅ ${pedidoExistente.numero} → ${nuevoEstado}`);
+
+      // Retornar el nuevo estado actualizado
+      return pedidosActuales.map((pedido) =>
+        pedido.id === idNumerico
+          ? {
+              ...pedido,
+              estado: nuevoEstado,
+              ...actualizaciones,
+            }
+          : pedido
+      );
+    });
   };
 
-  // Función para mostrar notificaciones (deshabilitada)
-  const showNotification = (mensaje) => {
-    // Solo mostrar en consola para debug
-    console.log('🍜 Cocina:', mensaje);
+  // 🔥 NUEVO: Función para eliminar pedidos completados
+  const eliminarPedido = (pedidoId) => {
+    console.log(`🗑️ Eliminando pedido ${pedidoId}`);
 
+    setPedidos((prev) => {
+      const idNumerico =
+        typeof pedidoId === "string" ? parseInt(pedidoId, 10) : pedidoId;
+
+      const pedidoAEliminar = prev.find((p) => p.id === idNumerico);
+
+      if (pedidoAEliminar) {
+        showNotification(`🗑️ Pedido ${pedidoAEliminar.numero} eliminado`);
+        return prev.filter((p) => p.id !== idNumerico);
+      }
+
+      return prev;
+    });
   };
 
-  // Función para contar pedidos por estado
-  const contarPorEstado = (estado) => {
-    return pedidos.filter(p => p.estado === estado).length;
+  // 🔥 NUEVO: Función para obtener estadísticas de tiempo
+  const obtenerEstadisticasTiempo = () => {
+    const ahora = new Date();
+    const estadisticas = {
+      promedioEspera: 0,
+      pedidoMasAntiguo: null,
+      totalPedidos: pedidos.length,
+    };
+
+    if (pedidos.length > 0) {
+      const tiemposEspera = pedidos.map((pedido) =>
+        Math.floor((ahora - pedido.fechaCreacion) / (1000 * 60))
+      );
+
+      estadisticas.promedioEspera = Math.round(
+        tiemposEspera.reduce((a, b) => a + b, 0) / tiemposEspera.length
+      );
+
+      estadisticas.pedidoMasAntiguo = Math.max(...tiemposEspera);
+    }
+
+    return estadisticas;
   };
 
-  // Actualizar tiempo de espera cada minuto
+  // ⏱️ Calcula minutos desde la creación
+  const calcularTiempoEspera = (fechaCreacion) => {
+    const ahora = new Date();
+    const diffMin = Math.floor((ahora - fechaCreacion) / (1000 * 60));
+    return `${diffMin} min`;
+  };
+
+  // ⌛ Actualiza el tiempo de espera cada minuto
   useEffect(() => {
     const interval = setInterval(() => {
-      setPedidos(prev => prev.map(pedido => ({
-        ...pedido,
-        tiempoEspera: calcularTiempoEspera(pedido.fechaCreacion)
-      })));
-    }, 60000); // Actualizar cada minuto
+      setPedidos((prev) =>
+        prev.map((pedido) => ({
+          ...pedido,
+          tiempoEspera: calcularTiempoEspera(pedido.fechaCreacion),
+        }))
+      );
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
-
-  // Función auxiliar para calcular tiempo de espera
-  const calcularTiempoEspera = (fechaCreacion) => {
-    const ahora = new Date();
-    const diferencia = Math.floor((ahora - fechaCreacion) / (1000 * 60));
-    return `${diferencia} min`;
-  };
-
-  // Función para volver al dashboard
+  // 🔙 Regresa al inicio
   const handleBack = () => {
-    navigate('/');
+    navigate("/");
   };
 
-    return (
+  // 🔢 Cuenta pedidos por estado
+  const contarPorEstado = (estado) =>
+    pedidos.filter((p) => p.estado === estado).length;
+
+  // 🔥 MEJORADO: Función de notificación más robusta
+  const showNotification = (mensaje) => {
+    console.log("🔔", mensaje);
+
+    // Notificación del navegador si está disponible
+    if (window.Notification && Notification.permission === "granted") {
+      new Notification("Chifa Imperio - Cocina", {
+        body: mensaje,
+        icon: "/favicon.ico",
+      });
+    }
+  };
+
+  // 🔥 NUEVO: Función para solicitar permisos de notificación
+  useEffect(() => {
+    if (window.Notification && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  // 🔥 NUEVO: Función para manejar atajos de teclado
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      // Ctrl/Cmd + R para refrescar pedidos
+      if ((event.ctrlKey || event.metaKey) && event.key === "r") {
+        event.preventDefault();
+        console.log("🔄 Refrescando vista de cocina...");
+        // Aquí podrías agregar lógica para refrescar pedidos
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, []);
+
+  // 🔥 NUEVO: Datos para el dashboard
+  const estadisticas = obtenerEstadisticasTiempo();
+
+  return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-        <HeaderCocina 
-        totalPendientes={contarPorEstado('pendiente')} 
+      <HeaderCocina
+        totalPendientes={contarPorEstado("pendiente")}
+        totalPreparando={contarPorEstado("preparando")}
+        totalListos={contarPorEstado("listo")}
+        estadisticas={estadisticas}
         onBack={handleBack}
+      />
+
+      <ResumenEstados pedidos={pedidos} />
+
+      <div className="flex-1 overflow-y-auto">
+        <KanbanBoard
+          pedidos={pedidos}
+          onMoverPedido={moverPedido}
+          onEliminarPedido={eliminarPedido}
         />
-        <ResumenEstados pedidos={pedidos} />
-        <div className="flex-1 overflow-y-auto">
-        <KanbanBoard pedidos={pedidos} onMoverPedido={moverPedido} />
-        </div>
+      </div>
+
+      {/* 🔥 NUEVO: Indicador de conexión del socket */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <div
+          className={`w-3 h-3 rounded-full ${
+            socketRef?.current?.connected ? "bg-green-500" : "bg-red-500"
+          }`}
+          title={
+            socketRef?.current?.connected
+              ? "Conectado al servidor"
+              : "Desconectado del servidor"
+          }
+        />
+      </div>
     </div>
-    );
+  );
 };
 
 export default Cocina;
