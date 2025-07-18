@@ -3,7 +3,7 @@ import { Plus, Minus } from 'lucide-react';
 
 const InventoryCard = ({ item, onItemClick, updateStock }) => {
   const isLowStock = item.stock_actual < item.stock_minimo;
-  const totalValue = item.stock_actual * item.precio_unitario;
+  const totalValue = item.stock_actual * item.costo;
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
@@ -13,7 +13,9 @@ const InventoryCard = ({ item, onItemClick, updateStock }) => {
           <h3 className="text-lg font-bold text-gray-800 hover:text-purple-600 transition-colors">
             {item.nombre}
           </h3>
-          <p className="text-sm text-gray-500">{item.categoria} • {item.proveedor}</p>
+          <p className="text-sm text-gray-500">
+            {item.tipo?.nombre ?? 'Sin tipo'}{/*  • {item.proveedor} */}
+          </p>       
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
           isLowStock ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
@@ -38,7 +40,7 @@ const InventoryCard = ({ item, onItemClick, updateStock }) => {
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
           <p className="text-xs text-gray-500 font-medium">Precio Unitario</p>
-          <p className="text-sm font-semibold">S/ {item.precio_unitario.toFixed(2)}</p>
+          <p className="text-sm font-semibold">S/ {item.costo.toFixed(2)}</p>
         </div>
         <div>
           <p className="text-xs text-gray-500 font-medium">Valor Total</p>

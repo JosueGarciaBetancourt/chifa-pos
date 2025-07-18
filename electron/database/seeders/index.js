@@ -26,6 +26,7 @@ import { seed as seedComprobantes } from './comprobantesSeeder.js';
 import { seed as seedReservas } from './reservasSeeder.js';
 import { seed as seedInventarioMovimientos } from './inventario_movimientosSeeder.js';
 import { seed as seedProveedores } from './proveedoresSeeder.js';
+import { seed as seedInsumosProveedores } from './insumos_proveedoresSeeder.js';
 import { seed as seedComprasInsumosProveedores } from './compras_insumos_proveedoresSeeder.js';
 import { seed as seedMovimientosCaja } from './movimientos_cajaSeeder.js';
 import { seed as seedDispositivos } from './dispositivosSeeder.js';
@@ -63,6 +64,7 @@ export function seed(db) {
   seedReservas(db);
   seedInventarioMovimientos(db);
   seedProveedores(db);
+  seedInsumosProveedores(db);
   seedComprasInsumosProveedores(db);
   seedMovimientosCaja(db);
   seedDispositivos(db);

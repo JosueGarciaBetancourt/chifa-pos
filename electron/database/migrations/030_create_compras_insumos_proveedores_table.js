@@ -4,8 +4,7 @@ export function up(db) {
   db.prepare(`
     CREATE TABLE IF NOT EXISTS compras_insumos_proveedores (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      insumo_id INTEGER NOT NULL REFERENCES insumos(id) ON DELETE CASCADE,
-      proveedor_id INTEGER NOT NULL REFERENCES proveedores(id) ON DELETE CASCADE,
+      insumo_proveedor_id INTEGER NOT NULL REFERENCES insumos_proveedores(id) ON DELETE CASCADE,
       cantidad INTEGER NOT NULL,
       costo_unitario REAL NOT NULL,
       fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -26,12 +26,14 @@ import { up as upComprobantes } from './migrations/025_create_comprobantes_table
 import { up as upReservas } from './migrations/026_create_reservas_table.js';
 import { up as upInventarioMovimientos } from './migrations/027_create_inventario_movimientos_table.js';
 import { up as upProveedores } from './migrations/028_create_proveedores_table.js';
-import { up as upComprasInsumosProveedores } from './migrations/029_create_compras_insumos_proveedores_table.js';
-import { up as upMovimientosCaja } from './migrations/030_create_movimientos_caja_table.js';
-import { up as upDispositivos } from './migrations/031_create_dispositivos_table.js';
-import { up as upTiposNotificaciones } from './migrations/032_create_tipos_notificaciones_table.js';
-import { up as upNotificaciones } from './migrations/033_create_notificaciones_table.js';
-import { up as upLogsSistema } from './migrations/034_create_logs_sistema_table.js';
+import { up as upInsumosProveedores } from './migrations/029_create_insumos_proveedores_table.js';
+import { up as upComprasInsumosProveedores } from './migrations/030_create_compras_insumos_proveedores_table.js';
+import { up as upMovimientosCaja } from './migrations/031_create_movimientos_caja_table.js';
+import { up as upDispositivos } from './migrations/032_create_dispositivos_table.js';
+import { up as upTiposNotificaciones } from './migrations/033_create_tipos_notificaciones_table.js';
+import { up as upNotificaciones } from './migrations/034_create_notificaciones_table.js';
+import { up as upLogsSistema } from './migrations/035_create_logs_sistema_table.js';
+
 
 export async function runMigrations(db) {
   db.pragma('foreign_keys = ON;');
@@ -48,7 +50,7 @@ export async function runMigrations(db) {
     db.prepare('SELECT name FROM migrations').all().map(r => r.name)
   );
 
-  console.log('🔄 Ejecutando migraciones pendientes...\n');
+  console.log('\nEjecutando migraciones pendientes...\n');
 
   const migrations = [
     { name: '001_create_empresa_local_table', fn: upEmpresaLocal },
@@ -79,29 +81,30 @@ export async function runMigrations(db) {
     { name: '026_create_reservas_table', fn: upReservas },
     { name: '027_create_inventario_movimientos_table', fn: upInventarioMovimientos },
     { name: '028_create_proveedores_table', fn: upProveedores },
-    { name: '029_create_compras_insumos_proveedores_table', fn: upComprasInsumosProveedores },
-    { name: '030_create_movimientos_caja_table', fn: upMovimientosCaja },
-    { name: '031_create_dispositivos_table', fn: upDispositivos },
-    { name: '032_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
-    { name: '033_create_notificaciones_table', fn: upNotificaciones },
-    { name: '034_create_logs_sistema_table', fn: upLogsSistema }
+    { name: '029_create_insumos_proveedores_table', fn: upInsumosProveedores },
+    { name: '030_create_compras_insumos_proveedores_table', fn: upComprasInsumosProveedores },
+    { name: '031_create_movimientos_caja_table', fn: upMovimientosCaja },
+    { name: '032_create_dispositivos_table', fn: upDispositivos },
+    { name: '033_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
+    { name: '034_create_notificaciones_table', fn: upNotificaciones },
+    { name: '035_create_logs_sistema_table', fn: upLogsSistema }
   ];
 
   for (const migration of migrations) {
     if (!applied.has(migration.name)) {
       try {
-        console.log(`⚙️ Ejecutando ${migration.name}...`);
+        console.log(`- Ejecutando ${migration.name}...`);
         migration.fn(db);
         db.prepare('INSERT INTO migrations (name) VALUES (?)').run(migration.name);
-        console.log(`✅ Migración ${migration.name} aplicada.\n`);
+        console.log(`- Migracion ${migration.name} aplicada.\n`);
       } catch (err) {
-        console.error(`❌ Error ejecutando ${migration.name}:`, err);
+        console.error(`X Error ejecutando ${migration.name}:`, err);
         throw err;
       }
     } else {
-      console.log(`→ Migración ${migration.name} ya aplicada. Se omite.\n`);
+      console.log(`- Migracion ${migration.name} ya aplicada. Se omite.`);
     }
   }
 
-  console.log('🎉 Todas las migraciones completadas.');
+  console.log('\nTodas las migraciones completadas.');
 }

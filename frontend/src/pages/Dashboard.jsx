@@ -4,26 +4,33 @@ import { BarChart2, Clock, Users, Package, ShoppingCart, Utensils, Tablet, Truck
 import productosUnifiedService from '../services/productosUnifiedService';
 
 export default function Dashboard() {
+  console.log(window.electronAPI);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const productos = await productosUnifiedService.getProductos();
-        console.log('✅ Productos:', productos);
+        const productosData = await productosUnifiedService.getProductos();
+    
+        if (Array.isArray(productosData)) {
+          alert(`✅ ${productosData.length} productos recibidos`);
+        } else {
+          console.error("❌ productosData no es un array:", productosData);
+        }
       } catch (error) {
         console.error('Error al obtener productos:', error);
       }
     };
   
     fetchProductos();
-  }, []);
+  }, []); */
   
   const handleProbarApi = async () => {
     try {
-      const productos = await productosUnifiedService.getProductos();
-      console.log('[✔️ Unified API OK] Productos:', productos);
-      alert(`✅ ${productos.length} productos recibidos`);
+      const productosData = await productosUnifiedService.getProductos();
+      console.log('[✔️ Unified API OK] Productos:', productosData);
+      alert(`✅ ${productosData.length} productos recibidos`);
     } catch (error) {
       alert('❌ Error al obtener productos');
     }
@@ -75,7 +82,7 @@ export default function Dashboard() {
             <p className="text-sm text-gray-600 mb-3">Procesar ventas, generar tickets y enviar pedidos a cocina</p>
             <button
               onClick={() => navigate('/caja')}
-              className="bg-red-600 text-white px-4 py-2 rounded w-full"
+              className="bg-red-600 text-white px-4 py-2 rounded w-full cursor-pointer"
             >
               Abrir Caja
             </button>
@@ -90,7 +97,7 @@ export default function Dashboard() {
             </p>
             <button
               onClick={() => navigate('/cocina')}
-              className="bg-orange-500 text-white px-4 py-2 rounded w-full"
+              className="bg-orange-500 text-white px-4 py-2 rounded w-full cursor-pointer"
             >
               Ver Cocina
             </button>
@@ -102,9 +109,11 @@ export default function Dashboard() {
             </h3>
             <p className="text-sm text-gray-600 mb-3">Tomar pedidos de mesa y gestionar mesas</p>
             <button 
-            onClick={() => navigate('/mozos')}
-            className="bg-blue-600 text-white px-4 py-2 rounded w-full" >
-              Abrir Tablet</button>
+              onClick={() => navigate('/mozos')}
+              className="bg-blue-600 text-white px-4 py-2 rounded w-full cursor-pointer"
+            >
+              Abrir Tablet
+            </button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">
@@ -113,11 +122,11 @@ export default function Dashboard() {
             </h3>
             <p className="text-sm text-gray-600 mb-3">Gestionar pedidos de delivery y repartidores</p>
             <button 
-                onClick={() => navigate('/delivery')}
-                className="bg-green-600 text-white px-4 py-2 rounded w-full"
-              >
-                Ver Delivery
-              </button>
+              onClick={() => navigate('/delivery')}
+              className="bg-green-600 text-white px-4 py-2 rounded w-full cursor-pointer"
+            >
+              Ver Delivery
+            </button>
           </div>
 
           <div className="bg-white p-5 rounded shadow">
@@ -127,7 +136,7 @@ export default function Dashboard() {
             <p className="text-sm text-gray-600 mb-3">Control de insumos y stock de productos</p>
             <button 
               onClick={() => navigate('/inventario')}
-              className="bg-purple-600 text-white px-4 py-2 rounded w-full"
+              className="bg-purple-600 text-white px-4 py-2 rounded w-full cursor-pointer"
             >
               Ver Inventario
             </button>
@@ -140,7 +149,7 @@ export default function Dashboard() {
             <p className="text-sm text-gray-600 mb-3">Reportes de ventas, productos más vendidos</p>
             <button 
               onClick={() => navigate('/reportes')}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded w-full transition-colors"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded w-full cursor-pointer transition-colors"
             >
               Ver Reportes
             </button>

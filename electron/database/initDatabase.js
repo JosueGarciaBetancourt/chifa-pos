@@ -7,8 +7,6 @@ import { runMigrations } from './runMigrations.js';
 import { runSeeders } from './runSeeders.js';
 
 export async function initDatabase(reset = false) {
-  console.log("- Inicializando base de datos...");
-
   const userDataPath = app.getPath('appData');
   const dbDir = path.join(userDataPath, 'Electron', 'databases');
 

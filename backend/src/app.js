@@ -5,7 +5,6 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
-import productosRouter from "./routes/productos.js";
 import routes from "./routes/index.js";
 import loggerMiddleware from "./logger.js";
 
@@ -21,32 +20,33 @@ const io = new Server(server, {
 // Configuración del servidor
 const PORT = process.env.API_PORT || 4000;
 const URL = process.env.API_URL || "http://localhost";
+app.set("url", URL);
+app.set("port", PORT);
 
 // Middlewares
 app.use(loggerMiddleware);
 app.use(cors());
 app.use(express.json());
 
-// Rutas API (ambas formas combinadas)
+// Rutas API
 routes.forEach(({ path, router }) => app.use(path, router));
-app.use("/api/productos", productosRouter);
 
 // Socket.IO
 io.on("connection", (socket) => {
-  console.log("🟢 Cliente conectado:", socket.id);
+  console.log("- Cliente conectado:", socket.id);
 
   socket.on("nuevo-pedido", (pedido) => {
-    console.log("📦 Pedido recibido:", pedido);
+    console.log("- Pedido recibido:", pedido);
     io.emit("pedido-nuevo", pedido);
   });
 
   socket.on("estadoPedidoActualizado", (pedidoActualizado) => {
-    console.log("🔄 Estado actualizado:", pedidoActualizado);
+    console.log("- Estado actualizado:", pedidoActualizado);
     io.emit("estadoPedidoActualizado", pedidoActualizado);
   });
 
   socket.on("disconnect", () => {
-    console.log("🔴 Cliente desconectado:", socket.id);
+    console.log("- Cliente desconectado:", socket.id);
   });
 });
 

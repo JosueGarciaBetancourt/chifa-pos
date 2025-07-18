@@ -11,42 +11,35 @@ import tiposInsumosUnifiedService from '../services/tiposInsumosUnifiedService';
 const Inventario = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [view, setView] = useState('list');
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedTipo, setSelectedTipo] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [inventoryData, setInventoryData] = useState([]);
-  const [categories, setCategories] = useState(['Todos']); // Inicializa con "Todos"
+  const [tipos, setTipos] = useState(['Todos']); // Inicializa con "Todos"
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1) Obtener tipos de insumos
+        // Obtener tipos de insumos
         const tipos = await tiposInsumosUnifiedService.getTiposInsumos();
-        console.log('Tipos de insumos:', tipos);
+        if (!Array.isArray(tipos)) {
+          console.warn('⚠️ tiposInsumos no es un array:', tipos);
+          setTipos(['Todos']);
+        } else {
+          const tiposDB = tipos.map(tipo => tipo.nombre);
+          setTipos(['Todos', ...tiposDB]);
+        }
 
-        const categoriasDB = tipos.map(tipo => tipo.nombre);
-        setCategories(['Todos', ...categoriasDB]);
-
-        // 2) Obtener insumos reales
+        // Obtener insumos
         const insumos = await insumosUnifiedService.getInsumos();
-        console.log('Insumos:', insumos);
+        if (!Array.isArray(insumos)) {
+          console.warn('⚠️ insumos no es un array:', insumos);
+          setInventoryData([]);
+          return;
+        }
 
-        // 3) Mapea insumos usando la estructura con JOIN
-        const mapped = insumos.map(i => ({
-          id: i.id,
-          nombre: i.nombre,
-          categoria: i.categoria?.nombre || 'Sin categoría',
-          categoria_descripcion: i.categoria?.descripcion || '',
-          unidad: i.unidad,
-          stock_actual: i.stock_actual,
-          stock_minimo: i.stock_minimo,
-          precio_unitario: i.costo,
-          proveedor: 'Proveedor Genérico', // Si tienes proveedor real, cámbialo
-          status: i.stock_actual < i.stock_minimo ? 'Stock Bajo' : 'Stock OK'
-        }));
-
-        setInventoryData(mapped);
+        setInventoryData(insumos);
       } catch (error) {
-        console.error('Error al cargar inventario:', error);
+        console.error('❌ Error inesperado al cargar inventario:', error);
       }
     };
 
@@ -80,14 +73,14 @@ const Inventario = () => {
   };
 
   const filteredData = inventoryData.filter(item => {
-    const matchesCategory = selectedCategory === 'Todos' || item.categoria === selectedCategory;
+    const matchesTipo = selectedTipo === 'Todos' || item.tipo?.nombre.toLowerCase().trim() === selectedTipo.toLowerCase().trim();
     const matchesSearch = item.nombre.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesTipo && matchesSearch;
   });
 
   const totalProductos = inventoryData.length;
   const lowStockItems = inventoryData.filter(item => item.stock_actual < item.stock_minimo);
-  const totalCategories = categories.length - 1; // No contar "Todos"
+  const totalTipos = tipos.length - 1; // No contar "Todos"
   const inventoryValue = inventoryData.reduce((total, item) => {
     return total + (item.stock_actual * item.precio_unitario);
   }, 0);
@@ -101,16 +94,16 @@ const Inventario = () => {
             <InventoryStats
               totalProductos={totalProductos}
               lowStockCount={lowStockItems.length}
-              totalCategories={totalCategories}
+              totalTipos={totalTipos}
               inventoryValue={inventoryValue}
             />
 
             <LowStockAlert items={lowStockItems} />
 
             <InventoryFilters
-              categories={categories}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
+              tipos={tipos}
+              selectedTipo={selectedTipo}
+              setSelectedTipo={setSelectedTipo}
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
             />

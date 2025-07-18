@@ -34,10 +34,10 @@ export default defineConfig({
     })
   ],
   server: {
-    host: '0.0.0.0', // Acepta conexiones externas
+    host: '0.0.0.0',
     origin: process.env.FRONTEND_URL,
     strictPort: true,
-    port: Number(process.env.FRONTEND_PORT) // Asegúrate de usar el mismo puerto que configuras en ngrok
+    port: Number(process.env.FRONTEND_PORT) 
   },
   build: {
     outDir: 'dist',

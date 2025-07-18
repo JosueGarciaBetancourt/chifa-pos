@@ -6,7 +6,7 @@ const tiposInsumosApi = {
       const data = await api.get('/api/tiposInsumos');
       return data.data
     } catch (error) {
-      console.error('Error obteniendo tiposInsumos:', error);
+      console.error('Error obteniendo tipos de insumos:', error);
       throw error;
     }
   }

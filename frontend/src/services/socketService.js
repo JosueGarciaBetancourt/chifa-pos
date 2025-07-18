@@ -6,7 +6,7 @@ let socket;
 // Inicializa el socket si aún no existe
 export const initSocket = () => {
   if (!socket) {
-    socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
+    socket = io(import.meta.env.VITE_WEBSOCKET_URL || "http://localhost:4001", {
       transports: ["websocket"],
       reconnection: true,
     });

@@ -18,9 +18,9 @@ process.on('SIGINT', closeGracefully);
 process.on('SIGTERM', closeGracefully);
 
 function closeGracefully() {
-  console.log('\n📴 Cerrando servidor…');
+  console.log('-Cerrando servidor...');
   server.close(() => {
-    console.log('✅ Servidor cerrado correctamente');
+    console.log('Servidor cerrado correctamente');
     process.exit(0);
   });
 }

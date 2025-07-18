@@ -44,8 +44,8 @@ function formatInsumo(row) {
     stock_actual: row.stock_actual,
     stock_minimo: row.stock_minimo,
     costo: row.costo,
-    tipo_id: row.tipo_id,
-    categoria: {
+    tipo: {
+      id: row.tipo_id,
       nombre: row.tipo_nombre,
       descripcion: row.tipo_descripcion
     }

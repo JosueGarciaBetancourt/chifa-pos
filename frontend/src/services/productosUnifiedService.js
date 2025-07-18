@@ -6,6 +6,7 @@ const productosUnifiedService = {
     if (isElectron()) {
       try {
         const productos = await window.electronAPI.getProductos();
+
         return productos;
       } catch (error) {
         console.error('❌ Error usando Electron API:', error);

@@ -26,7 +26,7 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
             <div>
               <h1 className="text-3xl font-bold text-gray-800 mb-2">{item.nombre}</h1>
               <div className="flex items-center space-x-4">
-                <span className="text-gray-600">{item.categoria}</span>
+                <span className="text-gray-600">{item.tipo}</span>
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-600">{item.proveedor}</span>
               </div>
@@ -42,8 +42,8 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Categoría</h3>
-                <p className="text-lg text-gray-900">{item.categoria}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">Tipo</h3>
+                <p className="text-lg text-gray-900">{item.tipo}</p>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Proveedor</h3>

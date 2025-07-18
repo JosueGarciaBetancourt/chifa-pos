@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSocket from "../hooks/useSocket";
-import useProductos from "../hooks/useProductos";
+import productosUnifiedService from '../services/productosUnifiedService';
 
 const mesas = Array.from({ length: 13 }, (_, i) => ({
   id: i + 1,
@@ -10,8 +10,7 @@ const mesas = Array.from({ length: 13 }, (_, i) => ({
 
 export default function TabletMozo() {
   const navigate = useNavigate();
-  const { productos, loading } = useProductos();
-
+  const [productos, setProductos] = useState([]);
   const [tipoPedido, setTipoPedido] = useState("mesa");
   const [mesaSeleccionada, setMesaSeleccionada] = useState(null);
   const [pedido, setPedido] = useState([]);
@@ -23,8 +22,26 @@ export default function TabletMozo() {
     mesas.forEach((m) => (estadosIniciales[m.id] = "Libre"));
     return estadosIniciales;
   });
+  const [loading, setLoading] = useState(true);
 
-  // 🔥 CORRECCIÓN: Reemplazar toda la lógica de manejo de eventos del socket
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        setLoading(true);
+        const productosData = await productosUnifiedService.getProductos();
+        setProductos(productosData);
+        console.log("Productos: ", productosData);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProductos();
+  }, []);
+  
+  // CORRECCIÓN: Reemplazar toda la lógica de manejo de eventos del socket
   const socketRef = useSocket((eventoRecibido) => {
     console.log("📥 Evento recibido en mozo:", eventoRecibido);
 

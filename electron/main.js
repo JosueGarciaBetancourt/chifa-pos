@@ -1,14 +1,27 @@
+if (process.env.NODE_ENV === 'development') {
+  process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+}
+
+// Captura errores globales de forma segura
+process.on('uncaughtException', (err) => {
+  if (
+    err.message.includes('VideoProcessorGetOutputExtension') ||
+    err.message.includes('Autofill')
+  ) {
+    return; // Silenciar errores molestos del sistema
+  }
+  console.error('❌ Excepción no capturada:', err);
+});
+
 import { app as electronApp, BrowserWindow } from "electron";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { initDatabase } from "./database/initDatabase.js";
 import { connection } from "./database/connection.js";
-import { productosHandlers } from "./handlers/productos.js";
-import { insumosHandlers } from "./handlers/insumos.js";
-import { tiposInsumosHandlers } from "./handlers/tiposInsumos.js";
+import { registerAllIpcHandlers } from './handlers/index.js';
 
-import { app as expressApp, server } from "../backend/src/app.js"; // renombrado para no colisionar
+import { app as expressApp, server } from "../backend/src/app.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,50 +30,61 @@ let mainWindow;
 let db;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
+  try {
+    mainWindow = new BrowserWindow({
+      width: 1024,
+      height: 768,
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+        contextIsolation: true,
+        nodeIntegration: false,
+      },
+    });
 
-  if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {
-    mainWindow.loadURL(process.env.FRONTEND_URL);
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {
+      mainWindow.loadURL(process.env.FRONTEND_URL);
+      mainWindow.webContents.openDevTools();
+    } else {
+      mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    }
+  } catch (error) {
+    console.error("\nError creando la ventana principal:", error);
   }
 }
 
 electronApp.whenReady().then(async () => {
   try {
+    console.log("\n- Inicializando base de datos...");
     await initDatabase();
     db = connection();
-    productosHandlers(db);
-    insumosHandlers(db);
-    tiposInsumosHandlers(db);
+
+    console.log("\n- Registrando handlers IPC...");
+    registerAllIpcHandlers(db);
 
     const URL = expressApp.get("url") || "http://localhost";
     const PORT = expressApp.get("port") || 4000;
+
     server.listen(PORT, "0.0.0.0", () => {
-      console.log(`- API REST (Express) ${URL}:${PORT}/api`);
+      console.log(`\nAPI REST activa en ${URL}:${PORT}/api\n`);
     });
 
     createWindow();
   } catch (error) {
-    console.error("Error durante el arranque:", error);
+    console.error("\nError crítico durante el arranque:", error);
   }
 });
 
 function closeGracefully() {
-  console.log("\n- Cerrando servidor…");
-  server?.close(() => {
-    console.log("- Servidor cerrado correctamente");
+  try {
+    console.log("\n Cerrando servidor...");
+    server?.close(() => {
+      console.log("\n Servidor cerrado correctamente");
+      electronApp.quit();
+    });
+  } catch (error) {
+    console.error("\n Error al cerrar servidor:", error);
     electronApp.quit();
-  });
+  }
 }
 
 process.on("SIGINT", closeGracefully);
@@ -71,5 +95,11 @@ electronApp.on("window-all-closed", () => {
 });
 
 electronApp.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) {
+    try {
+      createWindow();
+    } catch (error) {
+      console.error("\n Error al reactivar la ventana:", error);
+    }
+  }
 });

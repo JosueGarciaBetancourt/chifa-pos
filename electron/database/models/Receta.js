@@ -88,7 +88,7 @@ export const Receta = {
   update(producto_id, insumo_id, cantidad) {
     const result = db.prepare(sql.update).run(cantidad, producto_id, insumo_id);
     if (result.changes === 0) {
-      throw new Error('No se encontró receta para actualizar.');
+      throw new Error('No se encontro receta para actualizar.');
     }
     return this.findByProductoId(producto_id);
   },
