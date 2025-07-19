@@ -34,7 +34,7 @@ routes.forEach(({ path, router }) => app.use(path, router));
 // Socket.IO
 io.on("connection", (socket) => {
   console.log("- Cliente conectado:", socket.id);
-
+  
   socket.on("nuevo-pedido", (pedido) => {
     console.log("- Pedido recibido:", pedido);
     io.emit("pedido-nuevo", pedido);

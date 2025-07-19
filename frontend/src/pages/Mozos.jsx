@@ -30,7 +30,6 @@ export default function TabletMozo() {
         setLoading(true);
         const productosData = await productosUnifiedService.getProductos();
         setProductos(productosData);
-        console.log("Productos: ", productosData);
       } catch (error) {
         console.error('Error al obtener productos:', error);
       } finally {

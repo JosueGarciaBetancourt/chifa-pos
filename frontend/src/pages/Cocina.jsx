@@ -267,7 +267,6 @@ const Cocina = () => {
         />
       </div>
 
-      {/* 🔥 NUEVO: Indicador de conexión del socket */}
       <div className="fixed bottom-4 right-4 z-50">
         <div
           className={`w-3 h-3 rounded-full ${
@@ -285,3 +284,4 @@ const Cocina = () => {
 };
 
 export default Cocina;
+

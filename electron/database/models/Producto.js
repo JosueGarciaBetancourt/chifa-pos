@@ -60,6 +60,12 @@ export const Producto = {
     return db.prepare(sql.selectAll).all().map(formatProducto);
   },
 
+  searchByName(nombre) {
+    const stmt = db.prepare(`${baseSelect} WHERE p.nombre LIKE ?`);
+    const rows = stmt.all(`%${nombre}%`);
+    return rows.map(formatProducto);
+  },
+  
   selectActive() {
     return db.prepare(sql.selectActive).all().map(formatProducto);
   },

@@ -6,4 +6,7 @@ const router = Router();
 router.route('/')
   .get(productosController.getProductos);
 
+router.route('/buscarPorNombre')
+  .get(productosController.buscarProductosPorNombre);
+
 export default router;

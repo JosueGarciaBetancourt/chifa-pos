@@ -5,7 +5,7 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
   if (!item) return null;
 
   const isLowStock = item.stock_actual < item.stock_minimo;
-  const totalValue = item.stock_actual * item.precio_unitario;
+  const totalValue = item.stock_actual * item.costo;
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -57,7 +57,7 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
               </div>
               <div>
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Precio Unitario</h3>
-                <p className="text-lg font-semibold text-gray-900">S/ {item.precio_unitario.toFixed(2)}</p>
+                <p className="text-lg font-semibold text-gray-900">S/ {item.costo.toFixed(2)}</p>
               </div>
             </div>
           </div>

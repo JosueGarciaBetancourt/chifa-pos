@@ -6,7 +6,7 @@ export default function useSocket(onEventoRecibido) {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_WEBSOCKET_URL || "http://localhost:4001");
+    const socket = io(import.meta.env.VITE_WEBSOCKET_URL || "http://localhost:4000");
 
     socketRef.current = socket;
 

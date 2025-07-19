@@ -10,5 +10,16 @@ export const productosController = {
       console.error(error.message);
       res.status(500).json({ error: 'Server Error: ' + error.message });
     }
+  },
+
+  buscarProductosPorNombre(req, res) {
+    try {
+      const { search } = req.query;
+      const productos = Producto.searchByName(search.trim()) || [];
+      res.json(productos);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Server Error: ' + error.message });
+    }
   }
 };

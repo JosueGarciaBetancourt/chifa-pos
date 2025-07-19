@@ -31,14 +31,14 @@ const Delivery = () => {
           id: 1,
           producto: { nombre: 'Arroz Chaufa de Pollo' },
           cantidad: 1,
-          precio_unitario: 18.00,
+          costo: 18.00,
           subtotal: 18.00
         },
         {
           id: 2,
           producto: { nombre: 'Wantán Frito' },
           cantidad: 1,
-          precio_unitario: 15.00,
+          costo: 15.00,
           subtotal: 15.00
         }
       ],
@@ -68,14 +68,14 @@ const Delivery = () => {
           id: 3,
           producto: { nombre: 'Tallarín Saltado' },
           cantidad: 1,
-          precio_unitario: 20.00,
+          costo: 20.00,
           subtotal: 20.00
         },
         {
           id: 4,
           producto: { nombre: 'Pollo Chi Jau Kay' },
           cantidad: 1,
-          precio_unitario: 25.00,
+          costo: 25.00,
           subtotal: 25.00
         }
       ],

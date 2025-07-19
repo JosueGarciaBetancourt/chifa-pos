@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import productosUnifiedService from '../services/productosUnifiedService';
 
 const VentaForm = () => {
 
@@ -10,8 +11,8 @@ const VentaForm = () => {
 
   const buscarProducto = async () => {
     try {
-      const resultados = await window.electronAPI.buscarProductosPorNombre(busqueda.trim());
-      console.log("🔎 Resultados desde la base de datos:", resultados); // <- MUY IMPORTANTE
+      const resultados = await productosUnifiedService.buscarProductosPorNombre(busqueda);
+      console.log("BD buscarProductosPorNombre:", resultados);
       setProductos(resultados);
     } catch (error) {
       console.error("Error al buscar productos:", error);

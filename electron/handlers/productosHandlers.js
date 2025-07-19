@@ -11,4 +11,14 @@ export function productosHandlers(db) {
       return [];
     }
   });
+  
+  ipcMain.handle('buscarProductosPorNombre', (event, search) => {
+    try {
+      const productos = Producto.searchByName(search.trim()) || [];
+      return productos;
+    } catch (error) {
+      console.error('Error en buscarProductosPorNombre handler:', error);
+      return [];
+    }
+  });
 }

@@ -10,7 +10,7 @@ process.on('uncaughtException', (err) => {
   ) {
     return; // Silenciar errores molestos del sistema
   }
-  console.error('❌ Excepción no capturada:', err);
+  console.error('X Excepción no capturadanpm ru:', err);
 });
 
 import { app as electronApp, BrowserWindow } from "electron";
@@ -38,7 +38,17 @@ function createWindow() {
         preload: path.join(__dirname, "preload.js"),
         contextIsolation: true,
         nodeIntegration: false,
+        webSecurity: false, // Solo para desarrollo
       },
+    });
+
+    // Manejar errores del renderer
+    mainWindow.webContents.on('crashed', (event, killed) => {
+      console.error('Renderer process crashed:', { killed });
+    });
+
+    mainWindow.webContents.on('render-process-gone', (event, details) => {
+      console.error('Render process gone:', details);
     });
 
     if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {

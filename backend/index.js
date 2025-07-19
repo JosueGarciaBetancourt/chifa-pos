@@ -1,4 +1,4 @@
-// backend/index.js
+/* // backend/index.js
 import 'dotenv/config.js';
 import http from 'http';
 import app from './src/app.js';
@@ -25,3 +25,4 @@ function closeGracefully() {
   });
 }
 
+ */

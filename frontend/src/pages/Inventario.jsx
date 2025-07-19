@@ -37,6 +37,19 @@ const Inventario = () => {
           return;
         }
 
+        /* 
+          id: row.id,
+          nombre: row.nombre,
+          unidad: row.unidad_medida,
+          stock_actual: row.stock_actual,
+          stock_minimo: row.stock_minimo,
+          costo: row.costo,
+          tipo: {
+            id: row.tipo_id,
+            nombre: row.tipo_nombre,
+            descripcion: row.tipo_descripcion
+          }
+        */
         setInventoryData(insumos);
       } catch (error) {
         console.error('❌ Error inesperado al cargar inventario:', error);
@@ -82,7 +95,7 @@ const Inventario = () => {
   const lowStockItems = inventoryData.filter(item => item.stock_actual < item.stock_minimo);
   const totalTipos = tipos.length - 1; // No contar "Todos"
   const inventoryValue = inventoryData.reduce((total, item) => {
-    return total + (item.stock_actual * item.precio_unitario);
+    return total + (item.stock_actual * item.costo);
   }, 0);
 
   return (
