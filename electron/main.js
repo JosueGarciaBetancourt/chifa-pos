@@ -37,8 +37,7 @@ function createWindow() {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         contextIsolation: true,
-        nodeIntegration: false,
-        webSecurity: false, // Solo para desarrollo
+        nodeIntegration: true
       },
     });
 
@@ -53,7 +52,10 @@ function createWindow() {
 
     if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {
       mainWindow.loadURL(process.env.FRONTEND_URL);
-      mainWindow.webContents.openDevTools();
+      // Espera a que el frontend haya cargado completamente
+      mainWindow.webContents.once("did-finish-load", () => {
+        mainWindow.webContents.openDevTools();
+      });
     } else {
       mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
     }
@@ -85,16 +87,13 @@ electronApp.whenReady().then(async () => {
 });
 
 function closeGracefully() {
-  try {
-    console.log("\n Cerrando servidor...");
-    server?.close(() => {
-      console.log("\n Servidor cerrado correctamente");
-      electronApp.quit();
-    });
-  } catch (error) {
-    console.error("\n Error al cerrar servidor:", error);
-    electronApp.quit();
-  }
+  console.log('\n- Cerrando servidor...');
+  server?.close(() => {
+    console.log('- Servidor cerrado correctamente');
+    // Si quieres cerrar la BD:
+    db?.close();
+    electronApp.quit();             // termina Electron
+  });
 }
 
 process.on("SIGINT", closeGracefully);
