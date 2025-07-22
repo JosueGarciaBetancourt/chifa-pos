@@ -30,7 +30,7 @@ const sql = Object.freeze({
   `,
   update: `
     UPDATE productos 
-    SET codigo = ?, nombre = ?, descripcion = ?, precio = ?, categoria_id = ?, tiempo_preparacion_min = ?, activo = ? 
+    SET nombre = ?, descripcion = ?, precio = ?, categoria_id = ?, tiempo_preparacion_min = ?, activo = ? 
     WHERE id = ?
   `,
   delete: `
@@ -87,15 +87,31 @@ export const Producto = {
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo }) {
+  update(id, cambiosParciales) {
+    const actual = this.findById(id);
+    //if (!actual) throw new Error(`Producto con id ${id} no encontrado`);
+  
+    const actualizado = {
+      ...actual,
+      ...cambiosParciales,
+      categoria_id: cambiosParciales.categoria_id ?? actual.categoria.id,
+    };
+  
     db.prepare(sql.update).run(
-      codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo, id
+      actualizado.nombre,
+      actualizado.descripcion,
+      actualizado.precio,
+      actualizado.categoria_id,
+      actualizado.tiempo_preparacion_min,
+      actualizado.activo,
+      id
     );
+  
     return this.findById(id);
   },
 
   delete(id) {
     db.prepare(sql.delete).run(id);
-    return { deleted: true };
+    return;
   }
 };

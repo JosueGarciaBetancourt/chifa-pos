@@ -53,4 +53,36 @@ export const productosController = {
       res.status(500).json({ error: 'Server Error: ' + error.message });
     }
   },
+  
+  createProducto(req, res) {
+    try {
+      const nuevoProducto = Producto.create(req.body);
+      res.status(201).json(nuevoProducto);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Server Error: ' + error.message });
+    }
+  },
+  
+  updateProducto(req, res) {
+    try {
+      const { id } = req.params;
+      const productoActualizado = Producto.update(id, req.body);
+      res.json(productoActualizado);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Server Error: ' + error.message });
+    }
+  },
+  
+  deleteProducto(req, res) {
+    try {
+      const { id } = req.params;
+      Producto.delete(id);
+      res.json({ deleted: true });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Server Error: ' + error.message });
+    }
+  },
 };
