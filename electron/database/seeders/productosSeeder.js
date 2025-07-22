@@ -78,6 +78,7 @@ export function seed(db) {
     [58, 'C008', 'Combo Vegetariano', 'Chaufa vegetariano + sopa de verduras + bebida', 24.0, 9, 18, 1],
     [59, 'C009', 'Combo Pollo Curry + Entrada', 'Tallarín con pollo en salsa curry + wantán frito (4 und)', 26.0, 9, 18, 1],
     [60, 'C010', 'Combo Niño Feliz', 'Chaufa de pollo + jugo natural + postre pequeño', 22.0, 9, 15, 1],
+    [61, 'C011', 'Combo Ficticio Desactivado', 'Ejemplo de producto desactivado', 22.0, 9, 15, 0],
   ];
 
   const insertMany = db.transaction((productos) => {

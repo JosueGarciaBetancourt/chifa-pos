@@ -20,7 +20,9 @@ const baseSelect = `
 
 const sql = Object.freeze({
   selectAll: `${baseSelect}`,
+  searchByName: `${baseSelect} WHERE p.nombre LIKE ?`,
   selectActive: `${baseSelect} WHERE p.activo = 1`,
+  selectNoActive: `${baseSelect} WHERE p.activo = 0`,
   selectById: `${baseSelect} WHERE p.id = ?`,
   insert: `
     INSERT INTO productos (codigo, nombre, descripcion, precio, categoria_id, tiempo_preparacion_min, activo) 
@@ -61,13 +63,16 @@ export const Producto = {
   },
 
   searchByName(nombre) {
-    const stmt = db.prepare(`${baseSelect} WHERE p.nombre LIKE ?`);
-    const rows = stmt.all(`%${nombre}%`);
+    const rows = db.prepare(sql.searchByName).all(`%${nombre}%`);
     return rows.map(formatProducto);
   },
   
   selectActive() {
     return db.prepare(sql.selectActive).all().map(formatProducto);
+  },
+
+  selectNoActive() {
+    return db.prepare(sql.selectNoActive).all().map(formatProducto);
   },
 
   findById(id) {

@@ -17,7 +17,7 @@ export default defineConfig({
           build: {
             outDir: 'dist-electron',
             emptyOutDir: true,
-          },
+          }
         },
       },
       preload: {
