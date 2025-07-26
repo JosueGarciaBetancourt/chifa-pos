@@ -30,9 +30,11 @@ import { up as upInsumosProveedores } from './migrations/029_create_insumos_prov
 import { up as upComprasInsumosProveedores } from './migrations/030_create_compras_insumos_proveedores_table.js';
 import { up as upMovimientosCaja } from './migrations/031_create_movimientos_caja_table.js';
 import { up as upDispositivos } from './migrations/032_create_dispositivos_table.js';
-import { up as upTiposNotificaciones } from './migrations/033_create_tipos_notificaciones_table.js';
-import { up as upNotificaciones } from './migrations/034_create_notificaciones_table.js';
-import { up as upLogsSistema } from './migrations/035_create_logs_sistema_table.js';
+import { up as upTiposReportes } from './migrations/033_create_tipos_reportes_table.js';
+import { up as upReportes } from './migrations/034_create_reportes_table.js';
+import { up as upTiposNotificaciones } from './migrations/035_create_tipos_notificaciones_table.js';
+import { up as upNotificaciones } from './migrations/036_create_notificaciones_table.js';
+import { up as upLogsSistema } from './migrations/037_create_logs_sistema_table.js';
 
 
 export async function runMigrations(db) {
@@ -85,9 +87,11 @@ export async function runMigrations(db) {
     { name: '030_create_compras_insumos_proveedores_table', fn: upComprasInsumosProveedores },
     { name: '031_create_movimientos_caja_table', fn: upMovimientosCaja },
     { name: '032_create_dispositivos_table', fn: upDispositivos },
-    { name: '033_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
-    { name: '034_create_notificaciones_table', fn: upNotificaciones },
-    { name: '035_create_logs_sistema_table', fn: upLogsSistema }
+    { name: '033_create_tipos_reportes_table', fn: upTiposReportes },
+    { name: '034_create_reportes_table', fn: upReportes },
+    { name: '035_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
+    { name: '036_create_notificaciones_table', fn: upNotificaciones },
+    { name: '037_create_logs_sistema_table', fn: upLogsSistema }
   ];
 
   for (const migration of migrations) {

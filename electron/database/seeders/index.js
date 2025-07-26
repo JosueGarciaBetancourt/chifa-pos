@@ -30,6 +30,8 @@ import { seed as seedInsumosProveedores } from './insumos_proveedoresSeeder.js';
 import { seed as seedComprasInsumosProveedores } from './compras_insumos_proveedoresSeeder.js';
 import { seed as seedMovimientosCaja } from './movimientos_cajaSeeder.js';
 import { seed as seedDispositivos } from './dispositivosSeeder.js';
+import { seed as seedTiposReportes } from './tipos_reportesSeeder.js';
+import { seed as seedReportes } from './reportes_Seeder.js';
 import { seed as seedTiposNotificaciones } from './tipos_NotificacionesSeeder.js';
 import { seed as seedNotificaciones } from './notificacionesSeeder.js';
 import { seed as seedLogsSistema } from './logs_sistemaSeeder.js';
@@ -68,6 +70,8 @@ export function seed(db) {
   seedComprasInsumosProveedores(db);
   seedMovimientosCaja(db);
   seedDispositivos(db);
+  seedTiposReportes(db);
+  seedReportes(db);
   seedTiposNotificaciones(db);
   seedNotificaciones(db);
   seedLogsSistema(db);
