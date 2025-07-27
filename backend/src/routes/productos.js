@@ -1,27 +1,24 @@
-import { Router } from 'express';
-import { productosController } from '../controllers/productos.controller.js';
+import { Router } from "express";
+import { productoController } from "../controllers/Producto.controller.js";
 
 const router = Router();
 
-router.route('/')
-  .get(productosController.getProductos)
-  .post(productosController.createProducto);
+router
+  .route("/")
+  .get(productoController.getAll)
+  .post(productoController.create);
 
-router.route('/buscarPorNombre')
-  .get(productosController.buscarProductosPorNombre);
+router.route("/buscarPorNombre").get(productoController.searchByName);
 
-router.route('/active')
-  .get(productosController.getProductosActivos);
+router.route("/active").get(productoController.getActive);
 
-router.route('/no-active')
-  .get(productosController.getProductosNoActivos);
-    
-router.route('/:id')
-  //.all(validateObjectId(Epic))
-  .get(productosController.getProductoById)
-  .put(productosController.updateProducto)
-  .delete(productosController.deleteProducto);
+router.route("/no-active").get(productoController.getNoActive);
 
+router
+  .route("/:id")
+  .get(productoController.getById)
+  .put(productoController.update)
+  .delete(productoController.delete);
 
 export default router;
 

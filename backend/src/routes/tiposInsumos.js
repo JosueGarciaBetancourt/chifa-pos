@@ -1,9 +1,7 @@
-import { Router } from 'express';
-import { tiposInsumosController } from '../controllers/tiposInsumos.controller.js';
-
+import { Router } from "express";
+import { tipoInsumoController } from "../controllers/TipoInsumo.controller.js";
 const router = Router();
 
-router.route('/')
-  .get(tiposInsumosController.getTiposInsumos);
+router.route("/").get(tipoInsumoController.getAll);
 
 export default router;

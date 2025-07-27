@@ -1,9 +1,8 @@
-import { Router } from 'express';
-import { insumosController } from '../controllers/insumos.controller.js';
+import { Router } from "express";
+import { insumoController } from "../controllers/Insumo.controller.js";
 
 const router = Router();
 
-router.route('/')
-  .get(insumosController.getInsumos);
+router.route("/").get(insumoController.getAll);
 
 export default router;
