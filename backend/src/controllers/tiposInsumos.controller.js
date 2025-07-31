@@ -1,7 +1,7 @@
 import { TipoInsumo } from '../../../electron/database/models/tipoInsumo.js';
 
-export const tipoInsumoController = {
-  getAll: async (req, res) => {
+export const tiposInsumosController = {
+  getTiposInsumos: async (req, res) => {
     try {
       const tipos = await TipoInsumo.selectAll();
       res.json(tipos);

@@ -2,9 +2,10 @@ import { connection } from '../connection.js';
 const db = connection();
 
 const sql = Object.freeze({
-  selectAll: `
+  selectPrincipal: `
     SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64 
     FROM empresa_local
+    WHERE id = 1
   `,
   selectById: `
     SELECT * 
@@ -22,33 +23,12 @@ const sql = Object.freeze({
 });
 
 export const EmpresaLocal = {
-  selectAll() {
-    return db.prepare(sql.selectAll).all();
+  selectPrincipal() {
+    return db.prepare(sql.selectPrincipal).get();
   },
 
   findById(id) {
     return db.prepare(sql.selectById).get(id);
-  },
-
-  create({ 
-    ruc,
-    razon_social,
-    nombre_comercial = null,
-    direccion,
-    telefono = null,
-    email = null,
-    logo_base64 = null
-  }) {
-    const { lastInsertRowid } = db.prepare(sql.insert).run(
-      ruc,
-      razon_social,
-      nombre_comercial,
-      direccion,
-      telefono,
-      email,
-      logo_base64
-    );
-    return this.findById(lastInsertRowid);
   },
 
   /**

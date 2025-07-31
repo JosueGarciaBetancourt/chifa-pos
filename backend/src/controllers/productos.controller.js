@@ -1,7 +1,7 @@
 import { Producto } from '../../../electron/database/models/producto.js';
 
-export const productoController = {
-  getAll: async (req, res) => {
+export const productosController = {
+  getProductos: async (req, res) => {
     try {
       const productos = await Producto.selectAll();
       res.json(productos);
@@ -19,7 +19,7 @@ export const productoController = {
     }
   },
 
-  getActive: async (req, res) => {
+  getProductosActive: async (req, res) => {
     try {
       const productos = await Producto.selectActive();
       res.json(productos);
@@ -28,7 +28,7 @@ export const productoController = {
     }
   },
 
-  getNoActive: async (req, res) => {
+  getProductosNoActive: async (req, res) => {
     try {
       const productos = await Producto.selectNoActive();
       res.json(productos);
@@ -37,7 +37,7 @@ export const productoController = {
     }
   },
 
-  getById: async (req, res) => {
+  getProductoById: async (req, res) => {
     try {
       const producto = await Producto.findById(req.params.id);
       if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
@@ -47,7 +47,7 @@ export const productoController = {
     }
   },
 
-  create: async (req, res) => {
+  createProducto: async (req, res) => {
     try {
       const nuevoProducto = await Producto.create(req.body);
       res.status(201).json(nuevoProducto);
@@ -56,7 +56,7 @@ export const productoController = {
     }
   },
 
-  update: async (req, res) => {
+  updateProducto: async (req, res) => {
     try {
       const productoActualizado = await Producto.update(
         req.params.id, 
@@ -68,7 +68,7 @@ export const productoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteProducto: async (req, res) => {
     try {
       await Producto.delete(req.params.id);
       res.status(204).end();

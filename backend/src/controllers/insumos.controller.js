@@ -1,7 +1,7 @@
 import { Insumo } from '../../../electron/database/models/insumo.js';
 
-export const insumoController = {
-  getAll: async (req, res) => {
+export const insumosController = {
+  getInsumos: async (req, res) => {
     try {
       const insumos = await Insumo.selectAll();
       res.json(insumos);

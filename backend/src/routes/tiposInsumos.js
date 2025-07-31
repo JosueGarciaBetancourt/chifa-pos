@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { tiposInsumosController } from '../controllers/tiposInsumos.controller.js';
 
-const router = Router();
+const tiposInsumosRouter = Router();
 
-router.route('/')
+tiposInsumosRouter.route('/')
   .get(tiposInsumosController.getTiposInsumos);
 
-export default router;
+export default tiposInsumosRouter;

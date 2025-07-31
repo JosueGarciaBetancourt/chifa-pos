@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { insumosController } from '../controllers/insumos.controller.js';
 
-const router = Router();
+const insumosRouter = Router();
 
-router.route('/')
+insumosRouter.route('/')
   .get(insumosController.getInsumos);
 
-export default router;
+export default insumosRouter;

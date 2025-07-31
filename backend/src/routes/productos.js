@@ -1,29 +1,29 @@
 import { Router } from 'express';
 import { productosController } from '../controllers/productos.controller.js';
 
-const router = Router();
+const productosRouter = Router();
 
-router.route('/')
+productosRouter.route('/')
   .get(productosController.getProductos)
   .post(productosController.createProducto);
 
-router.route('/buscarPorNombre')
-  .get(productosController.buscarProductosPorNombre);
+productosRouter.route('/searchByName')
+  .get(productosController.searchByName);
 
-router.route('/active')
-  .get(productosController.getProductosActivos);
+productosRouter.route('/active')
+  .get(productosController.getProductosActive);
 
-router.route('/no-active')
-  .get(productosController.getProductosNoActivos);
+productosRouter.route('/no-active')
+  .get(productosController.getProductosNoActive);
     
-router.route('/:id')
+productosRouter.route('/:id')
   //.all(validateObjectId(Epic))
   .get(productosController.getProductoById)
   .put(productosController.updateProducto)
   .delete(productosController.deleteProducto);
 
 
-export default router;
+export default productosRouter;
 
 /* 
 
