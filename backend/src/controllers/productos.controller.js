@@ -1,4 +1,4 @@
-import { Producto } from '../../../electron/database/models/producto.js';
+import { Producto } from "../../../electron/database/models/producto.js";
 
 export const productosController = {
   getProductos: async (req, res) => {
@@ -40,7 +40,8 @@ export const productosController = {
   getProductoById: async (req, res) => {
     try {
       const producto = await Producto.findById(req.params.id);
-      if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
+      if (!producto)
+        return res.status(404).json({ error: "Producto no encontrado" });
       res.json(producto);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -59,7 +60,7 @@ export const productosController = {
   updateProducto: async (req, res) => {
     try {
       const productoActualizado = await Producto.update(
-        req.params.id, 
+        req.params.id,
         req.body
       );
       res.json(productoActualizado);
@@ -75,5 +76,5 @@ export const productosController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  },
 };

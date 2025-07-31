@@ -1,4 +1,4 @@
-import { Insumo } from '../../../electron/database/models/insumo.js';
+import { Insumo } from "../../../electron/database/models/insumo.js";
 
 export const insumosController = {
   getInsumos: async (req, res) => {
@@ -13,7 +13,8 @@ export const insumosController = {
   getById: async (req, res) => {
     try {
       const insumo = await Insumo.findById(req.params.id);
-      if (!insumo) return res.status(404).json({ error: 'Insumo no encontrado' });
+      if (!insumo)
+        return res.status(404).json({ error: "Insumo no encontrado" });
       res.json(insumo);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -45,5 +46,5 @@ export const insumosController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  },
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSocket from "../hooks/useSocket";
-import productosUnifiedService from '../services/productosUnifiedService';
+import productosUnifiedService from "../services/productosUnifiedService";
 
 const mesas = Array.from({ length: 13 }, (_, i) => ({
   id: i + 1,
@@ -29,22 +29,35 @@ export default function TabletMozo() {
       try {
         setLoading(true);
         const productosData = await productosUnifiedService.getProductos();
-        setProductos(productosData);
+
+        if (!productosData || productosData.length === 0) {
+          setProductos([
+            { id: 1, nombre: "Arroz Chaufa", precio: 12.5 },
+            { id: 2, nombre: "Tallarin Saltado", precio: 13.0 },
+            { id: 3, nombre: "Pollo Tipakay", precio: 14.5 },
+          ]);
+        } else {
+          setProductos(productosData);
+        }
       } catch (error) {
-        console.error('Error al obtener productos:', error);
+        console.error("Error al obtener productos:", error);
+        setProductos([
+          { id: 1, nombre: "Arroz Chaufa", precio: 12.5 },
+          { id: 2, nombre: "Tallarin Saltado", precio: 13.0 },
+          { id: 3, nombre: "Pollo Tipakay", precio: 14.5 },
+        ]);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchProductos();
   }, []);
-  
-  // CORRECCIÓN: Reemplazar toda la lógica de manejo de eventos del socket
+
   const socketRef = useSocket((eventoRecibido) => {
     console.log("📥 Evento recibido en mozo:", eventoRecibido);
 
-    // 🔥 CORRECCIÓN: Verificar si es actualización de estado
+    // Manejo de actualizaciones de estado
     if (
       eventoRecibido?.estado &&
       eventoRecibido?.id &&
@@ -62,7 +75,6 @@ export default function TabletMozo() {
           const mesa = prev[mesaId];
           if (!mesa) return prev;
 
-          // 🔥 CORRECCIÓN: Actualizar TODOS los platos del pedido específico
           const platosActualizados = mesa.platos.map((plato) => {
             if (plato.pedidoId === eventoRecibido.id) {
               return {
@@ -74,7 +86,6 @@ export default function TabletMozo() {
             return plato;
           });
 
-          // Determinar el estado general de la mesa
           const todosListos = platosActualizados.every(
             (plato) => plato.estado === "listo"
           );
@@ -94,7 +105,6 @@ export default function TabletMozo() {
             [mesaId]: nuevoEstadoMesa,
           }));
 
-          // Notificaciones
           if (eventoRecibido.estado === "listo") {
             showNotification(`🍽️ Mesa ${mesaId} - Pedido listo para servir!`);
           } else if (eventoRecibido.estado === "preparando") {
@@ -111,14 +121,17 @@ export default function TabletMozo() {
         });
       }
 
-      // Actualizar pedidos para llevar
+      // Actualizar pedidos para llevar - CORRECCIÓN PRINCIPAL
       if (eventoRecibido.tipo === "llevar") {
         setPedidosParaLlevar((prev) =>
           prev.map((pedido) => {
             if (pedido.id === eventoRecibido.id) {
+              // Actualizamos todo el objeto del pedido, no solo el estado
               return {
                 ...pedido,
+                ...eventoRecibido,
                 estado: eventoRecibido.estado,
+                items: pedido.items, // Mantenemos los items originales
               };
             }
             return pedido;
@@ -132,10 +145,10 @@ export default function TabletMozo() {
         }
       }
 
-      return; // 🔥 IMPORTANTE: Salir aquí para actualizaciones de estado
+      return;
     }
 
-    // 🔥 ORIGINAL: Manejo de pedidos nuevos (cuando vienen con items)
+    // Manejo de pedidos nuevos
     if (eventoRecibido?.items && eventoRecibido?.tipo === "mesa") {
       const mesaId = parseInt(eventoRecibido.cliente.match(/\d+/)?.[0]);
       if (!mesaId) return;
@@ -236,6 +249,13 @@ export default function TabletMozo() {
       default:
         return "bg-gray-100 text-gray-800 border-gray-300";
     }
+  };
+
+  const marcarPedidoLlevarComoEntregado = (pedidoId) => {
+    setPedidosParaLlevar((prev) =>
+      prev.filter((pedido) => pedido.id !== pedidoId)
+    );
+    showNotification(`✅ Pedido para llevar #${pedidoId} entregado`);
   };
 
   const getEstadoPlatoTexto = (estado) => {
@@ -374,10 +394,18 @@ export default function TabletMozo() {
       }));
       setEstadoMesas((prev) => ({ ...prev, [mesaSeleccionada]: "Ocupado" }));
     } else {
-      const nuevoId = pedidosParaLlevar.length + 1;
-      setPedidosParaLlevar([
-        ...pedidosParaLlevar,
-        { id: nuevoId, items: pedido, estado: "pendiente" },
+      // CORRECCIÓN: Usar el mismo ID que se envió a cocina
+      setPedidosParaLlevar((prev) => [
+        ...prev,
+        {
+          id: pedidoId, // Usamos el mismo ID que se envió a cocina
+          numero: pedidoData.numero,
+          items: pedido,
+          estado: "pendiente",
+          tipo: "llevar",
+          hora: pedidoData.hora,
+          total: pedidoData.total,
+        },
       ]);
     }
 
@@ -527,20 +555,40 @@ export default function TabletMozo() {
                     className={`p-4 border rounded shadow ${
                       pedido.estado === "listo"
                         ? "bg-green-100 border-green-400"
+                        : pedido.estado === "preparando"
+                        ? "bg-blue-100 border-blue-400"
                         : "bg-white"
                     }`}
                   >
                     <h3 className="font-semibold">
-                      Pedido #{pedido.id}
-                      {pedido.estado === "listo" && (
-                        <span className="ml-2 text-green-600">✅ Listo</span>
-                      )}
+                      Pedido {pedido.numero}
+                      <span
+                        className={`ml-2 px-2 py-1 rounded text-xs ${getEstadoPlatoColor(
+                          pedido.estado
+                        )}`}
+                      >
+                        {getEstadoPlatoTexto(pedido.estado)}
+                      </span>
                     </h3>
+                    <p className="text-sm text-gray-600">{pedido.hora}</p>
                     <ul className="text-sm mt-2">
                       {pedido.items.map((item, i) => (
                         <li key={i}>• {item.nombre}</li>
                       ))}
                     </ul>
+                    <p className="mt-2 font-semibold">
+                      Total: S/ {pedido.total.toFixed(2)}
+                    </p>
+                    {pedido.estado === "listo" && (
+                      <button
+                        onClick={() =>
+                          marcarPedidoLlevarComoEntregado(pedido.id)
+                        }
+                        className="mt-2 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+                      >
+                        Marcar como Entregado
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
