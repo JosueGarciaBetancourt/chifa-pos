@@ -2,27 +2,55 @@ import { connection } from '../connection.js';
 const db = connection();
 
 const sql = Object.freeze({
-  selectPrincipal: `
-    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64 
+  selectAll: `
+    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64, activo
     FROM empresa_local
-    WHERE id = 1
+  `,
+  selectActive: `
+    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64, activo
+    FROM empresa_local
+    WHERE activo = 1
+  `,
+  selectInactive: `
+    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64, activo
+    FROM empresa_local
+    WHERE activo = 0
+  `,
+  selectPrincipal: `
+    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64, activo
+    FROM empresa_local
+    WHERE id = 1 AND activo = 1
   `,
   selectById: `
-    SELECT * 
-    FROM empresa_local 
-    WHERE id = ?
+    SELECT id, ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64, activo
+    FROM empresa_local
+    WHERE id = ? AND activo = 1
   `,
   insert: `
     INSERT INTO empresa_local (ruc, razon_social, nombre_comercial, direccion, telefono, email, logo_base64) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `,
-  delete: `
-    DELETE FROM empresa_local 
-    WHERE id = ?
+  disable: `
+    UPDATE empresa_local SET activo = 0 WHERE id = ? AND activo = 1
   `,
+  enable: `
+    UPDATE empresa_local SET activo = 1 WHERE id = ? AND activo = 0
+  `
 });
 
 export const EmpresaLocal = {
+  selectAll() {
+    return db.prepare(sql.selectAll).all();
+  },
+
+  selectActive() {
+    return db.prepare(sql.selectActive).all();
+  },
+
+  selectInactive() {
+    return db.prepare(sql.selectInactive).all();
+  },
+
   selectPrincipal() {
     return db.prepare(sql.selectPrincipal).get();
   },
@@ -56,8 +84,13 @@ export const EmpresaLocal = {
     return this.findById(id);
   },
 
-  delete(id) {
-    db.prepare(sql.delete).run(id);
-    return { deleted: true };
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
+    return this.findById(id);
   }
 };

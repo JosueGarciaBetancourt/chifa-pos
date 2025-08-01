@@ -10,7 +10,8 @@ export function up(db) {
       direccion TEXT NOT NULL,
       telefono TEXT,
       email TEXT,
-      logo_base64 TEXT
+      logo_base64 TEXT,
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

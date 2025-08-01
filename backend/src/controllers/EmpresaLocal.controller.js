@@ -1,20 +1,38 @@
 import { EmpresaLocal } from '../../../electron/database/models/empresaLocal.js';
 
 export const empresaLocalController = {
-  getEmpresaLocal: async (req, res) => {
+  getEmpresaLocalAll: async (req, res) => {
     try {
-      const empresas = await EmpresaLocal.selectPrincipal();
-      res.json(empresas);
+      const empresas = await EmpresaLocal.selectAll();
+      res.json(empresas || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getEmpresaLocalById: async (req, res) => {
+  getEmpresaLocalActive: async (req, res) => {
     try {
-      const empresa = await EmpresaLocal.findById(req.params.id);
-      if (!empresa) return res.status(404).json({ error: 'Empresa no encontrada' });
-      res.json(empresa);
+      const empresas = await EmpresaLocal.selectActive();
+      res.json(empresas || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getEmpresaLocalInactive: async (req, res) => {
+    try {
+      const empresas = await EmpresaLocal.selectInactive();
+      res.json(empresas || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getEmpresaLocalPrincipal: async (req, res) => {
+    try {
+      const empresa = await EmpresaLocal.selectPrincipal();
+      console.log(empresa || []);
+      res.json(empresa || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -32,10 +50,19 @@ export const empresaLocalController = {
     }
   },
 
-  deleteEmpresaLocal: async (req, res) => {
+  disableEmpresaLocal: async (req, res) => {
     try {
-      await EmpresaLocal.delete(req.params.id);
-      res.status(204).end();
+      await EmpresaLocal.disable(req.params.id);
+      res.status(200).json({ disabled: true });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  enableEmpresaLocal: async (req, res) => {
+    try {
+      const empresaEnabled = await EmpresaLocal.enable(req.params.id);
+      res.status(200).json(empresaEnabled);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
