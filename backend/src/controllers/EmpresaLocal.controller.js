@@ -44,7 +44,7 @@ export const empresaLocalController = {
         req.params.id, 
         req.body
       );
-      res.json(empresaActualizada);
+      res.json(empresaActualizada || []);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

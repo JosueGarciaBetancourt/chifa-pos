@@ -13,7 +13,8 @@ export function up(db) {
       serie_boleta TEXT,
       serie_factura TEXT,
       serie_ticket TEXT,
-      usa_web_central BOOLEAN NOT NULL DEFAULT 1
+      usa_web_central BOOLEAN NOT NULL DEFAULT 1,
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

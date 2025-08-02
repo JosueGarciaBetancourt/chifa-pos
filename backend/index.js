@@ -1,16 +1,11 @@
-/* // backend/index.js
 import 'dotenv/config.js';
-import http from 'http';
-import app from './src/app.js';
+import { app, server } from "./app.js";
 
-const URL = app.get('url');
-const PORT = app.get('port');
+const PORT = app.get("port");
+const URL = app.get("url");
 
-const server = http.createServer(app);
-
-// Arrancar servidor
-server.listen(PORT, () => {
-  console.log(`- API REST escuchando en ${URL}:${PORT}`);
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`\n✅ API REST escuchando en ${URL}:${PORT}/api`);
 });
 
 // Cierre limpio
@@ -24,5 +19,3 @@ function closeGracefully() {
     process.exit(0);
   });
 }
-
- */

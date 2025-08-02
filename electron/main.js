@@ -72,7 +72,8 @@ electronApp.whenReady().then(async () => {
 
     console.log("\n- Registrando handlers IPC...");
     registerAllIpcHandlers(db);
-
+    
+    // Levantar servidor API
     const URL = expressApp.get("url") || "http://localhost";
     const PORT = expressApp.get("port") || 4000;
 

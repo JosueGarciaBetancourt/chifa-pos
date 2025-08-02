@@ -7,12 +7,12 @@ empresaLocalRouter.route('/')
   .get(empresaLocalController.getEmpresaLocalAll);
   
 empresaLocalRouter.route('/active')
-.get(empresaLocalController.getEmpresaLocalActive);
+  .get(empresaLocalController.getEmpresaLocalActive);
 
 empresaLocalRouter.route('/inactive')
   .get(empresaLocalController.getEmpresaLocalInactive);
 
-empresaLocalRouter.route('/princi pal')
+empresaLocalRouter.route('/principal')
   .get(empresaLocalController.getEmpresaLocalPrincipal);
 
 empresaLocalRouter.route('/:id')

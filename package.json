@@ -45,11 +45,12 @@
     "electron": "^36.4.0",
     "electron-builder": "^26.0.12",
     "electron-rebuild": "^3.2.9",
+    "electronmon": "^2.0.3",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "nodemon": "^3.1.9",
+    "nodemon": "^3.1.10",
     "vite": "^6.3.5",
     "vite-plugin-electron": "^0.29.0"
   }

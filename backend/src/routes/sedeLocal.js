@@ -1,15 +1,25 @@
 import { Router } from "express";
 import { sedeLocalController } from "../controllers/sedeLocal.controller.js";
 
-const router = Router();
+const sedeLocalRouter = Router();
 
-router.route("/")
-  .get(sedeLocalController.getAll)
-  .post(sedeLocalController.create);
+sedeLocalRouter.route('/')
+  .get(sedeLocalController.getSedeLocalAll);
+  
+sedeLocalRouter.route('/active')
+  .get(sedeLocalController.getSedeLocalActive);
 
-router.route("/:id")
-  .get(sedeLocalController.getById)
-  .put(sedeLocalController.update)
-  .delete(sedeLocalController.delete);
+sedeLocalRouter.route('/inactive')
+  .get(sedeLocalController.getSedeLocalInactive);
 
-export default router;
+sedeLocalRouter.route('/:id')
+  .put(sedeLocalController.updateSedeLocal)
+
+sedeLocalRouter.route('/:id/disable')
+  .delete(sedeLocalController.disableSedeLocal);
+
+sedeLocalRouter.route('/:id/enable')
+  .patch(sedeLocalController.enableSedeLocal);
+
+
+export default sedeLocalRouter;

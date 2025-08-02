@@ -1,50 +1,58 @@
-import { SedeLocal } from '../../../electron/database/models/sedeLocal.js';
+import { SedeLocal } from '../../../electron/database/models/SedeLocal.js';
 
 export const sedeLocalController = {
-  getAll: async (req, res) => {
+  getSedeLocalAll: async (req, res) => {
     try {
       const sedes = await SedeLocal.selectAll();
-      res.json(sedes);
+      res.json(sedes || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getById: async (req, res) => {
+  getSedeLocalActive: async (req, res) => {
     try {
-      const sede = await SedeLocal.findById(req.params.id);
-      if (!sede) return res.status(404).json({ error: 'Sede no encontrada' });
-      res.json(sede);
+      const sedes = await SedeLocal.selectActive();
+      res.json(sedes || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  create: async (req, res) => {
+  getSedeLocalInactive: async (req, res) => {
     try {
-      const nuevaSede = await SedeLocal.create(req.body);
-      res.status(201).json(nuevaSede);
+      const sedes = await SedeLocal.selectInactive();
+      res.json(sedes || []);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   },
 
-  update: async (req, res) => {
+  updateSedeLocal: async (req, res) => {
     try {
       const sedeActualizada = await SedeLocal.update(
         req.params.id, 
         req.body
       );
-      res.json(sedeActualizada);
+      res.json(sedeActualizada || []);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
 
-  delete: async (req, res) => {
+  disableSedeLocal: async (req, res) => {
     try {
-      await SedeLocal.delete(req.params.id);
-      res.status(204).end();
+      await SedeLocal.disable(req.params.id);
+      res.status(200).json({ disabled: true });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  enableSedeLocal: async (req, res) => {
+    try {
+      const sedeEnabled = await SedeLocal.enable(req.params.id);
+      res.status(200).json(sedeEnabled);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

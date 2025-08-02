@@ -5,29 +5,53 @@ const sql = Object.freeze({
   selectAll: `
     SELECT 
       id, empresa_id, nombre, direccion, ciudad, distrito, telefono, 
-      serie_boleta, serie_factura, serie_ticket, usa_web_central 
+      serie_boleta, serie_factura, serie_ticket, usa_web_central, activo
     FROM sede_local
+  `,
+  selectActive: `
+    SELECT 
+      id, empresa_id, nombre, direccion, ciudad, distrito, telefono, 
+      serie_boleta, serie_factura, serie_ticket, usa_web_central, activo
+    FROM sede_local
+    WHERE activo = 1
+  `,
+  selectInactive: `
+    SELECT 
+      id, empresa_id, nombre, direccion, ciudad, distrito, telefono, 
+      serie_boleta, serie_factura, serie_ticket, usa_web_central, activo
+    FROM sede_local
+    WHERE activo = 0
   `,
   selectById: `
     SELECT * 
     FROM sede_local 
-    WHERE id = ?
+    WHERE id = ? AND activo = 1
   `,
   insert: `
     INSERT INTO sede_local (
       empresa_id, nombre, direccion, ciudad, distrito, telefono, 
       serie_boleta, serie_factura, serie_ticket, usa_web_central
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  ` ,
+  disable: `
+    UPDATE sede_local SET activo = 0 WHERE id = ? AND activo = 1
   `,
-  delete: `
-    DELETE FROM sede_local 
-    WHERE id = ?
-  `,
+  enable: `
+    UPDATE sede_local SET activo = 1 WHERE id = ? AND activo = 0
+  `
 });
 
 export const SedeLocal = {
   selectAll() {
     return db.prepare(sql.selectAll).all();
+  },
+
+  selectActive() {
+    return db.prepare(sql.selectActive).all();
+  },
+
+  selectInactive() {
+    return db.prepare(sql.selectInactive).all();
   },
 
   findById(id) {
@@ -83,8 +107,13 @@ export const SedeLocal = {
     return this.findById(id);
   },
 
-  delete(id) {
-    db.prepare(sql.delete).run(id);
-    return { deleted: true };
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
+    return this.findById(id);
   }
 };
