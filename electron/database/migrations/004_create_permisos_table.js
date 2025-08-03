@@ -4,7 +4,8 @@ export function up(db) {
   db.prepare(`
     CREATE TABLE IF NOT EXISTS permisos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nombre TEXT UNIQUE NOT NULL 
+      nombre TEXT UNIQUE NOT NULL,
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

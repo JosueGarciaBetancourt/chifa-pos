@@ -77,7 +77,7 @@ export const rolesController = {
     }
   },
   
-  delete: async (req, res) => {
+  deleteRol: async (req, res) => {
     try {
       await Rol.delete(req.params.id);
       res.status(204).end();

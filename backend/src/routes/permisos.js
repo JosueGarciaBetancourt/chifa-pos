@@ -1,15 +1,27 @@
 import { Router } from "express";
 import { permisosController } from "../controllers/permisos.controller.js";
 
-const router = Router();
+const permisosRouter = Router();
 
-router.route("/")
-  .get(permisosController.getAll)
-  .post(permisosController.create);
+permisosRouter.route("/")
+  .get(permisosController.getPermisos)
+  .post(permisosController.createPermiso);
+  
+permisosRouter.route('/active')
+  .get(permisosController.getPermisosActive);
 
-router.route("/:id")
-  .get(permisosController.getById)
-  .put(permisosController.update)
-  .delete(permisosController.delete);
+permisosRouter.route('/inactive')
+  .get(permisosController.getPermisosInactive);
 
-export default router;
+permisosRouter.route("/:id")
+  .get(permisosController.getPermisoById)
+  .put(permisosController.updatePermiso)
+  .delete(permisosController.deletePermiso);
+
+permisosRouter.route('/:id/disable')
+  .delete(permisosController.disablePermiso);
+
+permisosRouter.route('/:id/enable')
+  .patch(permisosController.enablePermiso);
+
+export default permisosRouter;

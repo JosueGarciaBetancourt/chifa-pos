@@ -16,7 +16,7 @@ rolesRouter.route('/inactive')
 rolesRouter.route("/:id")
   .get(rolesController.getRolById)
   .put(rolesController.updateRol)
-  .delete(rolesController.delete);
+  .delete(rolesController.deleteRol);
 
 rolesRouter.route('/:id/disable')
   .delete(rolesController.disableRol);
