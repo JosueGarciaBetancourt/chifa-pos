@@ -1,8 +1,8 @@
-import { Usuario } from '../../../electron/database/models/usuario.js';
+import { Usuario } from '../../../electron/database/models/Usuario.js';
 
-export const usuarioController = {
+export const usuariosController = {
   // Obtener todos los usuarios
-  getAll: async (req, res) => {
+  getUsuarios: async (req, res) => {
     try {
       const usuarios = await Usuario.selectAll();
       res.json(usuarios);
@@ -12,7 +12,7 @@ export const usuarioController = {
   },
 
   // Obtener un usuario por ID
-  getById: async (req, res) => {
+  getUsuarioById: async (req, res) => {
     try {
       const user = await Usuario.findById(req.params.id);
       if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -23,7 +23,7 @@ export const usuarioController = {
   },
 
   // Obtener un usuario por DNI
-  getByDni: async (req, res) => {
+  getUsuarioByDni: async (req, res) => {
     try {
       const user = await Usuario.findByDni(req.params.dni);
       if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -45,7 +45,7 @@ export const usuarioController = {
   },
 
   // Crear un nuevo usuario
-  create: async (req, res) => {
+  createUsuario: async (req, res) => {
     try {
       const { dni, nombre, apellido, rol_id, username, password, activo } = req.body;
       const existing = await Usuario.findByDni(dni);
@@ -60,7 +60,7 @@ export const usuarioController = {
   },
 
   // Actualizar un usuario existente
-  update: async (req, res) => {
+  updateUsuario: async (req, res) => {
     try {
       const updated = await Usuario.update(req.params.id, req.body);
       res.json(updated);
@@ -70,7 +70,7 @@ export const usuarioController = {
   },
 
   // Eliminar un usuario por ID
-  delete: async (req, res) => {
+  deleteUsuario: async (req, res) => {
     try {
       await Usuario.delete(req.params.id);
       res.status(204).end();
