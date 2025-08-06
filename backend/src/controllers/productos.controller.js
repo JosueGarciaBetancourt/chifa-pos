@@ -13,7 +13,7 @@ export const productosController = {
   searchByName: async (req, res) => {
     try {
       const productos = await Producto.searchByName(req.query.nombre);
-      res.json(productos);
+      res.json(productos || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

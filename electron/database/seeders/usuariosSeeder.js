@@ -20,7 +20,7 @@ export function seed(db) {
     [3, '45678912', 'Carlos', 'Vilchez', 3, 'carlos_cajero', '123', 1],   // cajero
     [4, '78912345', 'Luisa', 'Landeo', 2, 'luisa_supervisor', '123', 1],  // supervisor
     [5, '32165487', 'Jorge', 'Guevara', 5, 'jorge_mozo', '123', 1],        // mozo
-    [6, '65498712', 'Ana', 'Manrique', 3, 'ana_cajero', '123', 0],        // cajero (inactivo)
+    [6, '65498712', 'Ana (inactivo)', 'Manrique', 3, 'ana_cajero', '123', 0],        // cajero (inactivo)
     [7, '14725836', 'Pedro', 'Castillo', 4, 'pedro_cocinero', '123', 1],   // cocinero
     [8, '25836914', 'Rosa', 'Pérez', 4, 'rosa_cocinero', '123', 1],        // cocinero
     [9, '36914725', 'Miguel', 'Medina', 2, 'miguel_supervisor', '123', 1] // supervisor

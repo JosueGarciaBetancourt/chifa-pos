@@ -6,14 +6,34 @@ const sql = Object.freeze({
     SELECT id, dni, nombre, apellido, rol_id, username, activo 
     FROM usuarios
   `,
+  searchByUsername: `
+    SELECT id, dni, nombre, apellido, rol_id, username, activo 
+    FROM usuarios 
+    WHERE username LIKE ?`,
   selectById: `
     SELECT id, dni, nombre, apellido, rol_id, username, activo 
     FROM usuarios 
     WHERE id = ?
   `,
+  selectActive: `
+    SELECT *
+    FROM usuarios
+    WHERE activo = 1
+  `,
+  selectInactive: `
+    SELECT *
+    FROM usuarios
+    WHERE activo = 0
+  `,
   insert: `
     INSERT INTO usuarios (dni, nombre, apellido, rol_id, username, password, activo) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
+  `,
+  disable: `
+    UPDATE usuarios SET activo = 0 WHERE id = ? AND activo = 1
+  `,
+  enable: `
+    UPDATE usuarios SET activo = 1 WHERE id = ? AND activo = 0
   `,
   delete: `
     DELETE FROM usuarios 
@@ -31,8 +51,21 @@ export const Usuario = {
     return db.prepare(sql.selectAll).all();
   },
 
+  searchByUsername(username) {
+    const rows = db.prepare(sql.searchByUsername).all(`%${username}%`);
+    return rows;
+  },
+
   findById(id) {
     return db.prepare(sql.selectById).get(id);
+  },
+
+  selectActive() {
+    return db.prepare(sql.selectActive).all();
+  },
+
+  selectInactive() {
+    return db.prepare(sql.selectInactive).all();
   },
 
   create({ dni, nombre, apellido, rol_id, username, password, activo = 1 }) {
@@ -61,6 +94,16 @@ export const Usuario = {
     return this.findById(id);
   },
 
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
+    return this.findById(id);
+  },
+  
   delete(id) {
     db.prepare(sql.delete).run(id);
     return { deleted: true };
