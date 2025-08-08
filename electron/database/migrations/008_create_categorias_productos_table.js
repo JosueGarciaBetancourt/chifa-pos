@@ -5,7 +5,8 @@ export function up(db) {
 	  CREATE TABLE IF NOT EXISTS categorias_productos (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		nombre TEXT NOT NULL,
-		descripcion TEXT
+		descripcion TEXT,
+		activo BOOLEAN NOT NULL DEFAULT 1
 	  );
 	`).run();
   }

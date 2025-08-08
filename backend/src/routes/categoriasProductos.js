@@ -1,15 +1,28 @@
 import { Router } from "express";
-import { categoriasProductosController } from "../controllers/CategoriasProductos.controller.js";
+import { categoriasProductosController } from "../controllers/categoriasProductos.controller.js";
 
-const router = Router();
+const categoriasProductosRouter = Router();
 
-router.route("/")
-  .get(categoriasProductosController.getAll)
-  .post(categoriasProductosController.create);
+categoriasProductosRouter.route("/")
+  .get(categoriasProductosController.getCategoriasProductos)
+  .post(categoriasProductosController.createCategoriaProducto);
 
-router.route("/:id")
-  .get(categoriasProductosController.getById)
-  .put(categoriasProductosController.update)
-  .delete(categoriasProductosController.delete);
+categoriasProductosRouter.route('/active')
+  .get(categoriasProductosController.getCategoriasProductosActive);
 
-export default router;
+categoriasProductosRouter.route('/inactive')
+  .get(categoriasProductosController.getCategoriasProductosInactive);
+
+
+categoriasProductosRouter.route("/:id")
+  .get(categoriasProductosController.getCategoriaProductoById)
+  .put(categoriasProductosController.updateCategoriaProducto)
+  .delete(categoriasProductosController.deleteCategoriaProducto);
+
+categoriasProductosRouter.route('/:id/disable')
+  .delete(categoriasProductosController.disableCategoriaProducto);
+
+categoriasProductosRouter.route('/:id/enable')
+  .patch(categoriasProductosController.enableCategoriaProducto);
+
+export default categoriasProductosRouter;

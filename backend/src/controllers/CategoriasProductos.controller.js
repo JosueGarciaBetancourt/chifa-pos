@@ -1,39 +1,57 @@
-import { CategoriasProductos } from '../../../electron/database/models/CategoriaProducto.js';
+import { CategoriaProducto } from '../../../electron/database/models/CategoriaProducto.js';
 
 export const categoriasProductosController = {
-  getAll: async (req, res) => {
+  getCategoriasProductos: async (req, res) => {
     try {
-      const categorias = await CategoriasProductos.selectAll();
-      res.json(categorias);
+      const categoriasProductos = await CategoriaProducto.selectAll();
+      res.json(categoriasProductos);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getById: async (req, res) => {
+  getCategoriaProductoById: async (req, res) => {
     try {
-      const categoria = await CategoriasProductos.findById(req.params.id);
-      if (!categoria) {
+      const categoriaProducto = await CategoriaProducto.findById(req.params.id);
+      if (!categoriaProducto) {
         return res.status(404).json({ error: 'Categoría no encontrada' });
       }
-      res.json(categoria);
+      res.json(categoriaProducto);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  create: async (req, res) => {
+  getCategoriasProductosActive: async (req, res) => {
     try {
-      const nuevaCategoria = await CategoriasProductos.create(req.body);
+      const categoriasProductos = await CategoriaProducto.selectActive();
+      res.json(categoriasProductos || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getCategoriasProductosInactive: async (req, res) => {
+    try {
+      const categoriasProductos = await CategoriaProducto.selectInactive();
+      res.json(categoriasProductos || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  createCategoriaProducto: async (req, res) => {
+    try {
+      const nuevaCategoria = await CategoriaProducto.create(req.body);
       res.status(201).json(nuevaCategoria);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
 
-  update: async (req, res) => {
+  updateCategoriaProducto: async (req, res) => {
     try {
-      const categoriaActualizada = await CategoriasProductos.update(
+      const categoriaActualizada = await CategoriaProducto.update(
         req.params.id, 
         req.body
       );
@@ -42,10 +60,28 @@ export const categoriasProductosController = {
       res.status(400).json({ error: error.message });
     }
   },
-
-  delete: async (req, res) => {
+  
+  disableCategoriaProducto: async (req, res) => {
     try {
-      await CategoriasProductos.delete(req.params.id);
+      await CategoriaProducto.disable(req.params.id);
+      res.status(200).json({ disabled: true });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  enableCategoriaProducto: async (req, res) => {
+    try {
+      const categoriaProductoEnabled = await CategoriaProducto.enable(req.params.id);
+      res.status(200).json(categoriaProductoEnabled);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  deleteCategoriaProducto: async (req, res) => {
+    try {
+      await CategoriaProducto.delete(req.params.id);
       res.status(204).end();
     } catch (error) {
       res.status(500).json({ error: error.message });

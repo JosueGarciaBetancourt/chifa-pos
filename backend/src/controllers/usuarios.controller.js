@@ -114,18 +114,6 @@ export const usuariosController = {
     }
   },
 
-  // Cambiar estado activo/inactivo de un usuario
-  toggleActive: async (req, res) => {
-    try {
-      const user = await Usuario.findById(req.params.id);
-      if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-      const updated = await Usuario.update(req.params.id, { activo: user.activo ? 0 : 1 });
-      res.json(updated);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
   // Actualizar contraseña
   changePassword: async (req, res) => {
     try {

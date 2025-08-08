@@ -5,7 +5,7 @@ import permisosRouter from './permisos.js';
 import rolesPermisosRouter from './roles_permisos.js';
 import usuariosRouter from './usuarios.js';
 import jornadasLaboralesRouter from './jornadasLaborales.js';
-
+import categoriasProductosRouter from './categoriasProductos.js';
 
 import productosRouter from './productos.js';
 import insumosRouter from './insumos.js';
@@ -19,6 +19,7 @@ export default [
   { path: '/api/roles-permisos', router: rolesPermisosRouter },
   { path: '/api/usuarios', router: usuariosRouter },
   { path: '/api/jornadasLaborales', router: jornadasLaboralesRouter },
+  { path: '/api/categoriasProductos', router: categoriasProductosRouter },
   { path: '/api/productos', router: productosRouter },
   { path: '/api/insumos', router: insumosRouter },
   { path: '/api/tiposInsumos', router: tiposInsumosRouter },
