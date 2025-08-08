@@ -1,20 +1,20 @@
 import { Router } from "express";
 import { jornadasLaboralesController } from "../controllers/jornadasLaborales.controller.js";
 
-const router = Router();
+const jornadasLaboralesRouter = Router();
 
-router.route("/")
-  .get(jornadasLaboralesController.getAll)
-  .post(jornadasLaboralesController.create);
+jornadasLaboralesRouter.route("/")
+  .get(jornadasLaboralesController.getJornadasLaborales)
+  .post(jornadasLaboralesController.createJornadaLaboral);
 
-router.route("/usuario/:usuarioId/iniciada")
-  .get(jornadasLaboralesController.findIniciadaPorUsuario);
+jornadasLaboralesRouter.route("/usuario/:usuarioId/iniciada")
+  .get(jornadasLaboralesController.getJornadaLaboralIniciadaPorUsuarioId);
 
-router.route("/:id/finalizar")
-  .put(jornadasLaboralesController.finalizar);
+jornadasLaboralesRouter.route("/:id/finalizar")
+  .put(jornadasLaboralesController.finalizarJornadaLaboral);
 
-router.route("/:id")
-  .get(jornadasLaboralesController.getById)
-  .delete(jornadasLaboralesController.delete);
+jornadasLaboralesRouter.route("/:id")
+  .get(jornadasLaboralesController.getJornadaLaboralById)
+  .delete(jornadasLaboralesController.deleteJornadaLaboral);
 
-export default router;
+export default jornadasLaboralesRouter;

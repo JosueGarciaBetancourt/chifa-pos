@@ -1,4 +1,6 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
+
 const db = connection();
 
 const sql = Object.freeze({
@@ -34,7 +36,7 @@ const sql = Object.freeze({
   `,
 });
 
-export const JornadasLaborales = {
+export const JornadaLaboral = {
   selectAll() {
     return db.prepare(sql.selectAll).all();
   },
@@ -44,7 +46,7 @@ export const JornadasLaborales = {
   },
 
   create({ usuario_id, sede_id }) {
-    const fechaInicio = new Date().toISOString();
+    const fechaInicio = DateFormatter.toLocalSQLDatetime();
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       usuario_id,
       sede_id,
@@ -57,7 +59,7 @@ export const JornadasLaborales = {
    * Finaliza una jornada (actualiza estado y fecha_fin)
    */
   finalizar(id) {
-    const fechaFin = new Date().toISOString();
+    const fechaFin = DateFormatter.toLocalSQLDatetime();
     db.prepare(sql.update).run(fechaFin, 'finalizada', id);
     return this.findById(id);
   },

@@ -1,56 +1,59 @@
-import { JornadasLaborales } from '../../../electron/database/models/jornadaLaboral.js';
+import { JornadaLaboral } from '../../../electron/database/models/JornadaLaboral.js';
 
 export const jornadasLaboralesController = {
-  getAll: async (req, res) => {
+  getJornadasLaborales: async (req, res) => {
     try {
-      const jornadas = await JornadasLaborales.selectAll();
+      const jornadas = await JornadaLaboral.selectAll();
       res.json(jornadas);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getById: async (req, res) => {
+  getJornadaLaboralById: async (req, res) => {
     try {
-      const jornada = await JornadasLaborales.findById(req.params.id);
-      if (!jornada) return res.status(404).json({ error: 'Jornada no encontrada' });
+      const jornada = await JornadaLaboral.findById(req.params.id);
+      if (!jornada) return res.status(404).json({ error: 'Jornada laboral no encontrada' });
       res.json(jornada);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  create: async (req, res) => {
+  createJornadaLaboral: async (req, res) => {
     try {
-      const nuevaJornada = await JornadasLaborales.create(req.body);
+      const nuevaJornada = await JornadaLaboral.create(req.body);
       res.status(201).json(nuevaJornada);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
 
-  finalizar: async (req, res) => {
+  finalizarJornadaLaboral: async (req, res) => {
     try {
-      const jornadaFinalizada = await JornadasLaborales.finalizar(req.params.id);
+      const jornada = await JornadaLaboral.findById(req.params.id);
+      if (jornada.estado === "finalizada") {
+        return res.status(409).json({ error: 'La jornada laboral ya fue finalizada' });
+      }
+      const jornadaFinalizada = await JornadaLaboral.finalizar(req.params.id);
       res.json(jornadaFinalizada);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
 
-  findIniciadaPorUsuario: async (req, res) => {
+  getJornadaLaboralIniciadaPorUsuarioId: async (req, res) => {
     try {
-      const jornada = await JornadasLaborales.findIniciadaPorUsuario(req.params.usuarioId);
-      if (!jornada) return res.status(404).json({ error: 'Jornada no encontrada' });
-      res.json(jornada);
+      const jornada = await JornadaLaboral.findIniciadaPorUsuario(req.params.usuarioId);
+      res.json(jornada || []);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  delete: async (req, res) => {
+  deleteJornadaLaboral: async (req, res) => {
     try {
-      await JornadasLaborales.delete(req.params.id);
+      await JornadaLaboral.delete(req.params.id);
       res.status(204).end();
     } catch (error) {
       res.status(500).json({ error: error.message });
