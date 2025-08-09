@@ -33,6 +33,12 @@ const sql = Object.freeze({
     SET nombre = ?, descripcion = ?, precio = ?, categoria_id = ?, tiempo_preparacion_min = ?, activo = ? 
     WHERE id = ?
   `,
+  disable: `
+    UPDATE productos SET activo = 0 WHERE id = ? AND activo = 1
+  `,
+  enable: `
+    UPDATE productos SET activo = 1 WHERE id = ? AND activo = 0
+  `,
   delete: `
     DELETE FROM productos 
     WHERE id = ?
@@ -107,6 +113,16 @@ export const Producto = {
       id
     );
   
+    return this.findById(id);
+  },
+
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
     return this.findById(id);
   },
 

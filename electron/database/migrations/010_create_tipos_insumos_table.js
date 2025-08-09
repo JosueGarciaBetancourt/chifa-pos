@@ -4,7 +4,8 @@ export function up(db) {
 		CREATE TABLE IF NOT EXISTS tipos_insumos (
 		  id INTEGER PRIMARY KEY AUTOINCREMENT,
 		  nombre TEXT UNIQUE NOT NULL,
-		  descripcion TEXT
+		  descripcion TEXT,
+		  activo BOOLEAN NOT NULL DEFAULT 1
 		);
 	  `).run();
 }

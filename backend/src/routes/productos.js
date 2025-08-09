@@ -13,7 +13,7 @@ productosRouter.route('/searchByName')
 productosRouter.route('/active')
   .get(productosController.getProductosActive);
 
-productosRouter.route('/no-active')
+productosRouter.route('/inactive')
   .get(productosController.getProductosNoActive);
     
 productosRouter.route('/:id')
@@ -22,6 +22,11 @@ productosRouter.route('/:id')
   .put(productosController.updateProducto)
   .delete(productosController.deleteProducto);
 
+productosRouter.route('/:id/disable')
+  .delete(productosController.disableProducto);
+
+productosRouter.route('/:id/enable')
+  .patch(productosController.enableProducto);
 
 export default productosRouter;
 

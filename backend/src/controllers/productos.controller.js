@@ -69,6 +69,24 @@ export const productosController = {
     }
   },
 
+  disableProducto: async (req, res) => {
+    try {
+      await Producto.disable(req.params.id);
+      res.status(200).json({ disabled: true });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  enableProducto: async (req, res) => {
+    try {
+      const productoEnabled = await Producto.enable(req.params.id);
+      res.status(200).json(productoEnabled);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
   deleteProducto: async (req, res) => {
     try {
       await Producto.delete(req.params.id);

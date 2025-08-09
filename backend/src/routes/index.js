@@ -6,10 +6,9 @@ import rolesPermisosRouter from './roles_permisos.js';
 import usuariosRouter from './usuarios.js';
 import jornadasLaboralesRouter from './jornadasLaborales.js';
 import categoriasProductosRouter from './categoriasProductos.js';
-
 import productosRouter from './productos.js';
-import insumosRouter from './insumos.js';
 import tiposInsumosRouter from './tiposInsumos.js';
+import insumosRouter from './insumos.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -21,6 +20,8 @@ export default [
   { path: '/api/jornadasLaborales', router: jornadasLaboralesRouter },
   { path: '/api/categoriasProductos', router: categoriasProductosRouter },
   { path: '/api/productos', router: productosRouter },
-  { path: '/api/insumos', router: insumosRouter },
+  { path: '/api/tiposProductos', router: tiposInsumosRouter },
   { path: '/api/tiposInsumos', router: tiposInsumosRouter },
+  { path: '/api/insumos', router: insumosRouter },
+
 ];
