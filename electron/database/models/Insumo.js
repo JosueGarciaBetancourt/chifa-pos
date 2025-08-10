@@ -13,7 +13,8 @@ const baseSelect = `
     i.unidad_medida,
     i.stock_actual,
     i.stock_minimo,
-    i.costo
+    i.costo,
+    i.activo
   FROM insumos i
   JOIN tipos_insumos t ON i.tipo_id = t.id
 `;
@@ -21,6 +22,8 @@ const baseSelect = `
 const sql = Object.freeze({
   selectAll: `${baseSelect}`,
   selectById: `${baseSelect} WHERE i.id = ?`,
+  selectActive: `${baseSelect} WHERE i.activo = 1`,
+  selectActive: `${baseSelect} WHERE i.activo = 0`,
   insert: `
     INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -29,6 +32,12 @@ const sql = Object.freeze({
     UPDATE insumos
     SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?, costo = ?
     WHERE id = ?
+  `,
+  disable: `
+    UPDATE insumos SET activo = 0 WHERE id = ? AND activo = 1
+  `,
+  enable: `
+    UPDATE insumos SET activo = 1 WHERE id = ? AND activo = 0
   `,
   delete: `
     DELETE FROM insumos WHERE id = ?
@@ -44,6 +53,7 @@ function formatInsumo(row) {
     stock_actual: row.stock_actual,
     stock_minimo: row.stock_minimo,
     costo: row.costo,
+    activo: row.activo,
     tipo: {
       id: row.tipo_id,
       nombre: row.tipo_nombre,
@@ -62,6 +72,14 @@ export const Insumo = {
     return row ? formatInsumo(row) : null;
   },
 
+  selectActive() {
+    return db.prepare(sql.selectActive).all();
+  },
+
+  selectInactive() {
+    return db.prepare(sql.selectInactive).all();
+  },
+
   create({ nombre, tipo_id, unidad_medida, stock_actual = 0, stock_minimo = 0, costo }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo
@@ -73,6 +91,16 @@ export const Insumo = {
     db.prepare(sql.update).run(
       nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo, id
     );
+    return this.findById(id);
+  },
+
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
     return this.findById(id);
   },
 

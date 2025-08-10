@@ -9,7 +9,7 @@ export function seed(db) {
   const tipos_insumos = [
     [1, 'Granos', 'Insumos como arroz, fideos y similares.'],
     [2, 'Carnes y proteínas', 'Carnes rojas, blancas, mariscos, huevos.'],
-    [3, 'Bebidas', 'Bebidas embotelladas como gaseosas o agua.'],
+    [3, 'Bebidas/Infusiones', 'Ingredientes para preparar bebidas o infusiones.'],
     [4, 'Condimentos', 'especias, aliños, hierbas.'],
     [5, 'Vegetales', 'Verduras.'],
     [6, 'Salsas y líquidos', 'Salsas como sillao, aceite, vinagre, etc.'],

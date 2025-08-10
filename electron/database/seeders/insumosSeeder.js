@@ -24,10 +24,10 @@ export function seed(db) {
     [6, 'Camarón', 2, 'kg', 15, 3, 25.0],
     [7, 'Huevos', 2, 'unidad', 300, 60, 0.5],
 
-    // Bebidas (3)
-    [8, 'Inca Kola 500ml', 3, 'unidad', 200, 50, 2.0],
-    [9, 'Coca Cola 500ml', 3, 'unidad', 150, 40, 2.2],
-    [10, 'Agua Mineral 600ml', 3, 'unidad', 180, 30, 1.0],
+    // Insumos para bebidas (3)
+    [8, 'Jarabe de goma', 3, 'ml', 5000, 1000, 0.005], // 5 litros, costo unitario por ml
+    [9, 'Pulpa de maracuyá', 3, 'ml', 3000, 800, 0.007], // 3 litros
+    [10, 'Hojas de hierbaluisa', 3, 'g', 200, 50, 0.02], // para infusiones
 
     // Condimentos (4)
     [13, 'Ajo', 4, 'kg', 8, 2, 8.0],
