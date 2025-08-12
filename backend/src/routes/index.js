@@ -9,6 +9,7 @@ import categoriasProductosRouter from './categoriasProductos.js';
 import productosRouter from './productos.js';
 import tiposInsumosRouter from './tiposInsumos.js';
 import insumosRouter from './insumos.js';
+import recetasRouter from './recetas.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -23,5 +24,5 @@ export default [
   { path: '/api/tiposProductos', router: tiposInsumosRouter },
   { path: '/api/tiposInsumos', router: tiposInsumosRouter },
   { path: '/api/insumos', router: insumosRouter },
-
+  { path: '/api/recetas', router: recetasRouter },
 ];

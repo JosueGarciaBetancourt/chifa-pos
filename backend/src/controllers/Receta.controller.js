@@ -1,7 +1,7 @@
 import { Receta } from '../../../electron/database/models/receta.js';
 
 export const recetaController = {
-  getByProducto: async (req, res) => {
+  getRecetasByProductoId: async (req, res) => {
     try {
       const recetas = await Receta.findByProductoId(req.params.productoId);
       res.json(recetas);
@@ -10,7 +10,7 @@ export const recetaController = {
     }
   },
 
-  getByInsumo: async (req, res) => {
+  getRecetasByInsumoId: async (req, res) => {
     try {
       const recetas = await Receta.findByInsumoId(req.params.insumoId);
       res.json(recetas);
@@ -19,7 +19,61 @@ export const recetaController = {
     }
   },
 
-  create: async (req, res) => {
+  getRecetasActive: async (req, res) => {
+    try {
+      const recetas = await Receta.selectActive();
+      res.json(recetas || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getRecetasInactive: async (req, res) => {
+    try {
+      const recetas = await Receta.selectInactive();
+      res.json(recetas || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getRecetasByProductosActive: async (req, res) => {
+    try {
+      const recetas = await Receta.findByProductosActive();
+      res.json(recetas);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getRecetasByProductosInactive: async (req, res) => {
+    try {
+      const recetas = await Receta.findByProductosInactive();
+      res.json(recetas);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getRecetasByInsumosActive: async (req, res) => {
+    try {
+      const recetas = await Receta.findByInsumosActive();
+      res.json(recetas);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getRecetasByInsumosInactive: async (req, res) => {
+    try {
+      const recetas = await Receta.findByInsumosInactive();
+      res.json(recetas);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  createReceta: async (req, res) => {
     try {
       const nuevasRecetas = await Receta.create(req.body);
       res.status(201).json(nuevasRecetas);
@@ -28,7 +82,7 @@ export const recetaController = {
     }
   },
 
-  update: async (req, res) => {
+  updateReceta: async (req, res) => {
     try {
       const recetasActualizadas = await Receta.update(
         req.params.productoId, 
@@ -41,7 +95,7 @@ export const recetaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteReceta: async (req, res) => {
     try {
       const resultado = await Receta.delete(
         req.params.productoId, 
