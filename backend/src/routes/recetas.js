@@ -6,12 +6,6 @@ const recetasRouter = Router();
 recetasRouter.route("/")
   .post(recetaController.createReceta);
 
-recetasRouter.route('/active')
-  .get(recetaController.getRecetasActive);
-
-recetasRouter.route('/inactive')
-  .get(recetaController.getRecetasInactive);
-
 recetasRouter.route("/producto/:productoId")
   .get(recetaController.getRecetasByProductoId)
 

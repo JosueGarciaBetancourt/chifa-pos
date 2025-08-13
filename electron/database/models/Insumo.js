@@ -23,7 +23,7 @@ const sql = Object.freeze({
   selectAll: `${baseSelect}`,
   selectById: `${baseSelect} WHERE i.id = ?`,
   selectActive: `${baseSelect} WHERE i.activo = 1`,
-  selectActive: `${baseSelect} WHERE i.activo = 0`,
+  selectInactive: `${baseSelect} WHERE i.activo = 0`,
   insert: `
     INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo)
     VALUES (?, ?, ?, ?, ?, ?)

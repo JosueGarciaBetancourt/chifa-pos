@@ -19,24 +19,6 @@ export const recetaController = {
     }
   },
 
-  getRecetasActive: async (req, res) => {
-    try {
-      const recetas = await Receta.selectActive();
-      res.json(recetas || []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  getRecetasInactive: async (req, res) => {
-    try {
-      const recetas = await Receta.selectInactive();
-      res.json(recetas || []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
   getRecetasByProductosActive: async (req, res) => {
     try {
       const recetas = await Receta.findByProductosActive();

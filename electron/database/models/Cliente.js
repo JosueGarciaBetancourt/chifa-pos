@@ -11,7 +11,8 @@ const baseSelect = `
     apellido,
     direccion,
     telefono,
-    verificado_reniec
+    verificado_reniec,
+    activo
   FROM clientes
 `;
 
@@ -19,6 +20,8 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY apellido ASC, nombre ASC`,
   selectById: `${baseSelect} WHERE id = ?`,
   selectByDni: `${baseSelect} WHERE dni = ?`,
+  selectActive: `${baseSelect} WHERE activo = 1`,
+  selectInactive: `${baseSelect} WHERE activo = 0`,
   insert: `
     INSERT INTO clientes (
       dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec
@@ -29,13 +32,18 @@ const sql = Object.freeze({
     SET dni = ?, digitoVerificador = ?, nombre = ?, apellido = ?, direccion = ?, telefono = ?, verificado_reniec = ?
     WHERE id = ?
   `,
+  disable: `
+    UPDATE clientes SET activo = 0 WHERE id = ? AND activo = 1
+  `,
+  enable: `
+    UPDATE clientes SET activo = 1 WHERE id = ? AND activo = 0
+  `,
   delete: `
     DELETE FROM clientes 
     WHERE id = ?
   `,
 });
 
-// Formateo del cliente (si luego se requiere enriquecer, queda preparado)
 function formatCliente(row) {
   return {
     id: row.id,
@@ -45,7 +53,8 @@ function formatCliente(row) {
     apellido: row.apellido,
     direccion: row.direccion,
     telefono: row.telefono,
-    verificado_reniec: !!row.verificado_reniec
+    verificado_reniec: row.verificado_reniec,
+    activo: row.activo
   };
 }
 
@@ -64,7 +73,15 @@ export const Cliente = {
     return row ? formatCliente(row) : null;
   },
 
-  create({ dni, digitoVerificador = null, nombre, apellido, direccion = null, telefono = null, verificado_reniec = 1 }) {
+  selectActive() {
+    return db.prepare(sql.selectActive).all().map(formatCliente);
+  },
+
+  selectInactive() {
+    return db.prepare(sql.selectInactive).all().map(formatCliente);
+  },
+
+  create({ dni, digitoVerificador = null, nombre, apellido, direccion = null, telefono = null, verificado_reniec = 0 }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec
     );
@@ -75,6 +92,16 @@ export const Cliente = {
     db.prepare(sql.update).run(
       dni, digitoVerificador, nombre, apellido, direccion, telefono, verificado_reniec, id
     );
+    return this.findById(id);
+  },
+
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return;
+  },
+
+  enable(id) {
+    db.prepare(sql.enable).run(id);
     return this.findById(id);
   },
 

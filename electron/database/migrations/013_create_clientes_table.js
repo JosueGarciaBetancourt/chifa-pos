@@ -9,7 +9,8 @@ export function up(db) {
       apellido TEXT NOT NULL,
       direccion TEXT,
       telefono TEXT,
-      verificado_reniec BOOLEAN NOT NULL DEFAULT 1
+      verificado_reniec BOOLEAN NOT NULL DEFAULT 0,
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

@@ -6,7 +6,6 @@ export function up(db) {
       producto_id INTEGER NOT NULL REFERENCES productos(id) ON DELETE CASCADE,
       insumo_id INTEGER NOT NULL REFERENCES insumos(id) ON DELETE CASCADE,
       cantidad REAL NOT NULL,
-      activo BOOLEAN NOT NULL DEFAULT 1,
 
       UNIQUE (producto_id, insumo_id)
     );

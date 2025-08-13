@@ -8,7 +8,6 @@ const baseSelect = `
     r.producto_id,
     r.insumo_id,
     r.cantidad,
-    r.activo,
 
     p.codigo,
     p.nombre as producto_nombre,
@@ -30,8 +29,6 @@ const sql = Object.freeze({
   selectByProducto: `${baseSelect} WHERE r.producto_id = ? ORDER BY r.producto_id ASC`,
   selectByInsumo: `${baseSelect} WHERE r.insumo_id = ? ORDER BY r.producto_id ASC`,
   selectByProductoAndInsumo: `${baseSelect} WHERE r.producto_id = ? AND r.insumo_id = ? ORDER BY r.producto_id ASC`,
-  selectActive: `${baseSelect} WHERE r.activo = 1 ORDER BY r.producto_id ASC`,
-  selectInactive: `${baseSelect} WHERE r.activo = 0 ORDER BY r.producto_id ASC`,
   selectByProductosActive: `${baseSelect} WHERE p.activo = 1 ORDER BY r.producto_id ASC`,
   selectByProductosInactive: `${baseSelect} WHERE p.activo = 0 ORDER BY r.producto_id ASC`,
   selectByInsumosActive: `${baseSelect} WHERE i.activo = 1 ORDER BY r.producto_id ASC`,
@@ -58,7 +55,6 @@ function formatReceta(row) {
     producto_id: row.producto_id,
     insumo_id: row.insumo_id,
     cantidad: row.cantidad,
-    activo: row.activo,
     producto: {
       nombre: row.producto_nombre,
       codigo: row.codigo,
@@ -95,14 +91,6 @@ export const Receta = {
    */
   findByProductoIdInsumoId(producto_id, insumo_id) {
     return db.prepare(sql.selectByProductoAndInsumo).all(producto_id, insumo_id).map(formatReceta);
-  },
-
-  selectActive() {
-    return db.prepare(sql.selectActive).all().map(formatReceta);
-  },
-
-  selectInactive() {
-    return db.prepare(sql.selectInactive).all().map(formatReceta);
   },
 
   findByProductosActive() {
