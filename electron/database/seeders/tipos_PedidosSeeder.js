@@ -10,6 +10,7 @@ export function seed(db) {
     [1, 'consumo_local'],
     [2, 'para_llevar'],
     [3, 'delivery'],
+    [4, 'cotización']
   ];
 
   const insertMany = db.transaction((tipos_pedidos) => {

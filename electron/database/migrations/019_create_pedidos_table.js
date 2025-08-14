@@ -15,7 +15,7 @@ export function up(db) {
       total REAL NOT NULL DEFAULT 0, -- con IGV
       observaciones_generales TEXT,
       cotizacion_id INTEGER REFERENCES cotizaciones(id),
-      sede_id INTEGER NOT NULL REFERENCES sede_local(id) ON DELETE CASCADE
+      sede_id INTEGER NOT NULL DEFAULT 1 REFERENCES sede_local(id) ON DELETE CASCADE
     );
   `).run();
 }

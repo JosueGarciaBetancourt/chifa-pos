@@ -101,7 +101,15 @@ export function seed(db) {
     [90, 23, 27, 1, 15.0, 1, null],
     [91, 23, 40, 1, 8.0, 1, null],
     [92, 23, 41, 1, 7.0, 1, null],
-    [93, 23, 50, 3, 1.5, 1, null]
+    [93, 23, 50, 3, 1.5, 1, null],
+
+    // Detalles de pedidos virtuales generados por cotizaciones
+    /* 
+      id, pedido_id, producto_id, cantidad, precio_unitario, estado_id, observaciones
+    */
+    [94, 24, 1, 1, 25.0, 1, 'Cotización'],
+    [95, 24, 2, 1, 18.0, 1, 'Cotización'],
+    [96, 24, 3, 1, 22.0, 1, 'Cotización']
   ];
 
   const insertMany = db.transaction((detalles_pedidos) => {

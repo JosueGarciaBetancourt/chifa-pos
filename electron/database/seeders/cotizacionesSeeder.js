@@ -1,3 +1,5 @@
+import { DateFormatter } from '../utils/dateFormatter.js';
+
 export function seed(db) {
   console.log('[SEEDER] Insertando cotizaciones...');
 
@@ -8,8 +10,8 @@ export function seed(db) {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
-  const ahora = new Date().toISOString();
-  const manana = new Date(Date.now() + 86400000).toISOString();
+  const ahora = DateFormatter.toLocalSQLDatetime();
+  const manana = DateFormatter.toLocalSQLDatetime(new Date(Date.now() + 86400000));
 
   const cotizaciones = [
     [1, 1, 1, ahora, 7, 'activa', 350.0],
@@ -21,7 +23,8 @@ export function seed(db) {
     [7, 13, 1, manana, 6, 'activa', 380.0],
     [8, 15, 2, ahora, 0, 'vencida', 210.0],
     [9, 2, 3, manana, 7, 'activa', 290.0],
-    [10, 4, 1, ahora, 3, 'activa', 175.0]
+    [10, 4, 1, ahora, 3, 'activa', 175.0],
+    [11, 2, 3, ahora, 30, 'activa', 65.0]
   ];
 
   const insertMany = db.transaction((cotizaciones) => {
