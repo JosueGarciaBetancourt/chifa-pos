@@ -1,16 +1,16 @@
-import { EstadoMesa } from '../../../electron/database/models/estadoMesa.js';
+import { EstadoMesa } from '../../../electron/database/models/EstadoMesa.js';
 
-export const estadoMesaController = {
-  getAll: async (req, res) => {
+export const estadosMesasController = {
+  getEstadosMesas: async (req, res) => {
     try {
-      const estados = await EstadoMesa.selectAll();
-      res.json(estados);
+      const estadosMesas = await EstadoMesa.selectAll();
+      res.json(estadosMesas);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getById: async (req, res) => {
+  getEstadoMesaById: async (req, res) => {
     try {
       const estado = await EstadoMesa.findById(req.params.id);
       if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
@@ -20,9 +20,9 @@ export const estadoMesaController = {
     }
   },
 
-  getByNombre: async (req, res) => {
+  searchByName: async (req, res) => {
     try {
-      const estado = await EstadoMesa.findByNombre(req.params.nombre);
+      const estado = await EstadoMesa.searchByName(req.query.name);
       if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
       res.json(estado);
     } catch (error) {
@@ -30,7 +30,7 @@ export const estadoMesaController = {
     }
   },
 
-  create: async (req, res) => {
+  createEstadoMesa: async (req, res) => {
     try {
       const nuevoEstado = await EstadoMesa.create(req.body);
       res.status(201).json(nuevoEstado);
@@ -39,7 +39,7 @@ export const estadoMesaController = {
     }
   },
 
-  update: async (req, res) => {
+  updateEstadoMesa: async (req, res) => {
     try {
       const estadoActualizado = await EstadoMesa.update(
         req.params.id, 
@@ -51,7 +51,7 @@ export const estadoMesaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteEstadoMesa: async (req, res) => {
     try {
       await EstadoMesa.delete(req.params.id);
       res.status(204).end();

@@ -1,7 +1,7 @@
 import { Mesa } from '../../../electron/database/models/mesa.js';
 
-export const mesaController = {
-  getAll: async (req, res) => {
+export const mesasController = {
+  getMesas: async (req, res) => {
     try {
       const mesas = await Mesa.selectAll();
       res.json(mesas);
@@ -10,7 +10,7 @@ export const mesaController = {
     }
   },
 
-  getById: async (req, res) => {
+  getMesaById: async (req, res) => {
     try {
       const mesa = await Mesa.findById(req.params.id);
       if (!mesa) return res.status(404).json({ error: 'Mesa no encontrada' });
@@ -20,7 +20,7 @@ export const mesaController = {
     }
   },
 
-  getBySede: async (req, res) => {
+  getMesasBySede: async (req, res) => {
     try {
       const mesas = await Mesa.findBySede(req.params.sedeId);
       res.json(mesas);
@@ -29,7 +29,7 @@ export const mesaController = {
     }
   },
 
-  getByNumero: async (req, res) => {
+  getMesaByNumero: async (req, res) => {
     try {
       const mesa = await Mesa.findByNumero(req.params.numero);
       if (!mesa) return res.status(404).json({ error: 'Mesa no encontrada' });
@@ -39,7 +39,7 @@ export const mesaController = {
     }
   },
 
-  create: async (req, res) => {
+  createMesa: async (req, res) => {
     try {
       const nuevaMesa = await Mesa.create(req.body);
       res.status(201).json(nuevaMesa);
@@ -48,7 +48,7 @@ export const mesaController = {
     }
   },
 
-  update: async (req, res) => {
+  updateMesa: async (req, res) => {
     try {
       const mesaActualizada = await Mesa.update(req.params.id, req.body);
       res.json(mesaActualizada);
@@ -57,7 +57,7 @@ export const mesaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteMesa: async (req, res) => {
     try {
       await Mesa.delete(req.params.id);
       res.status(204).end();
