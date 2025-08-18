@@ -1,7 +1,7 @@
-import { EstadoPedido } from '../../../electron/database/models/estadoPedido.js';
+import { EstadoPedido } from '../../../electron/database/models/EstadoPedido.js';
 
-export const estadoPedidoController = {
-  getAll: async (req, res) => {
+export const estadosPedidosController = {
+  getEstadosPedidos: async (req, res) => {
     try {
       const estados = await EstadoPedido.selectAll();
       res.json(estados);
@@ -10,27 +10,27 @@ export const estadoPedidoController = {
     }
   },
 
-  getById: async (req, res) => {
+  getEstadoPedidoById: async (req, res) => {
     try {
       const estado = await EstadoPedido.findById(req.params.id);
-      if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
+      if (!estado) return res.status(404).json({ error: 'Estado de pedido no encontrado' });
       res.json(estado);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getByNombre: async (req, res) => {
+  searchByName: async (req, res) => {
     try {
-      const estado = await EstadoPedido.findByNombre(req.params.nombre);
-      if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
+      const estado = await EstadoPedido.searchByName(req.query.name);
+      if (!estado) return res.status(404).json({ error: 'Estado de pedido no encontrado' });
       res.json(estado);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  create: async (req, res) => {
+  createEstadoPedido: async (req, res) => {
     try {
       const nuevoEstado = await EstadoPedido.create(req.body);
       res.status(201).json(nuevoEstado);
@@ -39,10 +39,10 @@ export const estadoPedidoController = {
     }
   },
 
-  update: async (req, res) => {
+  updateEstadoPedido: async (req, res) => {
     try {
       const estadoActualizado = await EstadoPedido.update(
-        req极狐.id, 
+        req.params.id, 
         req.body
       );
       res.json(estadoActualizado);
@@ -51,7 +51,7 @@ export const estadoPedidoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteEstadoPedido: async (req, res) => {
     try {
       await EstadoPedido.delete(req.params.id);
       res.status(204).end();

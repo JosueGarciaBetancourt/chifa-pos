@@ -9,9 +9,10 @@ const baseSelect = `
 `;
 
 const sql = Object.freeze({
-  selectAll: `${baseSelect} ORDER BY nombre ASC`,
+  selectAll: `${baseSelect}`,
   selectById: `${baseSelect} WHERE id = ?`,
   selectByNombre: `${baseSelect} WHERE nombre = ?`,
+  searchByName: `${baseSelect} WHERE nombre LIKE ?`,
   insert: `
     INSERT INTO tipos_pedidos (nombre)
     VALUES (?)
@@ -27,7 +28,6 @@ const sql = Object.freeze({
   `,
 });
 
-// Formateo del resultado
 function formatTipoPedido(row) {
   return {
     id: row.id,
@@ -45,9 +45,9 @@ export const TipoPedido = {
     return row ? formatTipoPedido(row) : null;
   },
 
-  findByNombre(nombre) {
-    const row = db.prepare(sql.selectByNombre).get(nombre);
-    return row ? formatTipoPedido(row) : null;
+  searchByName(name) {
+    const rows = db.prepare(sql.searchByName).all(`%${name}%`).map(formatTipoPedido);
+    return rows;
   },
 
   create({ nombre }) {

@@ -1,7 +1,7 @@
-import { TipoPedido } from '../../../electron/database/models/tipoPedido.js';
+import { TipoPedido } from '../../../electron/database/models/TipoPedido.js';
 
-export const tipoPedidoController = {
-  getAll: async (req, res) => {
+export const tiposPedidosController = {
+  getTiposPedidos: async (req, res) => {
     try {
       const tipos = await TipoPedido.selectAll();
       res.json(tipos);
@@ -10,7 +10,7 @@ export const tipoPedidoController = {
     }
   },
 
-  getById: async (req, res) => {
+  getTipoPedidoById: async (req, res) => {
     try {
       const tipo = await TipoPedido.findById(req.params.id);
       if (!tipo) return res.status(404).json({ error: 'Tipo no encontrado' });
@@ -20,17 +20,17 @@ export const tipoPedidoController = {
     }
   },
 
-  getByNombre: async (req, res) => {
+  searchByName: async (req, res) => {
     try {
-      const tipo = await TipoPedido.findByNombre(req.params.nombre);
-      if (!tipo) return res.status(404).json({ error: 'Tipo no encontrado' });
+      const tipo = await TipoPedido.searchByName(req.query.name);
+      if (!tipo) return res.status(404).json({ error: 'Tipo de pedido no encontrado' });
       res.json(tipo);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  create: async (req, res) => {
+  createTipoPedido: async (req, res) => {
     try {
       const nuevoTipo = await TipoPedido.create(req.body);
       res.status(201).json(nuevoTipo);
@@ -39,7 +39,7 @@ export const tipoPedidoController = {
     }
   },
 
-  update: async (req, res) => {
+  updateTipoPedido: async (req, res) => {
     try {
       const tipoActualizado = await TipoPedido.update(
         req.params.id, 
@@ -51,7 +51,7 @@ export const tipoPedidoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteTipoPedido: async (req, res) => {
     try {
       await TipoPedido.delete(req.params.id);
       res.status(204).end();

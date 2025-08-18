@@ -1,4 +1,7 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
+import { CalculosFinancieros } from '../utils/calculosFinancieros.js';
+
 const db = connection();
 
 // SELECT base enriquecido
@@ -38,6 +41,13 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY p.fecha_hora DESC`,
   selectById: `${baseSelect} WHERE p.id = ?`,
   selectBySede: `${baseSelect} WHERE p.sede_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByFecha: `${baseSelect} WHERE date(p.fecha_hora) BETWEEN date(?) AND date(?) ORDER BY p.fecha_hora DESC`,
+  selectByCliente: `${baseSelect} WHERE p.cliente_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByUsuario: `${baseSelect} WHERE p.usuario_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByMesa: `${baseSelect} WHERE p.mesa_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByEstado: `${baseSelect} WHERE p.estado_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByTipo: `${baseSelect} WHERE p.tipo_id = ? ORDER BY p.fecha_hora DESC`,
+  selectByCotizacionId: `${baseSelect} WHERE p.cotizacion_id = ?`,
   insert: `
     INSERT INTO pedidos (
       cliente_id, usuario_id, mesa_id, tipo_id, estado_id,
@@ -46,18 +56,18 @@ const sql = Object.freeze({
     )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
-  updateEstado: `
-    UPDATE pedidos 
-    SET estado_id = ?
+  updateEstado: `UPDATE pedidos SET estado_id = ? WHERE id = ?`,
+  updatePedido: `
+    UPDATE pedidos
+    SET cliente_id = ?, usuario_id = ?, mesa_id = ?, tipo_id = ?, estado_id = ?,
+        fecha_hora = ?, direccion_entrega = ?, subTotal = ?, igv = ?, total = ?,
+        observaciones_generales = ?, cotizacion_id = ?, sede_id = ?
     WHERE id = ?
   `,
-  delete: `
-    DELETE FROM pedidos 
-    WHERE id = ?
-  `
+  delete: `DELETE FROM pedidos WHERE id = ?`
 });
 
-// Formateador
+// Formateador de resultados
 function formatPedido(row) {
   return {
     id: row.id,
@@ -110,24 +120,51 @@ export const Pedido = {
     return db.prepare(sql.selectBySede).all(sede_id).map(formatPedido);
   },
 
-  /**
-   * Crear un pedido
-   */
+  findByFecha(fechaInicio, fechaFin) {
+    return db.prepare(sql.selectByFecha).all(fechaInicio, fechaFin).map(formatPedido);
+  },
+
+  findByCliente(cliente_id) {
+    return db.prepare(sql.selectByCliente).all(cliente_id).map(formatPedido);
+  },
+
+  findByUsuario(usuario_id) {
+    return db.prepare(sql.selectByUsuario).all(usuario_id).map(formatPedido);
+  },
+
+  findByMesa(mesa_id) {
+    return db.prepare(sql.selectByMesa).all(mesa_id).map(formatPedido);
+  },
+
+  findByEstado(estado_id) {
+    return db.prepare(sql.selectByEstado).all(estado_id).map(formatPedido);
+  },
+
+  findByTipo(tipo_id) {
+    return db.prepare(sql.selectByTipo).all(tipo_id).map(formatPedido);
+  },
+
+  findByCotizacionId(cotizacion_id) {
+    const row = db.prepare(sql.selectByCotizacionId).get(cotizacion_id);
+    return row ? formatPedido(row) : null;
+  },
+
   create({
     cliente_id = 1,
     usuario_id,
     mesa_id = null,
     tipo_id,
-    estado_id,
-    fecha_hora = new Date().toISOString(),
+    estado_id = 1, // pendiente
+    fecha_hora = DateFormatter.toLocalSQLDatetime(),
     direccion_entrega = null,
-    subTotal,
-    igv,
     total,
     observaciones_generales = null,
     cotizacion_id = null,
-    sede_id
+    sede_id = 1
   }) {
+    const subTotal = CalculosFinancieros.calcularSubtotal(total);
+    const igv = CalculosFinancieros.calcularIGV(total);
+
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       cliente_id,
       usuario_id,
@@ -146,19 +183,21 @@ export const Pedido = {
     return this.findById(lastInsertRowid);
   },
 
-  /**
-   * Actualiza el estado del pedido
-   */
   updateEstado(id, estado_id) {
     db.prepare(sql.updateEstado).run(estado_id, id);
     return this.findById(id);
   },
 
-  /**
-   * Elimina un pedido por ID
-   */
-  delete(id) {
-    db.prepare(sql.delete).run(id);
-    return { deleted: true };
+  updatePedido(id, data) {
+    const keys = Object.keys(data);
+    if (keys.length === 0) return this.findById(id); // nada que actualizar
+  
+    const setClause = keys.map(k => `${k} = ?`).join(", ");
+    const values = keys.map(k => data[k]);
+  
+    const stmt = db.prepare(`UPDATE pedidos SET ${setClause} WHERE id = ?`);
+    stmt.run(...values, id);
+  
+    return this.findById(id);
   }
 };

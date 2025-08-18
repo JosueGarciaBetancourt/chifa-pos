@@ -23,6 +23,7 @@ const sql = Object.freeze({
   selectById: `${baseSelect} WHERE m.id = ?`,
   selectBySede: `${baseSelect} WHERE m.sede_id = ? ORDER BY m.numero ASC`,
   selectByNumero: `${baseSelect} WHERE m.numero = ?`,
+  selectByEstado: `${baseSelect} WHERE m.estado_mesa_id = ?`,
   insert: `
     INSERT INTO mesas (numero, capacidad, estado_mesa_id, sede_id)
     VALUES (?, ?, ?, ?)
@@ -73,6 +74,10 @@ export const Mesa = {
   findByNumero(numero) {
     const row = db.prepare(sql.selectByNumero).get(numero);
     return row ? formatMesa(row) : null;
+  },
+
+  findByEstado(estadoId) {
+    return db.prepare(sql.selectByEstado).all(estadoId).map(formatMesa);
   },
 
   create({ numero, capacidad, estado_mesa_id, sede_id }) {

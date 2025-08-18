@@ -10,7 +10,7 @@ const baseSelect = `
 `;
 
 const sql = Object.freeze({
-  selectAll: `${baseSelect} ORDER BY nombre ASC`,
+  selectAll: `${baseSelect}`,
   selectById: `${baseSelect} WHERE id = ?`,
   searchByName: `${baseSelect} WHERE nombre LIKE ?`,
   selectByNombre: `${baseSelect} WHERE nombre = ?`,

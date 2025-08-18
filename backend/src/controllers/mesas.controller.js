@@ -28,10 +28,20 @@ export const mesasController = {
       res.status(500).json({ error: error.message });
     }
   },
-
+  
   getMesaByNumero: async (req, res) => {
     try {
       const mesa = await Mesa.findByNumero(req.params.numero);
+      if (!mesa) return res.status(404).json({ error: 'Mesa no encontrada' });
+      res.json(mesa);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getMesasByEstado: async (req, res) => {
+    try {
+      const mesa = await Mesa.findByEstado(req.params.estadoId);
       if (!mesa) return res.status(404).json({ error: 'Mesa no encontrada' });
       res.json(mesa);
     } catch (error) {

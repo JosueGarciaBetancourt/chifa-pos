@@ -12,6 +12,9 @@ mesasRouter.route("/sede/:sedeId")
 
 mesasRouter.route("/numero/:numero")
   .get(mesasController.getMesaByNumero);
+  
+mesasRouter.route("/estado/:estadoId")
+  .get(mesasController.getMesasByEstado);
 
 mesasRouter.route("/:id")
   .get(mesasController.getMesaById)

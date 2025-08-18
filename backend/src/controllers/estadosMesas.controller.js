@@ -23,7 +23,7 @@ export const estadosMesasController = {
   searchByName: async (req, res) => {
     try {
       const estado = await EstadoMesa.searchByName(req.query.name);
-      if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
+      if (!estado) return res.status(404).json({ error: 'Estado de mesa no encontrado' });
       res.json(estado);
     } catch (error) {
       res.status(500).json({ error: error.message });

@@ -13,6 +13,7 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY id ASC`,
   selectById: `${baseSelect} WHERE id = ?`,
   selectByNombre: `${baseSelect} WHERE nombre = ?`,
+  searchByName: `${baseSelect} WHERE nombre LIKE ?`,
   insert: `
     INSERT INTO estados_pedidos (nombre, descripcion)
     VALUES (?, ?)
@@ -47,9 +48,9 @@ export const EstadoPedido = {
     return row ? formatEstadoPedido(row) : null;
   },
 
-  findByNombre(nombre) {
-    const row = db.prepare(sql.selectByNombre).get(nombre);
-    return row ? formatEstadoPedido(row) : null;
+  searchByName(name) {
+    const rows = db.prepare(sql.searchByName).all(`%${name}%`).map(formatEstadoPedido);
+    return rows;
   },
 
   create({ nombre, descripcion = null }) {

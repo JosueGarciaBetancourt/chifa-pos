@@ -2,7 +2,7 @@ export const DateFormatter = {
 	/**
 	 * Retorna la fecha en formato: "YYYY-MM-DD HH:mm:ss"
 	 * Ideal para almacenar en bases de datos SQL.
-	 */
+	*/
 	toLocalSQLDatetime(date = new Date()) {
 	  const year = date.getFullYear();
 	  const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -17,7 +17,7 @@ export const DateFormatter = {
   
 	/**
 	 * Retorna solo la fecha en formato: "YYYY-MM-DD"
-	 */
+	*/
 	toDateOnly(date = new Date()) {
 	  const year = date.getFullYear();
 	  const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -28,7 +28,7 @@ export const DateFormatter = {
   
 	/**
 	 * Retorna solo la hora en formato: "HH:mm:ss"
-	 */
+	*/
 	toTimeOnly(date = new Date()) {
 	  const hours = String(date.getHours()).padStart(2, '0');
 	  const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -40,7 +40,7 @@ export const DateFormatter = {
 	/**
 	 * Retorna la fecha en formato: "DD/MM/YYYY"
 	 * Útil para mostrar al usuario.
-	 */
+	*/
 	toReadableDate(date = new Date()) {
 	  const day = String(date.getDate()).padStart(2, '0');
 	  const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -51,7 +51,7 @@ export const DateFormatter = {
   
 	/**
 	 * Parsea una fecha en string tipo "YYYY-MM-DD HH:mm:ss" a objeto Date
-	 */
+	*/
 	parseSQLDatetime(datetimeStr) {
 	  const [datePart, timePart] = datetimeStr.split(' ');
 	  const [year, month, day] = datePart.split('-');
@@ -66,5 +66,5 @@ export const DateFormatter = {
 		Number(seconds)
 	  );
 	}
-  };
+};
   

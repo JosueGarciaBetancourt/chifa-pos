@@ -1,4 +1,5 @@
 import { DateFormatter } from '../utils/dateFormatter.js';
+import { CalculosFinancieros } from '../utils/calculosFinancieros.js';
 
 export function seed(db) {
   console.log('[SEEDER] Insertando pedidos...');
@@ -10,14 +11,6 @@ export function seed(db) {
     )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
-
-  function calcularSubtotal(total) {
-    return parseFloat((total / 1.18).toFixed(2)); // precio sin IGV
-  }
-
-  function calcularIGV(subtotal, total) {
-    return parseFloat((total - subtotal).toFixed(2)); // diferencia exacta
-  }
 
   const ahora = DateFormatter.toLocalSQLDatetime();
   const ayer = DateFormatter.toLocalSQLDatetime(new Date(new Date() - 86400000));
@@ -59,8 +52,8 @@ export function seed(db) {
   const insertMany = db.transaction((pedidos) => {
     for (const p of pedidos) {
       const [id, cliente_id, usuario_id, mesa_id, tipo_id, estado_id, fecha_hora, direccion_entrega, total, observaciones_generales, cotizacion_id, sede_id] = p;
-      const subTotal = calcularSubtotal(total);
-      const igv = calcularIGV(subTotal, total);
+      const subTotal = CalculosFinancieros.calcularSubtotal(total);
+      const igv = CalculosFinancieros.calcularIGV(total);
 
       stmt.run([
         id,
