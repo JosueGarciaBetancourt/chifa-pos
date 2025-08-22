@@ -1,7 +1,7 @@
-import { EstadoDetallePedido } from '../../../electron/database/models/estadoDetallePedido.js';
+import { EstadoDetallePedido } from '../../../electron/database/models/EstadoDetallePedido.js';
 
-export const estadoDetallePedidoController = {
-  getAll: async (req, res) => {
+export const estadosDetallesPedidosController = {
+  getEstadosDetallesPedidos: async (req, res) => {
     try {
       const estados = await EstadoDetallePedido.selectAll();
       res.json(estados);
@@ -10,7 +10,7 @@ export const estadoDetallePedidoController = {
     }
   },
 
-  getById: async (req, res) => {
+  getEstadoDetallePedidoById: async (req, res) => {
     try {
       const estado = await EstadoDetallePedido.findById(req.params.id);
       if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
@@ -20,17 +20,16 @@ export const estadoDetallePedidoController = {
     }
   },
 
-  getByNombre: async (req, res) => {
-    try {
-      const estado = await EstadoDetallePedido.findByNombre(req.params.nombre);
-      if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
-      res.json(estado);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  searchByName: async (req, res) => {
+      try {
+        const estadosDetallesPedidos = await EstadoDetallePedido.searchByName(req.query.name);
+        res.json(estadosDetallesPedidos || []);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
   },
 
-  create: async (req, res) => {
+  createEstadoDetallePedido: async (req, res) => {
     try {
       const nuevoEstado = await EstadoDetallePedido.create(req.body);
       res.status(201).json(nuevoEstado);
@@ -39,7 +38,7 @@ export const estadoDetallePedidoController = {
     }
   },
 
-  update: async (req, res) => {
+  updateDetallePedido: async (req, res) => {
     try {
       const estadoActualizado = await EstadoDetallePedido.update(
         req.params.id, 
@@ -51,7 +50,7 @@ export const estadoDetallePedidoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteEstadoDetallePedido: async (req, res) => {
     try {
       await EstadoDetallePedido.delete(req.params.id);
       res.status(204).end();

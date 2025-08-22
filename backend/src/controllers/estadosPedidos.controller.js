@@ -13,7 +13,7 @@ export const estadosPedidosController = {
   getEstadoPedidoById: async (req, res) => {
     try {
       const estado = await EstadoPedido.findById(req.params.id);
-      if (!estado) return res.status(404).json({ error: 'Estado de pedido no encontrado' });
+      if (!estado) return res.status(404).json({ error: 'Estado de detalle de pedido no encontrado' });
       res.json(estado);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -23,7 +23,7 @@ export const estadosPedidosController = {
   searchByName: async (req, res) => {
     try {
       const estado = await EstadoPedido.searchByName(req.query.name);
-      if (!estado) return res.status(404).json({ error: 'Estado de pedido no encontrado' });
+      if (!estado) return res.status(404).json({ error: 'Estado de detalle de pedido no encontrado' });
       res.json(estado);
     } catch (error) {
       res.status(500).json({ error: error.message });

@@ -17,6 +17,8 @@ import mesasRouter from './mesas.js';
 import tiposPedidosRouter from './tiposPedidos.js';
 import pedidosRouter from './pedidos.js';
 import estadosPedidosRouter from './estadosPedidos.js';
+import estadosDetallesPedidosRouter from './estadosDetallesPedidos.js';
+import detallesPedidosRouter from './detallesPedidos.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -38,5 +40,7 @@ export default [
   { path: '/api/mesas', router: mesasRouter },
   { path: '/api/tiposPedidos', router: tiposPedidosRouter },
   { path: '/api/estadosPedidos', router: estadosPedidosRouter },
-  { path: '/api/pedidos', router: pedidosRouter }
+  { path: '/api/pedidos', router: pedidosRouter },
+  { path: '/api/estadosDetallesPedidos', router: estadosDetallesPedidosRouter },
+  { path: '/api/detallesPedidos', router: detallesPedidosRouter }
 ];
