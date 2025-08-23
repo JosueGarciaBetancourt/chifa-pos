@@ -1,7 +1,7 @@
-import { DetallePedido } from '../../../electron/database/models/detallePedido.js';
+import { DetallePedido } from '../../../electron/database/models/DetallePedido.js';
 
-export const detallePedidoController = {
-  getByPedido: async (req, res) => {
+export const detallesPedidosController = {
+  getDetalleByPedido: async (req, res) => {
     try {
       const detalles = await DetallePedido.findByPedidoId(req.params.pedidoId);
       res.json(detalles);
@@ -10,9 +10,9 @@ export const detallePedidoController = {
     }
   },
 
-  create: async (req, res) => {
+  createDetallePedido: async (req, res) => {
     try {
-      const nuevosDetalles = await DetallePedido.create(req.body);
+      const nuevosDetalles = await DetallePedido.create(req.params.pedidoId, req.body);
       res.status(201).json(nuevosDetalles);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -31,7 +31,19 @@ export const detallePedidoController = {
     }
   },
 
-  delete: async (req, res) => {
+  updateDetallePedido: async (req, res) => {
+    try {
+      const detallePedidoActualizado = await DetallePedido.update(
+        req.params.id, 
+        req.body
+      );
+      res.json(detallePedidoActualizado);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+
+  deleteDetallePedido: async (req, res) => {
     try {
       await DetallePedido.delete(req.params.id);
       res.status(204).end();

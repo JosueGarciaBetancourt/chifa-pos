@@ -1,4 +1,6 @@
 import { connection } from '../connection.js';
+import { Producto } from '../../../electron/database/models/Producto.js';
+
 const db = connection();
 
 // SELECT enriquecido con producto y estado
@@ -22,6 +24,7 @@ const baseSelect = `
 `;
 
 const sql = Object.freeze({
+  selectById: `${baseSelect} WHERE d.id = ?`,
   selectByPedido: `${baseSelect} WHERE d.pedido_id = ? ORDER BY d.id ASC`,
   insert: `
     INSERT INTO detalles_pedidos (
@@ -31,6 +34,11 @@ const sql = Object.freeze({
   updateEstado: `
     UPDATE detalles_pedidos 
     SET estado_id = ?
+    WHERE id = ?
+  `,
+  update: `
+    UPDATE detalles_pedidos 
+    SET cantidad = ?, observaciones = ?
     WHERE id = ?
   `,
   delete: `
@@ -72,7 +80,10 @@ export const DetallePedido = {
   /**
    * Agregar un ítem a un pedido
    */
-  create({ pedido_id, producto_id, cantidad, precio_unitario, estado_id, observaciones = null }) {
+  create(pedido_id, { producto_id, cantidad, estado_id = 1, observaciones = null }) {
+    const producto = Producto.findById(producto_id);
+    const precio_unitario = producto.precio;
+
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       pedido_id,
       producto_id,
@@ -90,6 +101,12 @@ export const DetallePedido = {
   updateEstado(id, estado_id) {
     db.prepare(sql.updateEstado).run(estado_id, id);
     return { id, estado_id };
+  },
+
+  update(id, { cantidad, observaciones = null }) {
+    db.prepare(sql.update).run(cantidad, observaciones, id);
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatDetalle(row) : null;
   },
 
   /**
