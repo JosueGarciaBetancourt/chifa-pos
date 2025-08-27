@@ -1,7 +1,7 @@
-import { MetodoPago } from '../../../electron/database/models/metodoPago.js';
+import { MetodoPago } from '../../../electron/database/models/MetodoPago.js';
 
-export const metodoPagoController = {
-  getAll: async (req, res) => {
+export const metodosPagoController = {
+  getMetodosPago: async (req, res) => {
     try {
       const metodos = await MetodoPago.selectAll();
       res.json(metodos);
@@ -10,7 +10,7 @@ export const metodoPagoController = {
     }
   },
 
-  getById: async (req, res) => {
+  getMetodoPagoById: async (req, res) => {
     try {
       const metodo = await MetodoPago.findById(req.params.id);
       if (!metodo) return res.status(404).json({ error: 'Método de pago no encontrado' });
@@ -20,17 +20,16 @@ export const metodoPagoController = {
     }
   },
 
-  getByNombre: async (req, res) => {
-    try {
-      const metodo = await MetodoPago.findByNombre(req.params.nombre);
-      if (!metodo) return res.status(404).json({ error: 'Método de pago no encontrado' });
-      res.json(metodo);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  searchByName: async (req, res) => {
+      try {
+        const metodosPago = await MetodoPago.searchByName(req.query.name);
+        res.json(metodosPago || []);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
   },
 
-  create: async (req, res) => {
+  createMetodoPago: async (req, res) => {
     try {
       const nuevoMetodo = await MetodoPago.create(req.body);
       res.status(201).json(nuevoMetodo);
@@ -39,7 +38,7 @@ export const metodoPagoController = {
     }
   },
 
-  update: async (req, res) => {
+  updateMetodoPago: async (req, res) => {
     try {
       const metodoActualizado = await MetodoPago.update(
         req.params.id, 
@@ -51,7 +50,7 @@ export const metodoPagoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteMetodoPago: async (req, res) => {
     try {
       await MetodoPago.delete(req.params.id);
       res.status极狐.end();

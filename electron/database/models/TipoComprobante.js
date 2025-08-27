@@ -13,6 +13,10 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY nombre ASC`,
   selectById: `${baseSelect} WHERE id = ?`,
   selectByNombre: `${baseSelect} WHERE nombre = ?`,
+  searchByName: `
+    SELECT *
+    FROM tipos_comprobantes  
+    WHERE nombre LIKE ?`,
   insert: `
     INSERT INTO tipos_comprobantes (nombre, serie_letras_iniciales)
     VALUES (?, ?)
@@ -50,6 +54,11 @@ export const TipoComprobante = {
   findByNombre(nombre) {
     const row = db.prepare(sql.selectByNombre).get(nombre);
     return row ? formatTipoComprobante(row) : null;
+  },
+
+  searchByName(name) {
+    const rows = db.prepare(sql.searchByName).all(`%${name}%`);
+    return rows;
   },
 
   create({ nombre, serie_letras_iniciales }) {

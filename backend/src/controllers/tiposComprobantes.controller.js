@@ -1,7 +1,7 @@
-import { TipoComprobante } from '../../../electron/database/models/tipoComprobante.js';
+import { TipoComprobante } from '../../../electron/database/models/TipoComprobante.js';
 
-export const tipoComprobanteController = {
-  getAll: async (req, res) => {
+export const tiposComprobantesController = {
+  getTiposComprobantes: async (req, res) => {
     try {
       const tipos = await TipoComprobante.selectAll();
       res.json(tipos);
@@ -10,27 +10,26 @@ export const tipoComprobanteController = {
     }
   },
 
-  getById: async (req, res) => {
+  getTipoComprobanteById: async (req, res) => {
     try {
       const tipo = await TipoComprobante.findById(req.params.id);
-      if (!tipo) return res.status(404).json({ error: 'Tipo no encontrado' });
+      if (!tipo) return res.status(404).json({ error: 'Tipo  de comprobante no encontrado' });
       res.json(tipo);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
 
-  getByNombre: async (req, res) => {
-    try {
-      const tipo = await TipoComprobante.findByNombre(req.params.nombre);
-      if (!tipo) return res.status(404).json({ error: 'Tipo no encontrado' });
-      res.json(tipo);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  searchByName: async (req, res) => {
+      try {
+        const estadosComprobantes = await TipoComprobante.searchByName(req.query.name);
+        res.json(estadosComprobantes || []);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
   },
 
-  create: async (req, res) => {
+  createTipoComprobante: async (req, res) => {
     try {
       const nuevoTipo = await TipoComprobante.create(req.body);
       res.status(201).json(nuevoTipo);
@@ -39,7 +38,7 @@ export const tipoComprobanteController = {
     }
   },
 
-  update: async (req, res) => {
+  updateTipoComprobante: async (req, res) => {
     try {
       const tipoActualizado = await TipoComprobante.update(
         req.params.id, 
@@ -51,7 +50,7 @@ export const tipoComprobanteController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteTipoComprobante: async (req, res) => {
     try {
       await TipoComprobante.delete(req.params.id);
       res.status(204).end();

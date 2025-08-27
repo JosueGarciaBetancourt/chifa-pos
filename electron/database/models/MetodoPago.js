@@ -12,6 +12,10 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY nombre ASC`,
   selectById: `${baseSelect} WHERE id = ?`,
   selectByNombre: `${baseSelect} WHERE nombre = ?`,
+  searchByName: `
+    SELECT *
+    FROM metodos_pago  
+    WHERE nombre LIKE ?`,
   insert: `
     INSERT INTO metodos_pago (nombre)
     VALUES (?)
@@ -48,6 +52,11 @@ export const MetodoPago = {
   findByNombre(nombre) {
     const row = db.prepare(sql.selectByNombre).get(nombre);
     return row ? formatMetodo(row) : null;
+  },
+
+  searchByName(name) {
+    const rows = db.prepare(sql.searchByName).all(`%${name}%`);
+    return rows;
   },
 
   create({ nombre }) {
