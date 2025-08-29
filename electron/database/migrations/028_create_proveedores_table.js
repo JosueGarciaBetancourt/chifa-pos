@@ -6,7 +6,8 @@ export function up(db) {
           nombre TEXT NOT NULL,
           ruc TEXT NOT NULL,
           correo TEXT,
-          telefono TEXT NOT NULL
+          telefono TEXT NOT NULL,
+          activo BOOLEAN NOT NULL DEFAULT 1
         );
       `).run();
   }

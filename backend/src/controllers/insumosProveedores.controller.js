@@ -1,7 +1,7 @@
 import { InsumoProveedor } from '../../../electron/database/models/InsumoProveedor.js';
 
-export const insumoProveedorController = {
-  getAll: async (req, res) => {
+export const insumosProveedoresController = {
+  getInsumosProveedores: async (req, res) => {
     try {
       const relaciones = await InsumoProveedor.selectAll();
       res.json(relaciones);
@@ -10,10 +10,10 @@ export const insumoProveedorController = {
     }
   },
 
-  getById: async (req, res) => {
+  getInsumoProveedorById: async (req, res) => {
     try {
       const relacion = await InsumoProveedor.findById(req.params.id);
-      if (!relacion) return res.status(404).json({ error: 'Relación no encontrada' });
+      if (!relacion) return res.status(404).json({ error: 'Relación de insumo con proveedor no encontrada' });
       res.json(relacion);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -38,7 +38,7 @@ export const insumoProveedorController = {
     }
   },
 
-  create: async (req, res) => {
+  createInsumoProveedor: async (req, res) => {
     try {
       const nuevaRelacion = await InsumoProveedor.create(req.body);
       res.status(201).json(nuevaRelacion);
@@ -47,7 +47,7 @@ export const insumoProveedorController = {
     }
   },
 
-  update: async (req, res) => {
+  updateInsumoProveedor: async (req, res) => {
     try {
       const relacionActualizada = await InsumoProveedor.update(
         req.params.id, 
@@ -59,7 +59,7 @@ export const insumoProveedorController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteInsumoProveedor: async (req, res) => {
     try {
       await InsumoProveedor.delete(req.params.id);
       res.status(204).end();

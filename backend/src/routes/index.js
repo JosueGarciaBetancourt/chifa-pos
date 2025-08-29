@@ -25,6 +25,8 @@ import tiposComprobantesRouter from './tiposComprobantes.js';
 import comprobantesRouter from './comprobantes.js';
 import reservasRouter from './reservas.js';
 import inventarioMovimientosRouter from './inventarioMovimientos.js';
+import proveedoresRouter from './proveedores.js';
+import insumosProveedoresRouter from './insumosProveedores.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -54,5 +56,7 @@ export default [
   { path: '/api/tiposComprobantes', router: tiposComprobantesRouter },
   { path: '/api/comprobantes', router: comprobantesRouter },
   { path: '/api/reservas', router: reservasRouter },
-  { path: '/api/inventarioMovimientos', router: inventarioMovimientosRouter }
+  { path: '/api/inventarioMovimientos', router: inventarioMovimientosRouter },
+  { path: '/api/proveedores', router: proveedoresRouter },
+  { path: '/api/insumosProveedores', router: insumosProveedoresRouter }
 ];
