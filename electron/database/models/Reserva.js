@@ -1,4 +1,6 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
+
 const db = connection();
 
 const baseSelect = `
@@ -110,7 +112,8 @@ export const Reserva = {
     estado = 'pendiente',
     observaciones = null
   }) {
-    const created_at = new Date().toISOString();
+    const created_at = DateFormatter.toLocalSQLDatetime();
+
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       cliente_id,
       mesa_id,

@@ -10,7 +10,7 @@ export function seed(db) {
   `);
 
   const comprobantes = [
-    // ID | PEDIDO | TIPO | SERIE | NÚMERO | FECHA | OBS | XML | MÉTODO_PAGO | ESTADO | SEDE
+    // ID | PEDIDO | TIPO | SERIE | NÚMERO | FECHA | OBSERVACION | XML | MÉTODO_PAGO | ESTADO | SEDE
 
     [1, 1, 1, 'B001', '0001', '2023-07-01 12:45:00', 'Ejemplo 1 de observación en un comprobante', null, 1, 2, 1], // emitido
     [2, 2, 2, 'T001', '0001', '2023-07-01 14:00:00', null, null, 1, 3, 1], // enviado

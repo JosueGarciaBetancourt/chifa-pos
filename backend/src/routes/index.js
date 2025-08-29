@@ -22,6 +22,9 @@ import detallesPedidosRouter from './detallesPedidos.js';
 import metodosPagoRouter from './metodosPago.js';
 import estadosComprobantesRouter from './estadosComprobantes.js';
 import tiposComprobantesRouter from './tiposComprobantes.js';
+import comprobantesRouter from './comprobantes.js';
+import reservasRouter from './reservas.js';
+import inventarioMovimientosRouter from './inventarioMovimientos.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -48,5 +51,8 @@ export default [
   { path: '/api/detallesPedidos', router: detallesPedidosRouter },
   { path: '/api/metodosPago', router: metodosPagoRouter },
   { path: '/api/estadosComprobantes', router: estadosComprobantesRouter },
-  { path: '/api/tiposComprobantes', router: tiposComprobantesRouter }
+  { path: '/api/tiposComprobantes', router: tiposComprobantesRouter },
+  { path: '/api/comprobantes', router: comprobantesRouter },
+  { path: '/api/reservas', router: reservasRouter },
+  { path: '/api/inventarioMovimientos', router: inventarioMovimientosRouter }
 ];

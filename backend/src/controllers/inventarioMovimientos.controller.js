@@ -1,7 +1,7 @@
 import { InventarioMovimiento } from '../../../electron/database/models/inventarioMovimiento.js';
 
-export const inventarioMovimientoController = {
-  getAll: async (req, res) => {
+export const inventarioMovimientosController = {
+  getInventarioMovimientos: async (req, res) => {
     try {
       const movimientos = await InventarioMovimiento.selectAll();
       res.json(movimientos);
@@ -10,7 +10,17 @@ export const inventarioMovimientoController = {
     }
   },
 
-  getByInsumo: async (req, res) => {
+  getInventarioMovimientoById: async (req, res) => {
+    try {
+      const movimiento = await InventarioMovimiento.findById(req.params.id);
+      if (!movimiento) return res.status(404).json({ error: 'Movimiento de inventario no encontrado' });
+      res.json(movimiento);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getInventarioMovimientoByInsumo: async (req, res) => {
     try {
       const movimientos = await InventarioMovimiento.findByInsumo(req.params.insumoId);
       res.json(movimientos);
@@ -19,7 +29,7 @@ export const inventarioMovimientoController = {
     }
   },
 
-  getByUsuario: async (req, res) => {
+  getInventarioMovimientoByUsuario: async (req, res) => {
     try {
       const movimientos = await InventarioMovimiento.findByUsuario(req.params.usuarioId);
       res.json(movimientos);
@@ -28,7 +38,7 @@ export const inventarioMovimientoController = {
     }
   },
 
-  create: async (req, res) => {
+  createInventarioMovimiento: async (req, res) => {
     try {
       const nuevoMovimiento = await InventarioMovimiento.create(req.body);
       res.status(201).json(nuevoMovimiento);
@@ -37,7 +47,7 @@ export const inventarioMovimientoController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteInventarioMovimiento: async (req, res) => {
     try {
       await InventarioMovimiento.delete(req.params.id);
       res.status(204).end();

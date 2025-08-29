@@ -1,7 +1,7 @@
 import { Reserva } from '../../../electron/database/models/reserva.js';
 
-export const reservaController = {
-  getAll: async (req, res) => {
+export const reservasController = {
+  getReservas: async (req, res) => {
     try {
       const reservas = await Reserva.selectAll();
       res.json(reservas);
@@ -10,7 +10,7 @@ export const reservaController = {
     }
   },
 
-  getById: async (req, res) => {
+  getReservaById: async (req, res) => {
     try {
       const reserva = await Reserva.findById(req.params.id);
       if (!reserva) return res.status(404).json({ error: 'Reserva no encontrada' });
@@ -20,7 +20,7 @@ export const reservaController = {
     }
   },
 
-  getByCliente: async (req, res) => {
+  getReservasByCliente: async (req, res) => {
     try {
       const reservas = await Reserva.findByCliente(req.params.clienteId);
       res.json(reservas);
@@ -29,7 +29,7 @@ export const reservaController = {
     }
   },
 
-  getActivas: async (req, res) => {
+  getReservasActivas: async (req, res) => {
     try {
       const reservas = await Reserva.selectActivas();
       res.json(reservas);
@@ -38,7 +38,7 @@ export const reservaController = {
     }
   },
 
-  create: async (req, res) => {
+  createReserva: async (req, res) => {
     try {
       const nuevaReserva = await Reserva.create(req.body);
       res.status(201).json(nuevaReserva);
@@ -59,7 +59,7 @@ export const reservaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteReserva: async (req, res) => {
     try {
       await Reserva.delete(req.params.id);
       res.status(204).end();

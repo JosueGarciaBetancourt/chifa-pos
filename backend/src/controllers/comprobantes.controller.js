@@ -1,7 +1,7 @@
 import { Comprobante } from '../../../electron/database/models/comprobante.js';
 
-export const comprobanteController = {
-  getAll: async (req, res) => {
+export const comprobantesController = {
+  getComprobantes: async (req, res) => {
     try {
       const comprobantes = await Comprobante.selectAll();
       res.json(comprobantes);
@@ -10,7 +10,7 @@ export const comprobanteController = {
     }
   },
 
-  getById: async (req, res) => {
+  getComprobanteById: async (req, res) => {
     try {
       const comprobante = await Comprobante.findById(req.params.id);
       if (!comprobante) return res.status(404).json({ error: 'Comprobante no encontrado' });
@@ -20,7 +20,7 @@ export const comprobanteController = {
     }
   },
 
-  getByPedido: async (req, res) => {
+  getComprobanteByPedidoId: async (req, res) => {
     try {
       const comprobante = await Comprobante.findByPedidoId(req.params.pedidoId);
       if (!comprobante) return res.status(404).json({ error: 'Comprobante no encontrado' });
@@ -30,7 +30,7 @@ export const comprobanteController = {
     }
   },
 
-  create: async (req, res) => {
+  createComprobante: async (req, res) => {
     try {
       const nuevoComprobante = await Comprobante.create(req.body);
       res.status(201).json(nuevoComprobante);
@@ -57,7 +57,7 @@ export const comprobanteController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteComprobante: async (req, res) => {
     try {
       await Comprobante.delete(req.params.id);
       res.status(204).end();

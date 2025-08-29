@@ -22,6 +22,7 @@ const baseSelect = `
 
 const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY m.fecha_hora DESC`,
+  selectById: `${baseSelect} WHERE m.id = ?`,
   selectByInsumo: `${baseSelect} WHERE m.insumo_id = ? ORDER BY m.fecha_hora DESC`,
   selectByUsuario: `${baseSelect} WHERE m.usuario_id = ? ORDER BY m.fecha_hora DESC`,
   insert: `
@@ -61,6 +62,11 @@ export const InventarioMovimiento = {
     return db.prepare(sql.selectAll).all().map(formatMovimiento);
   },
 
+  findById(id) {
+    const row = db.prepare(sql.selectById).get(id);
+    return row ? formatMovimiento(row) : null;
+  },
+
   findByInsumo(insumo_id) {
     return db.prepare(sql.selectByInsumo).all(insumo_id).map(formatMovimiento);
   },
@@ -77,7 +83,7 @@ export const InventarioMovimiento = {
       usuario_id,
       pedido_id
     );
-    return { id: lastInsertRowid };
+    return this.findById(lastInsertRowid);
   },
 
   delete(id) {

@@ -105,7 +105,7 @@ export const Comprobante = {
     xml_base64 = null,
     metodo_pago_id,
     estado_id,
-    sede_id
+    sede_id = 1
   }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       pedido_id,
