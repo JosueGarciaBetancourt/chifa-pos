@@ -8,7 +8,7 @@ export function up(db) {
       mesa_id INTEGER REFERENCES mesas(id),
       tipo_id INTEGER NOT NULL REFERENCES tipos_pedidos(id) ON DELETE CASCADE,
       estado_id INTEGER NOT NULL REFERENCES estados_pedidos(id) ON DELETE CASCADE,
-      fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      fecha_hora DATETIME NOT NULL,
       direccion_entrega TEXT,
       subTotal REAL NOT NULL DEFAULT 0, -- sin IGV
       igv REAL NOT NULL DEFAULT 0,

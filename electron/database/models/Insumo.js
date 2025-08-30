@@ -13,7 +13,6 @@ const baseSelect = `
     i.unidad_medida,
     i.stock_actual,
     i.stock_minimo,
-    i.costo,
     i.activo
   FROM insumos i
   JOIN tipos_insumos t ON i.tipo_id = t.id
@@ -25,12 +24,12 @@ const sql = Object.freeze({
   selectActive: `${baseSelect} WHERE i.activo = 1`,
   selectInactive: `${baseSelect} WHERE i.activo = 0`,
   insert: `
-    INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo)
+    VALUES (?, ?, ?, ?, ?)
   `,
   update: `
     UPDATE insumos
-    SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?, costo = ?
+    SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?
     WHERE id = ?
   `,
   disable: `
@@ -52,13 +51,12 @@ function formatInsumo(row) {
     unidad: row.unidad_medida,
     stock_actual: row.stock_actual,
     stock_minimo: row.stock_minimo,
-    costo: row.costo,
-    activo: row.activo,
     tipo: {
       id: row.tipo_id,
       nombre: row.tipo_nombre,
       descripcion: row.tipo_descripcion
-    }
+    },
+    activo: row.activo
   };
 }
 
@@ -73,23 +71,23 @@ export const Insumo = {
   },
 
   selectActive() {
-    return db.prepare(sql.selectActive).all();
+    return db.prepare(sql.selectActive).all().map(formatInsumo);
   },
 
   selectInactive() {
-    return db.prepare(sql.selectInactive).all();
+    return db.prepare(sql.selectInactive).all().map(formatInsumo);
   },
 
-  create({ nombre, tipo_id, unidad_medida, stock_actual = 0, stock_minimo = 0, costo }) {
+  create({ nombre, tipo_id, unidad_medida, stock_actual = 0, stock_minimo = 0 }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo
+      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo }) {
+  update(id, { nombre, tipo_id, unidad_medida, stock_actual, stock_minimo }) {
     db.prepare(sql.update).run(
-      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, costo, id
+      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, id
     );
     return this.findById(id);
   },

@@ -35,7 +35,7 @@ import { up as upReportes } from './migrations/034_create_reportes_table.js';
 import { up as upTiposNotificaciones } from './migrations/035_create_tipos_notificaciones_table.js';
 import { up as upNotificaciones } from './migrations/036_create_notificaciones_table.js';
 import { up as upLogsSistema } from './migrations/037_create_logs_sistema_table.js';
-
+import { DateFormatter } from './utils/dateFormatter.js';
 
 export async function runMigrations(db) {
   db.pragma('foreign_keys = ON;');
@@ -44,7 +44,7 @@ export async function runMigrations(db) {
     CREATE TABLE IF NOT EXISTS migrations (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
-      run_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      run_at DATETIME NOT NULL
     );
   `).run();
 
@@ -99,7 +99,7 @@ export async function runMigrations(db) {
       try {
         console.log(`- Ejecutando ${migration.name}...`);
         migration.fn(db);
-        db.prepare('INSERT INTO migrations (name) VALUES (?)').run(migration.name);
+        db.prepare('INSERT INTO migrations (name, run_at) VALUES (?, ?)').run(migration.name, DateFormatter.toLocalSQLDatetime());
         console.log(`- Migracion ${migration.name} aplicada.\n`);
       } catch (err) {
         console.error(`X Error ejecutando ${migration.name}:`, err);

@@ -4,9 +4,10 @@ export function up(db) {
         CREATE TABLE IF NOT EXISTS proveedores (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           nombre TEXT NOT NULL,
-          ruc TEXT NOT NULL,
+          ruc TEXT,
           correo TEXT,
-          telefono TEXT NOT NULL,
+          telefono TEXT,
+          direccion TEXT,
           activo BOOLEAN NOT NULL DEFAULT 1
         );
       `).run();

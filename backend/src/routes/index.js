@@ -27,6 +27,7 @@ import reservasRouter from './reservas.js';
 import inventarioMovimientosRouter from './inventarioMovimientos.js';
 import proveedoresRouter from './proveedores.js';
 import insumosProveedoresRouter from './insumosProveedores.js';
+import comprasInsumosProveedoresRouter from './comprasInsumosProveedores.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -58,5 +59,6 @@ export default [
   { path: '/api/reservas', router: reservasRouter },
   { path: '/api/inventarioMovimientos', router: inventarioMovimientosRouter },
   { path: '/api/proveedores', router: proveedoresRouter },
-  { path: '/api/insumosProveedores', router: insumosProveedoresRouter }
+  { path: '/api/insumosProveedores', router: insumosProveedoresRouter },
+  { path: '/api/comprasInsumosProveedores', router: comprasInsumosProveedoresRouter }
 ];

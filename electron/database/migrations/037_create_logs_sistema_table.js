@@ -7,7 +7,7 @@ export function up(db) {
       accion TEXT NOT NULL,                      -- Ejemplo: 'crear', 'actualizar', 'eliminar', 'login'
       modulo TEXT NOT NULL,                      -- Ejemplo: 'usuarios', 'pedidos', 'inventario'
       descripcion TEXT,                          -- Detalle del cambio o acción realizada
-      fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      fecha_hora DATETIME NOT NULL,
       dispositivo_id INTEGER REFERENCES dispositivos(id) ON DELETE SET NULL
     );
   `).run();

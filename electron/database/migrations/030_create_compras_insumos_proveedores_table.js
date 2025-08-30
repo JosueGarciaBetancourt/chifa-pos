@@ -6,8 +6,9 @@ export function up(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       insumo_proveedor_id INTEGER NOT NULL REFERENCES insumos_proveedores(id) ON DELETE CASCADE,
       cantidad INTEGER NOT NULL,
-      costo_unitario REAL NOT NULL,
-      fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      costo_unitario_real REAL NOT NULL,
+      observaciones TEXT,
+      fecha DATETIME NOT NULL,
       usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL
     );
   `).run();

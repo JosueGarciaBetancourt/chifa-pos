@@ -3,12 +3,12 @@ const db = connection();
 
 const sql = Object.freeze({
   selectAll: `
-    SELECT id, nombre, ruc, correo, telefono
+    SELECT *
     FROM proveedores
     ORDER BY nombre ASC
   `,
   selectById: `
-    SELECT id, nombre, ruc, correo, telefono
+    SELECT *
     FROM proveedores
     WHERE id = ?
   `,

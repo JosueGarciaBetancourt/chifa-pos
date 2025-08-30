@@ -7,7 +7,7 @@ export function up(db) {
           tipo_id INTEGER NOT NULL REFERENCES tipos_comprobantes(id) ON DELETE CASCADE,
           serie TEXT NOT NULL,
           numero TEXT NOT NULL,
-          fecha_hora_emision DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          fecha_hora_emision DATETIME NOT NULL,
           observaciones TEXT,
           xml_base64 TEXT,
           metodo_pago_id INTEGER NOT NULL REFERENCES metodos_pago(id) ON DELETE CASCADE,

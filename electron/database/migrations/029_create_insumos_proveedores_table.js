@@ -5,6 +5,7 @@ export function up(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       insumo_id INTEGER NOT NULL REFERENCES insumos(id) ON DELETE CASCADE,
       proveedor_id INTEGER NOT NULL REFERENCES proveedores(id) ON DELETE CASCADE,
+      costo_unitario_pactado REAL NOT NULL,
       observaciones TEXT,
       UNIQUE(insumo_id, proveedor_id)
     );

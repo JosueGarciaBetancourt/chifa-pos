@@ -8,7 +8,7 @@ export function up(db) {
       titulo TEXT,
       mensaje TEXT NOT NULL,
       leido BOOLEAN NOT NULL DEFAULT 0, -- 0 = no leído, 1 = leído
-      creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      creado_en DATETIME NOT NULL
     );
   `).run();
 }

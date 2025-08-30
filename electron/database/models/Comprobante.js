@@ -1,4 +1,6 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
+
 const db = connection();
 
 // JOIN enriquecido para mostrar nombres descriptivos
@@ -32,7 +34,7 @@ const sql = Object.freeze({
   selectByPedido: `${baseSelect} WHERE c.pedido_id = ?`,
   insert: `
     INSERT INTO comprobantes (
-      pedido_id, tipo_id, serie, numero,
+      pedido_id, tipo_id, serie, numero, fecha_hora_emision,
       observaciones, xml_base64,
       metodo_pago_id, estado_id, sede_id
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -101,6 +103,7 @@ export const Comprobante = {
     tipo_id,
     serie,
     numero,
+    fecha_hora_emision = DateFormatter.toLocalSQLDatetime(),
     observaciones = null,
     xml_base64 = null,
     metodo_pago_id,
@@ -112,6 +115,7 @@ export const Comprobante = {
       tipo_id,
       serie,
       numero,
+      fecha_hora_emision,
       observaciones,
       xml_base64,
       metodo_pago_id,
