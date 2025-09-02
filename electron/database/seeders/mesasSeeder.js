@@ -29,5 +29,5 @@ export function seed(db) {
   });
 
   insertMany(mesas);
-  console.log('[SEEDER] 15 mesas insertadas');
+  console.log(`[SEEDER] ${mesas.length} insertadas`);
 }

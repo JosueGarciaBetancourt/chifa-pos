@@ -22,7 +22,7 @@ const baseSelect = `
     ec.nombre AS estado_nombre,
     ec.descripcion AS estado_descripcion,
     c.sede_id
-  FROM comprobantes c
+  FROM comprobantes_venta c
   JOIN tipos_comprobantes tc ON c.tipo_id = tc.id
   JOIN metodos_pago mp ON c.metodo_pago_id = mp.id
   JOIN estados_comprobantes ec ON c.estado_id = ec.id
@@ -33,24 +33,24 @@ const sql = Object.freeze({
   selectById: `${baseSelect} WHERE c.id = ?`,
   selectByPedido: `${baseSelect} WHERE c.pedido_id = ?`,
   insert: `
-    INSERT INTO comprobantes (
+    INSERT INTO comprobantes_venta (
       pedido_id, tipo_id, serie, numero, fecha_hora_emision,
       observaciones, xml_base64,
       metodo_pago_id, estado_id, sede_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
   updateEstado: `
-    UPDATE comprobantes 
+    UPDATE comprobantes_venta 
     SET estado_id = ? 
     WHERE id = ?
   `,
   updateXML: `
-    UPDATE comprobantes
+    UPDATE comprobantes_venta
     SET xml_base64 = ?
     WHERE id = ?
   `,
   delete: `
-    DELETE FROM comprobantes 
+    DELETE FROM comprobantes_venta 
     WHERE id = ?
   `,
 });
@@ -83,7 +83,7 @@ function formatComprobante(row) {
   };
 }
 
-export const Comprobante = {
+export const ComprobanteVenta = {
   selectAll() {
     return db.prepare(sql.selectAll).all().map(formatComprobante);
   },

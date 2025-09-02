@@ -2,14 +2,14 @@ export function seed(db) {
   console.log('[SEEDER] Insertando comprobantes...');
 
   const stmt = db.prepare(`
-    INSERT INTO comprobantes (
+    INSERT INTO comprobantes_venta (
       id, pedido_id, tipo_id, serie, numero, fecha_hora_emision,
       observaciones, xml_base64, metodo_pago_id, estado_id, sede_id
     )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  const comprobantes = [
+  const comprobantes_venta = [
     // ID | PEDIDO | TIPO | SERIE | NÚMERO | FECHA | OBSERVACION | XML | MÉTODO_PAGO | ESTADO | SEDE
 
     [1, 1, 1, 'B001', '0001', '2023-07-01 12:45:00', 'Ejemplo 1 de observación en un comprobante', null, 1, 2, 1], // emitido
@@ -24,10 +24,10 @@ export function seed(db) {
     [10, 10, 1, 'B001', '0005', '2023-07-08 18:45:00', null, null, 1, 2, 1], // emitido
   ];
 
-  const insertMany = db.transaction((comprobantes) => {
-    for (const c of comprobantes) stmt.run(c);
+  const insertMany = db.transaction((comprobantes_venta) => {
+    for (const c of comprobantes_venta) stmt.run(c);
   });
 
-  insertMany(comprobantes);
-  console.log(`[SEEDER] ${comprobantes.length} comprobantes insertados`);
+  insertMany(comprobantes_venta);
+  console.log(`[SEEDER] ${comprobantes_venta.length} comprobantes_venta insertados`);
 }

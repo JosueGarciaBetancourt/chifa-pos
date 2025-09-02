@@ -22,19 +22,23 @@ import { up as upDetallesPedidos } from './migrations/021_create_detalles_pedido
 import { up as upMetodosPago } from './migrations/022_create_metodos_pago_table.js';
 import { up as upEstadosComprobantes } from './migrations/023_create_estados_comprobantes_table.js';
 import { up as upTiposComprobantes } from './migrations/024_create_tipos_comprobantes_table.js';
-import { up as upComprobantes } from './migrations/025_create_comprobantes_table.js';
+import { up as upComprobantes } from './migrations/025_create_comprobantes_venta_table.js';
 import { up as upReservas } from './migrations/026_create_reservas_table.js';
 import { up as upInventarioMovimientos } from './migrations/027_create_inventario_movimientos_table.js';
 import { up as upProveedores } from './migrations/028_create_proveedores_table.js';
 import { up as upInsumosProveedores } from './migrations/029_create_insumos_proveedores_table.js';
-import { up as upComprasInsumosProveedores } from './migrations/030_create_compras_insumos_proveedores_table.js';
-import { up as upMovimientosCaja } from './migrations/031_create_movimientos_caja_table.js';
-import { up as upDispositivos } from './migrations/032_create_dispositivos_table.js';
-import { up as upTiposReportes } from './migrations/033_create_tipos_reportes_table.js';
-import { up as upReportes } from './migrations/034_create_reportes_table.js';
-import { up as upTiposNotificaciones } from './migrations/035_create_tipos_notificaciones_table.js';
-import { up as upNotificaciones } from './migrations/036_create_notificaciones_table.js';
-import { up as upLogsSistema } from './migrations/037_create_logs_sistema_table.js';
+import { up as upTiposGastos } from './migrations/030_create_tipos_gastos_table.js';
+import { up as upComprasInsumosProveedores } from './migrations/031_create_compras_insumos_proveedores_table.js';
+import { up as upGastos } from './migrations/032_create_gastos_table.js';
+import { up as upCajas } from './migrations/033_create_cajas_table.js';
+import { up as upMovimientosCaja } from './migrations/034_create_movimientos_caja_table.js';
+import { up as upDispositivos } from './migrations/035_create_dispositivos_table.js';
+import { up as upTiposReportes } from './migrations/036_create_tipos_reportes_table.js';
+import { up as upReportes } from './migrations/037_create_reportes_table.js';
+import { up as upTiposNotificaciones } from './migrations/038_create_tipos_notificaciones_table.js';
+import { up as upNotificaciones } from './migrations/039_create_notificaciones_table.js';
+import { up as upLogsSistema } from './migrations/040_create_logs_sistema_table.js';
+
 import { DateFormatter } from './utils/dateFormatter.js';
 
 export async function runMigrations(db) {
@@ -84,14 +88,17 @@ export async function runMigrations(db) {
     { name: '027_create_inventario_movimientos_table', fn: upInventarioMovimientos },
     { name: '028_create_proveedores_table', fn: upProveedores },
     { name: '029_create_insumos_proveedores_table', fn: upInsumosProveedores },
-    { name: '030_create_compras_insumos_proveedores_table', fn: upComprasInsumosProveedores },
-    { name: '031_create_movimientos_caja_table', fn: upMovimientosCaja },
-    { name: '032_create_dispositivos_table', fn: upDispositivos },
-    { name: '033_create_tipos_reportes_table', fn: upTiposReportes },
-    { name: '034_create_reportes_table', fn: upReportes },
-    { name: '035_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
-    { name: '036_create_notificaciones_table', fn: upNotificaciones },
-    { name: '037_create_logs_sistema_table', fn: upLogsSistema }
+    { name: '030_create_tipos_gastos_table', fn: upTiposGastos },
+    { name: '031_create_compras_insumos_proveedores_table', fn: upComprasInsumosProveedores },
+    { name: '032_create_gastos_table', fn: upGastos },
+    { name: '033_create_cajas_table', fn: upCajas },
+    { name: '034_create_movimientos_caja_table', fn: upMovimientosCaja },
+    { name: '035_create_dispositivos_table', fn: upDispositivos },
+    { name: '036_create_tipos_reportes_table', fn: upTiposReportes },
+    { name: '037_create_reportes_table', fn: upReportes },
+    { name: '038_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
+    { name: '039_create_notificaciones_table', fn: upNotificaciones },
+    { name: '040_create_logs_sistema_table', fn: upLogsSistema }
   ];
 
   for (const migration of migrations) {

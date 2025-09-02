@@ -22,12 +22,14 @@ import detallesPedidosRouter from './detallesPedidos.js';
 import metodosPagoRouter from './metodosPago.js';
 import estadosComprobantesRouter from './estadosComprobantes.js';
 import tiposComprobantesRouter from './tiposComprobantes.js';
-import comprobantesRouter from './comprobantes.js';
+import comprobantesVentaRouter from './comprobantesVenta.js';
 import reservasRouter from './reservas.js';
 import inventarioMovimientosRouter from './inventarioMovimientos.js';
 import proveedoresRouter from './proveedores.js';
 import insumosProveedoresRouter from './insumosProveedores.js';
 import comprasInsumosProveedoresRouter from './comprasInsumosProveedores.js';
+import cajasRouter from './cajas.js';
+import movimientosCajaRouter from './movimientosCaja.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -55,10 +57,12 @@ export default [
   { path: '/api/metodosPago', router: metodosPagoRouter },
   { path: '/api/estadosComprobantes', router: estadosComprobantesRouter },
   { path: '/api/tiposComprobantes', router: tiposComprobantesRouter },
-  { path: '/api/comprobantes', router: comprobantesRouter },
+  { path: '/api/comprobantesVenta', router: comprobantesVentaRouter },
   { path: '/api/reservas', router: reservasRouter },
   { path: '/api/inventarioMovimientos', router: inventarioMovimientosRouter },
   { path: '/api/proveedores', router: proveedoresRouter },
   { path: '/api/insumosProveedores', router: insumosProveedoresRouter },
-  { path: '/api/comprasInsumosProveedores', router: comprasInsumosProveedoresRouter }
+  { path: '/api/comprasInsumosProveedores', router: comprasInsumosProveedoresRouter },
+  { path: '/api/cajas', router: cajasRouter },
+  { path: '/api/movimientosCaja', router: movimientosCajaRouter },
 ];

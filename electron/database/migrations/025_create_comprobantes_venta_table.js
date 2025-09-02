@@ -1,7 +1,7 @@
 export function up(db) {
-    console.log('[MIGRACION] creando tabla comprobantes...');
+    console.log('[MIGRACION] creando tabla comprobantes_venta...');
     db.prepare(`
-        CREATE TABLE IF NOT EXISTS comprobantes (
+        CREATE TABLE IF NOT EXISTS comprobantes_venta (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           pedido_id INTEGER NOT NULL UNIQUE REFERENCES pedidos(id),
           tipo_id INTEGER NOT NULL REFERENCES tipos_comprobantes(id) ON DELETE CASCADE,
