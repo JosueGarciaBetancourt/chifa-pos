@@ -1,4 +1,5 @@
 import { ComprobanteVenta } from '../../../electron/database/models/ComprobanteVenta.js';
+import { CalculosFinancieros } from '../../../electron/database/utils/calculosFinancieros.js';
 
 export const comprobantesVentaController = {
   getComprobantesVenta: async (req, res) => {
@@ -20,11 +21,11 @@ export const comprobantesVentaController = {
     }
   },
 
-  getComprobanteVentaByPedidoId: async (req, res) => {
+  getComprobantesVentaByPedidoId: async (req, res) => {
     try {
-      const comprobanteVenta = await ComprobanteVenta.findByPedidoId(req.params.pedidoId);
-      if (!comprobanteVenta) return res.status(404).json({ error: 'Comprobante de venta no encontrado' });
-      res.json(comprobanteVenta);
+      const comprobantesVenta = await ComprobanteVenta.findByPedidoId(req.params.pedidoId);
+      if (!comprobantesVenta) return res.status(404).json({ error: 'Comprobantes de venta no encontrado para este pedido' });
+      res.json(comprobantesVenta);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -32,7 +33,12 @@ export const comprobantesVentaController = {
 
   createComprobanteVenta: async (req, res) => {
     try {
-      const nuevoComprobanteVenta = await ComprobanteVenta.create(req.body);
+      const { total } = req.body;
+      const subTotal = CalculosFinancieros.calcularSubtotal(total);
+      const igv = CalculosFinancieros.calcularIGV(total);
+      const data = { ...req.body, subTotal, igv };
+
+      const nuevoComprobanteVenta = await ComprobanteVenta.create(data);
       res.status(201).json(nuevoComprobanteVenta);
     } catch (error) {
       res.status(400).json({ error: error.message });

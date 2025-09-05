@@ -22,7 +22,7 @@ import { seed as seedDetallesPedido } from './detalles_pedidosSeeder.js';
 import { seed as seedMetodosPago } from './metodos_pagoSeeder.js';
 import { seed as seedEstadosComprobantes } from './estados_comprobantesSeeder.js';
 import { seed as seedTiposComprobantes } from './tipos_comprobantesSeeder.js';
-import { seed as seedComprobantes } from './comprobantesSeeder.js';
+import { seed as seedComprobantesVenta } from './comprobantesVentaSeeder.js';
 import { seed as seedReservas } from './reservasSeeder.js';
 import { seed as seedInventarioMovimientos } from './inventario_movimientosSeeder.js';
 import { seed as seedProveedores } from './proveedoresSeeder.js';
@@ -32,6 +32,9 @@ import { seed as seedComprasInsumosProveedores } from './compras_insumos_proveed
 import { seed as seedGastos } from './gastosSeeder.js';
 import { seed as seedCajas } from './cajasSeeder.js';
 import { seed as seedMovimientosCaja } from './movimientos_cajaSeeder.js';
+import { seed as seedAperturasCaja } from './aperturas_cajaSeeder.js';
+import { seed as seedIngresosEgresosCaja } from './ingresos_egresos_cajaSeeder.js';
+import { seed as seedCierresCaja } from './cierres_cajaSeeder.js';
 import { seed as seedDispositivos } from './dispositivosSeeder.js';
 import { seed as seedTiposReportes } from './tipos_reportesSeeder.js';
 import { seed as seedReportes } from './reportes_Seeder.js';
@@ -65,7 +68,7 @@ export function seed(db) {
   seedMetodosPago(db);
   seedEstadosComprobantes(db);
   seedTiposComprobantes(db);
-  seedComprobantes(db);
+  seedComprobantesVenta(db);
   seedReservas(db);
   seedInventarioMovimientos(db);
   seedProveedores(db);
@@ -75,6 +78,9 @@ export function seed(db) {
   seedGastos(db);
   seedCajas(db);
   seedMovimientosCaja(db);
+  seedAperturasCaja(db);
+  seedIngresosEgresosCaja(db);
+  seedCierresCaja(db);
   seedDispositivos(db);
   seedTiposReportes(db);
   seedReportes(db);

@@ -64,5 +64,6 @@ export default [
   { path: '/api/insumosProveedores', router: insumosProveedoresRouter },
   { path: '/api/comprasInsumosProveedores', router: comprasInsumosProveedoresRouter },
   { path: '/api/cajas', router: cajasRouter },
-  { path: '/api/movimientosCaja', router: movimientosCajaRouter },
+  { path: '/api/movimientosCaja', router: movimientosCajaRouter }
+
 ];

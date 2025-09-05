@@ -1,4 +1,5 @@
 import { Pedido } from '../../../electron/database/models/Pedido.js';
+import { CalculosFinancieros } from '../../../electron/database/utils/calculosFinancieros.js';
 
 export const pedidosController = {
   getPedidos: async (req, res) => {
@@ -106,7 +107,12 @@ export const pedidosController = {
 
   createPedido: async (req, res) => {
     try {
-      const nuevoPedido = await Pedido.create(req.body);
+      const { total } = req.body;
+      const subTotal = CalculosFinancieros.calcularSubtotal(total);
+      const igv = CalculosFinancieros.calcularIGV(total);
+      const data = { ...req.body, subTotal, igv };
+
+      const nuevoPedido = await Pedido.create(data);
       res.status(201).json(nuevoPedido);
     } catch (error) {
       res.status(400).json({ error: error.message });

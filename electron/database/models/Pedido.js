@@ -1,6 +1,5 @@
 import { connection } from '../connection.js';
 import { DateFormatter } from '../utils/dateFormatter.js';
-import { CalculosFinancieros } from '../utils/calculosFinancieros.js';
 
 const db = connection();
 
@@ -157,14 +156,13 @@ export const Pedido = {
     estado_id = 1, // pendiente
     fecha_hora = DateFormatter.toLocalSQLDatetime(),
     direccion_entrega = null,
+    subTotal,
+    igv,
     total,
     observaciones_generales = null,
     cotizacion_id = null,
     sede_id = 1
   }) {
-    const subTotal = CalculosFinancieros.calcularSubtotal(total);
-    const igv = CalculosFinancieros.calcularIGV(total);
-
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       cliente_id,
       usuario_id,

@@ -3,10 +3,13 @@ export function up(db) {
     db.prepare(`
         CREATE TABLE IF NOT EXISTS comprobantes_venta (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          pedido_id INTEGER NOT NULL UNIQUE REFERENCES pedidos(id),
+          pedido_id INTEGER NOT NULL REFERENCES pedidos(id),
           tipo_id INTEGER NOT NULL REFERENCES tipos_comprobantes(id) ON DELETE CASCADE,
           serie TEXT NOT NULL,
           numero TEXT NOT NULL,
+          subTotal REAL NOT NULL DEFAULT 0, -- sin IGV
+          igv REAL NOT NULL DEFAULT 0,
+          total REAL NOT NULL DEFAULT 0, -- con IGV
           fecha_hora_emision DATETIME NOT NULL,
           observaciones TEXT,
           xml_base64 TEXT,

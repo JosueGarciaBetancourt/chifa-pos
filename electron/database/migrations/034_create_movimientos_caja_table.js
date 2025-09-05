@@ -4,16 +4,10 @@ export function up(db) {
       CREATE TABLE IF NOT EXISTS movimientos_caja (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         caja_id INTEGER NOT NULL REFERENCES cajas(id),
-        movimiento_origen_id INTEGER REFERENCES movimientos_caja(id), -- para enlazar apertura con cierre previo
+        tipo TEXT NOT NULL CHECK(tipo IN ('apertura', 'ingreso', 'egreso', 'cierre')),
         usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
         jornada_laboral_id INTEGER NOT NULL REFERENCES jornadas_laborales(id),
-        tipo TEXT NOT NULL CHECK(tipo IN ('apertura', 'ingreso', 'egreso')),
-        comprobante_id INTEGER REFERENCES comprobantes_venta(id), -- ingresos
-        gasto_id INTEGER REFERENCES gastos(id), -- egresos,
-        fecha_hora_inicio DATETIME NOT NULL,
-        fecha_hora_cierre DATETIME,
-        monto_inicial REAL NOT NULL,
-        monto_final REAL,
+        fecha_hora DATETIME NOT NULL,
         observaciones TEXT
       );
     `).run();

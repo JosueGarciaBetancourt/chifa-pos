@@ -32,12 +32,15 @@ import { up as upComprasInsumosProveedores } from './migrations/031_create_compr
 import { up as upGastos } from './migrations/032_create_gastos_table.js';
 import { up as upCajas } from './migrations/033_create_cajas_table.js';
 import { up as upMovimientosCaja } from './migrations/034_create_movimientos_caja_table.js';
-import { up as upDispositivos } from './migrations/035_create_dispositivos_table.js';
-import { up as upTiposReportes } from './migrations/036_create_tipos_reportes_table.js';
-import { up as upReportes } from './migrations/037_create_reportes_table.js';
-import { up as upTiposNotificaciones } from './migrations/038_create_tipos_notificaciones_table.js';
-import { up as upNotificaciones } from './migrations/039_create_notificaciones_table.js';
-import { up as upLogsSistema } from './migrations/040_create_logs_sistema_table.js';
+import { up as upAperturasCaja } from './migrations/035_create_aperturas_caja_table.js';
+import { up as upIngresosEgresosCaja } from './migrations/036_create_ingresos_egresos_caja_table.js';
+import { up as upCierresCaja } from './migrations/037_create_cierres_caja_table.js';
+import { up as upDispositivos } from './migrations/038_create_dispositivos_table.js';
+import { up as upTiposReportes } from './migrations/039_create_tipos_reportes_table.js';
+import { up as upReportes } from './migrations/040_create_reportes_table.js';
+import { up as upTiposNotificaciones } from './migrations/041_create_tipos_notificaciones_table.js';
+import { up as upNotificaciones } from './migrations/042_create_notificaciones_table.js';
+import { up as upLogsSistema } from './migrations/043_create_logs_sistema_table.js';
 
 import { DateFormatter } from './utils/dateFormatter.js';
 
@@ -93,12 +96,15 @@ export async function runMigrations(db) {
     { name: '032_create_gastos_table', fn: upGastos },
     { name: '033_create_cajas_table', fn: upCajas },
     { name: '034_create_movimientos_caja_table', fn: upMovimientosCaja },
-    { name: '035_create_dispositivos_table', fn: upDispositivos },
-    { name: '036_create_tipos_reportes_table', fn: upTiposReportes },
-    { name: '037_create_reportes_table', fn: upReportes },
-    { name: '038_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
-    { name: '039_create_notificaciones_table', fn: upNotificaciones },
-    { name: '040_create_logs_sistema_table', fn: upLogsSistema }
+    { name: '035_create_aperturas_caja_table', fn: upAperturasCaja },
+    { name: '036_create_ingresos_egresos_caja_table', fn: upIngresosEgresosCaja },
+    { name: '037_create_cierres_caja_table', fn: upCierresCaja },
+    { name: '038_create_dispositivos_table', fn: upDispositivos },
+    { name: '039_create_tipos_reportes_table', fn: upTiposReportes },
+    { name: '040_create_reportes_table', fn: upReportes },
+    { name: '041_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
+    { name: '042_create_notificaciones_table', fn: upNotificaciones },
+    { name: '043_create_logs_sistema_table', fn: upLogsSistema }
   ];
 
   for (const migration of migrations) {

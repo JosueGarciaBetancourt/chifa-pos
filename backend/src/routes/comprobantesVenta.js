@@ -8,7 +8,7 @@ comprobantesVentaRouter.route("/")
   .post(comprobantesVentaController.createComprobanteVenta);
 
 comprobantesVentaRouter.route("/pedido/:pedidoId")
-  .get(comprobantesVentaController.getComprobanteVentaByPedidoId);
+  .get(comprobantesVentaController.getComprobantesVentaByPedidoId);
 
 comprobantesVentaRouter.route("/:id")
   .get(comprobantesVentaController.getComprobanteVentaById)

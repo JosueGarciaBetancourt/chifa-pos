@@ -13,6 +13,9 @@ const baseSelect = `
     tc.serie_letras_iniciales AS tipo_serie,
     c.serie,
     c.numero,
+    c.subTotal,
+    c.igv,
+    c.total,
     c.fecha_hora_emision,
     c.observaciones,
     c.xml_base64,
@@ -32,12 +35,12 @@ const sql = Object.freeze({
   selectAll: `${baseSelect} ORDER BY c.fecha_hora_emision DESC`,
   selectById: `${baseSelect} WHERE c.id = ?`,
   selectByPedido: `${baseSelect} WHERE c.pedido_id = ?`,
+  selectTotalById: `SELECT total FROM comprobantes_venta WHERE id = ?`,
   insert: `
     INSERT INTO comprobantes_venta (
-      pedido_id, tipo_id, serie, numero, fecha_hora_emision,
-      observaciones, xml_base64,
-      metodo_pago_id, estado_id, sede_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      pedido_id, tipo_id, serie, numero, subTotal, igv, total, fecha_hora_emision,
+      observaciones, xml_base64, metodo_pago_id, estado_id, sede_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
   updateEstado: `
     UPDATE comprobantes_venta 
@@ -67,6 +70,9 @@ function formatComprobante(row) {
     },
     serie: row.serie,
     numero: row.numero,
+    subTotal: row.subTotal,
+    igv: row.igv,
+    total: row.total,
     fecha_hora_emision: row.fecha_hora_emision,
     observaciones: row.observaciones,
     xml_base64: row.xml_base64,
@@ -94,8 +100,12 @@ export const ComprobanteVenta = {
   },
 
   findByPedidoId(pedido_id) {
-    const row = db.prepare(sql.selectByPedido).get(pedido_id);
-    return row ? formatComprobante(row) : null;
+    return db.prepare(sql.selectByPedido).all(pedido_id).map(formatComprobante);
+  },
+
+  selectTotalById(id) {
+    const row = db.prepare(sql.selectTotalById).get(id);
+    return row.total || null;
   },
 
   create({
@@ -103,6 +113,9 @@ export const ComprobanteVenta = {
     tipo_id,
     serie,
     numero,
+    subTotal,
+    igv,
+    total,
     fecha_hora_emision = DateFormatter.toLocalSQLDatetime(),
     observaciones = null,
     xml_base64 = null,
@@ -110,11 +123,15 @@ export const ComprobanteVenta = {
     estado_id,
     sede_id = 1
   }) {
+
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       pedido_id,
       tipo_id,
       serie,
       numero,
+      subTotal,
+      igv,
+      total,
       fecha_hora_emision,
       observaciones,
       xml_base64,
