@@ -9,8 +9,8 @@ export function up(db) {
       proveedor_id INTEGER REFERENCES proveedores(id),
       monto REAL NOT NULL,
       metodo_pago_id INTEGER NOT NULL REFERENCES metodos_pago(id),
-      fecha_hora DATETIME NOT NULL,
-      observaciones TEXT
+      observaciones TEXT,
+      fecha_hora DATETIME NOT NULL
     );
   `).run();
 }

@@ -3,6 +3,7 @@ import { aperturasCajaController } from "../controllers/aperturasCaja.controller
 import { cierresCajaController } from "../controllers/cierresCaja.controller.js";
 import { ingresosEgresosCajaController } from "../controllers/ingresosEgresosCaja.controller.js";
 import { ComprobanteVenta } from '../../../electron/database/models/ComprobanteVenta.js';
+import { Gasto } from '../../../electron/database/models/Gasto.js';
 
 export const movimientosCajaController = {
   
@@ -153,7 +154,7 @@ export const movimientosCajaController = {
         observaciones: observaciones
       });
       
-      aperturasCajaController.abrirCaja(movimiento.id, monto_inicial)
+      aperturasCajaController.abrirCaja(movimiento.id, monto_inicial);
       const movimientoApertura = MovimientoCaja.findById(movimiento.id);
 
       res.status(201).json(movimientoApertura);
@@ -203,7 +204,7 @@ export const movimientosCajaController = {
         observaciones: observaciones
       });
 
-      cierresCajaController.cerrarCaja(movimiento.id, movimiento_apertura_id, monto_final_manual)
+      cierresCajaController.cerrarCaja(movimiento.id, movimiento_apertura_id, monto_final_manual);
       const movimientoCierre = MovimientoCaja.findById(movimiento.id);
 
       res.status(201).json(movimientoCierre);
@@ -246,10 +247,10 @@ export const movimientosCajaController = {
         observaciones: observaciones
       });
       
-      const monto = ComprobanteVenta.selectTotalById(comprobante_id)
+      const monto = ComprobanteVenta.selectTotalById(comprobante_id);
 
       ingresosEgresosCajaController.registrarIngreso(movimiento.id, movimiento_apertura_id,
-                                                    comprobante_id, monto)
+                                                    comprobante_id, monto);
 
       const movimientoIngreso = MovimientoCaja.findById(movimiento.id);
 
@@ -261,18 +262,11 @@ export const movimientosCajaController = {
 
   egresoCaja: async (req, res) => {
     try {
-      // Validar campos requeridos
-      const { movimiento_apertura_id, gasto_id, usuario_id, jornada_laboral_id, monto, observaciones } = req.body;
+      const { movimiento_apertura_id, gasto_id, usuario_id, jornada_laboral_id, observaciones } = req.body;
       
-      if (!movimiento_apertura_id || !gasto_id || !usuario_id || !jornada_laboral_id || !monto) {
+      if (!movimiento_apertura_id || !gasto_id || !usuario_id || !jornada_laboral_id) {
         return res.status(400).json({ 
-          error: 'movimiento_apertura_id, gasto_id, usuario_id, jornada_laboral_id y monto son requeridos' 
-        });
-      }
-
-      if (!monto || monto <= 0) {
-        return res.status(400).json({ 
-          error: 'monto debe ser un número mayor a 0' 
+          error: 'movimiento_apertura_id, gasto_id, usuario_i y jornada_laboral_id son requeridos' 
         });
       }
 
@@ -283,7 +277,6 @@ export const movimientosCajaController = {
         });
       }
 
-      // Verificar si la caja está abierta
       const cajaAbierta = MovimientoCaja.getCajaAbierta(caja_id);
       if (!cajaAbierta) {
         return res.status(400).json({ 
@@ -291,7 +284,7 @@ export const movimientosCajaController = {
         });
       }
 
-      const movimientoEgreso = MovimientoCaja.insertMovimientoBase({
+      const movimiento = MovimientoCaja.insertMovimientoBase({
         caja_id: caja_id,
         tipo: "egreso",
         usuario_id: usuario_id,
@@ -299,10 +292,13 @@ export const movimientosCajaController = {
         observaciones: observaciones
       });
 
-      const egreso = ingresosEgresosCajaController.registrarEgreso(movimientoEgreso.id, 
-                                                  movimiento_apertura_id, gasto_id, monto)
+      const monto = Gasto.selectMontoById(gasto_id);
 
-      res.status(201).json({movimiento_caja: movimientoEgreso, egreso_caja: egreso});
+      ingresosEgresosCajaController.registrarEgreso(movimiento.id, movimiento_apertura_id, gasto_id, monto);
+
+      const movimientoEgreso = MovimientoCaja.findById(movimiento.id);
+
+      res.status(201).json(movimientoEgreso);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

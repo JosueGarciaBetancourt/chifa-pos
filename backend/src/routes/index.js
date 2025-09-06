@@ -28,6 +28,8 @@ import inventarioMovimientosRouter from './inventarioMovimientos.js';
 import proveedoresRouter from './proveedores.js';
 import insumosProveedoresRouter from './insumosProveedores.js';
 import comprasInsumosProveedoresRouter from './comprasInsumosProveedores.js';
+import tiposGastosRouter from './tiposGastos.js';
+import gastosRouter from './gastos.js';
 import cajasRouter from './cajas.js';
 import movimientosCajaRouter from './movimientosCaja.js';
 
@@ -63,6 +65,8 @@ export default [
   { path: '/api/proveedores', router: proveedoresRouter },
   { path: '/api/insumosProveedores', router: insumosProveedoresRouter },
   { path: '/api/comprasInsumosProveedores', router: comprasInsumosProveedoresRouter },
+  { path: '/api/tiposGastos', router: tiposGastosRouter },
+  { path: '/api/gastos', router: gastosRouter },
   { path: '/api/cajas', router: cajasRouter },
   { path: '/api/movimientosCaja', router: movimientosCajaRouter }
 

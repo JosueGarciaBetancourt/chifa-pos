@@ -25,15 +25,17 @@ export const ingresosEgresosCajaController = {
 
   registrarEgreso: (movimiento_id, movimiento_apertura_id, gasto_id, monto) => {
     try {
-      if (!movimiento_id || !movimiento_apertura_id || !comprobante_id || !monto) {
+      if (!movimiento_id || !movimiento_apertura_id || !gasto_id || !monto) {
         return { 
           success: false, 
-          error: 'movimiento_id, movimiento_apertura_id, gasto_id  y monto son requeridos' 
+          error: 'movimiento_id, movimiento_apertura_id, gasto_id y monto son requeridos' 
         };
       }
 
+      console.log(movimiento_id, movimiento_apertura_id, gasto_id, monto);
+
       const egresoCaja = IngresoEgresoCaja.registrarEgreso(movimiento_id, movimiento_apertura_id, 
-                                                              gasto_id, monto);
+                                                          gasto_id, monto);
 
       return egresoCaja;
     } catch (error) {
