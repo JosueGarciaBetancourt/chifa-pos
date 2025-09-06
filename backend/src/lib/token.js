@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const generateAccessToken = (user) => {
-    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5m' });
+    return jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'claveSuperSecretaAccess', { expiresIn: '5m' });
 }
 
 const generateRefreshToken = (user) => {
-    return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET || 'claveSuperSecretaRefresh', { expiresIn: '7d' });
 }
 
 const getUserIdFromToken = (req) => {
@@ -15,7 +15,7 @@ const getUserIdFromToken = (req) => {
     throw new Error('Authorization token is required');
     }
 
-    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET || 'claveSuperSecretaAccess');
 
     if (!decoded.id) {
         throw new Error('Invalid token payload');

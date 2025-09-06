@@ -35,9 +35,9 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0',
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     strictPort: true,
-    port: Number(process.env.FRONTEND_PORT) 
+    port: Number(process.env.FRONTEND_PORT || 5173), 
   },
   build: {
     outDir: 'dist',

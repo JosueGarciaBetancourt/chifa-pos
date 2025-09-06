@@ -1,4 +1,6 @@
-if (process.env.NODE_ENV === 'development') {
+const node_env = process.env.NODE_ENV || 'development';
+
+if (node_env === 'development') {
   process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 }
 
@@ -50,8 +52,10 @@ function createWindow() {
       console.error('Render process gone:', details);
     });
 
-    if (process.env.FRONTEND_URL && process.env.NODE_ENV === "development") {
-      mainWindow.loadURL(process.env.FRONTEND_URL);
+    const frontend_url = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+    if (frontend_url && node_env === "development") {
+      mainWindow.loadURL(frontend_url);
       // Espera a que el frontend haya cargado completamente
       mainWindow.webContents.once("did-finish-load", () => {
         mainWindow.webContents.openDevTools();
