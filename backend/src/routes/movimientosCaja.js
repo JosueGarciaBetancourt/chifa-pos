@@ -34,13 +34,13 @@ movimientosCajaRouter.route("/caja/:cajaId/resumen")
 movimientosCajaRouter.route("/abrir")
   .post(movimientosCajaController.abrirCaja);
 
-movimientosCajaRouter.route("/cerrar")
-  .post(movimientosCajaController.cerrarCaja);
-
 movimientosCajaRouter.route("/ingreso")
   .post(movimientosCajaController.ingresoCaja);
 
 movimientosCajaRouter.route("/egreso")
   .post(movimientosCajaController.egresoCaja);
+
+movimientosCajaRouter.route("/cerrar")
+  .post(movimientosCajaController.cerrarCaja);
 
 export default movimientosCajaRouter;
