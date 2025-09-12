@@ -40,6 +40,7 @@ import { seed as seedTiposReportes } from './tipos_reportesSeeder.js';
 import { seed as seedReportes } from './reportes_Seeder.js';
 import { seed as seedTiposNotificaciones } from './tipos_NotificacionesSeeder.js';
 import { seed as seedNotificaciones } from './notificacionesSeeder.js';
+import { seed as seedNotifacionesUsuarios } from './notificaciones_usuariosSeeder.js';
 import { seed as seedLogsSistema } from './logs_sistemaSeeder.js';
 
 
@@ -86,6 +87,7 @@ export function seed(db) {
   seedReportes(db);
   seedTiposNotificaciones(db);
   seedNotificaciones(db);
+  seedNotifacionesUsuarios(db);
   seedLogsSistema(db);
 
   console.log('[SEEDER] Todos los datos iniciales insertados correctamente');

@@ -33,6 +33,10 @@ import gastosRouter from './gastos.js';
 import cajasRouter from './cajas.js';
 import movimientosCajaRouter from './movimientosCaja.js';
 import dispositivosRouter from './dispositivos.js';
+import tiposNotificacionesRouter from './tiposNotificaciones.js';
+import notificacionesRouter from './notificaciones.js';
+import tiposReportesRouter from './tiposReportes.js';
+import reportesRouter from './reportes.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -70,5 +74,9 @@ export default [
   { path: '/api/gastos', router: gastosRouter },
   { path: '/api/cajas', router: cajasRouter },
   { path: '/api/movimientosCaja', router: movimientosCajaRouter },
-  { path: '/api/dispositivos', router: dispositivosRouter }
+  { path: '/api/dispositivos', router: dispositivosRouter },
+  { path: '/api/tiposReportes', router: tiposReportesRouter },
+  { path: '/api/reportes', router: reportesRouter }
+  /* { path: '/api/tiposNotificaciones', router: tiposNotificacionesRouter },
+  { path: '/api/notificaciones', router: notificacionesRouter } */
 ];

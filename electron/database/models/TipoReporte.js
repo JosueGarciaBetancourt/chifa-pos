@@ -4,15 +4,15 @@ const db = connection();
 const sql = Object.freeze({
   selectAll: `
     SELECT *
-    FROM tipos_notificaciones
+    FROM tipos_reportes
     ORDER BY nombre
   `,
   selectById: `
-    SELECT * FROM tipos_notificaciones WHERE id = ?
+    SELECT * FROM tipos_reportes WHERE id = ?
   `
 });
 
-export const TipoNotificacion = {
+export const TipoReporte = {
   selectAll() {
     return db.prepare(sql.selectAll).all();
   },

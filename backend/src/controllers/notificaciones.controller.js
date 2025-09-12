@@ -1,7 +1,7 @@
-import { Notificacion } from '../../../electron/database/models/notificacion.js';
+import { Notificacion } from '../../../electron/database/models/Notificacion.js';
 
-export const notificacionController = {
-  getAll: async (req, res) => {
+export const notificacionesController = {
+  getNotificaciones: async (req, res) => {
     try {
       const notificaciones = await Notificacion.selectAll();
       res.json(notificaciones);
@@ -10,7 +10,7 @@ export const notificacionController = {
     }
   },
 
-  getByUsuario: async (req, res) => {
+  getNotificacionesByUsuario: async (req, res) => {
     try {
       const notificaciones = await Notificacion.findByUsuario(req.params.usuarioId);
       res.json(notificaciones);
@@ -19,7 +19,7 @@ export const notificacionController = {
     }
   },
 
-  getById: async (req, res) => {
+  getNotificacionById: async (req, res) => {
     try {
       const notificacion = await Notificacion.findById(req.params.id);
       if (!notificacion) return res.status(404).json({ error: 'Notificación no encontrada' });
@@ -29,7 +29,7 @@ export const notificacionController = {
     }
   },
 
-  create: async (req, res) => {
+  createNotificacion: async (req, res) => {
     try {
       const nuevaNotificacion = await Notificacion.create(req.body);
       res.status(201).json(nuevaNotificacion);
@@ -56,7 +56,7 @@ export const notificacionController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteNotificacion: async (req, res) => {
     try {
       await Notificacion.delete(req.params.id);
       res.status(204).end();
