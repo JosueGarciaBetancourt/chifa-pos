@@ -56,6 +56,7 @@ export function seed(db) {
   seedPermisos(db);
   seedRolesPermisos(db);
   seedUsuarios(db);
+  seedUsuariosPermisos(db);
   seedJornadasLaborales(db);
   seeedCategoriasProductos(db);
   seedProductos(db);
