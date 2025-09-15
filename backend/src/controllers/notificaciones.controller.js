@@ -40,7 +40,7 @@ export const notificacionesController = {
 
   marcarLeida: async (req, res) => {
     try {
-      await Notificacion.marcarLeida(req.params.id);
+      await Notificacion.marcarLeida(req.params.id, req.body.usuario_id);
       res.json({ message: 'Notificación marcada como leída' });
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -56,9 +56,9 @@ export const notificacionesController = {
     }
   },
 
-  deleteNotificacion: async (req, res) => {
+  disableNotificacion: async (req, res) => {
     try {
-      await Notificacion.delete(req.params.id);
+      await Notificacion.disable(req.params.id);
       res.status(204).end();
     } catch (error) {
       res.status(500).json({ error: error.message });

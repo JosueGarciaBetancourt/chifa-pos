@@ -1,91 +1,115 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
+
 const db = connection();
 
+const detailedSelect = `
+  SELECT 
+    n.id,
+    n.tipo_id,
+    t.nombre AS tipo_nombre,
+    n.titulo,
+    n.mensaje,
+    n.creado_en,
+    n.activo,
+
+    u.id AS usuario_id,
+    u.dni,
+    u.nombre,
+    u.apellido,
+    nu.leido
+  FROM notificaciones n
+  JOIN tipos_notificaciones t ON n.tipo_id = t.id
+  JOIN notificaciones_usuarios nu ON n.id = nu.notificacion_id
+  JOIN usuarios u ON nu.usuario_id = u.id
+`;
+
+function formatNotificaciones(rows) {
+  const map = new Map();
+
+  for (const row of rows) {
+    if (!map.has(row.id)) {
+      map.set(row.id, {
+        id: row.id,
+        tipo: { id: row.tipo_id, nombre: row.tipo_nombre },
+        titulo: row.titulo,
+        mensaje: row.mensaje,
+        usuarios: [],
+        creado_en: row.creado_en,
+        activo: row.activo
+      });
+    }
+
+    map.get(row.id).usuarios.push({
+      id: row.usuario_id,
+      dni: row.dni,
+      nombre: row.nombre,
+      apellido: row.apellido,
+      leido: !!row.leido
+    });
+  }
+
+  return Array.from(map.values());
+}
+
 const sql = Object.freeze({
-  selectAll: `
-    SELECT 
-      n.id, 
-      n.usuario_id,
-      n.tipo_id,
-      t.nombre AS tipo_nombre,
-      n.titulo, 
-      n.mensaje, 
-      n.leido, 
-      n.creado_en
-    FROM notificaciones n
-    JOIN tipos_notificaciones t ON n.tipo_id = t.id
-    ORDER BY n.creado_en DESC
-  `,
-  selectByUsuario: `
-    SELECT 
-      n.id, 
-      n.usuario_id,
-      n.tipo_id,
-      t.nombre AS tipo_nombre,
-      n.titulo, 
-      n.mensaje, 
-      n.leido, 
-      n.creado_en
-    FROM notificaciones n
-    JOIN tipos_notificaciones t ON n.tipo_id = t.id
-    WHERE n.usuario_id = ?
-    ORDER BY n.creado_en DESC
-  `,
-  selectById: `
-    SELECT * FROM notificaciones WHERE id = ?
-  `,
+  selectAll: `${detailedSelect} WHERE n.activo = 1 ORDER BY n.creado_en DESC`,
+  selectById: `${detailedSelect} WHERE n.id = ? AND n.activo = 1 ORDER BY n.creado_en DESC`,
+  selectByUsuario: `${detailedSelect} WHERE u.id = ? AND n.activo = 1 ORDER BY n.creado_en DESC`,
   insert: `
-    INSERT INTO notificaciones (usuario_id, tipo_id, titulo, mensaje)
+    INSERT INTO notificaciones (tipo_id, titulo, mensaje, creado_en)
     VALUES (?, ?, ?, ?)
   `,
+  insertUsuario: `
+    INSERT INTO notificaciones_usuarios (notificacion_id, usuario_id, leido)
+    VALUES (?, ?, 0)
+  `,
   marcarLeido: `
-    UPDATE notificaciones SET leido = 1 WHERE id = ?
+    UPDATE notificaciones_usuarios SET leido = 1 
+    WHERE notificacion_id = ? AND usuario_id = ?
   `,
   marcarTodasLeidas: `
-    UPDATE notificaciones SET leido = 1 WHERE usuario_id = ?
+    UPDATE notificaciones_usuarios SET leido = 1 
+    WHERE usuario_id = ?
   `,
-  delete: `
-    DELETE FROM notificaciones WHERE id = ?
+  disable: `
+    UPDATE notificaciones SET activo = 0
+    WHERE id = ? AND activo = 1
   `
 });
 
-// Formatea la notificación con tipo como objeto
-function formatNotificacion(row) {
-  return {
-    id: row.id,
-    usuario_id: row.usuario_id,
-    tipo_id: row.tipo_id,
-    tipo: {
-      nombre: row.tipo_nombre
-    },
-    titulo: row.titulo,
-    mensaje: row.mensaje,
-    leido: !!row.leido,
-    creado_en: row.creado_en
-  };
-}
-
 export const Notificacion = {
   selectAll() {
-    return db.prepare(sql.selectAll).all().map(formatNotificacion);
-  },
-
-  findByUsuario(usuario_id) {
-    return db.prepare(sql.selectByUsuario).all(usuario_id).map(formatNotificacion);
+    const rows = db.prepare(sql.selectAll).all();
+    return formatNotificaciones(rows);
   },
 
   findById(id) {
-    return db.prepare(sql.selectById).get(id);
+    const rows = db.prepare(sql.selectById).all(id);
+    const result = formatNotificaciones(rows);
+    return result.length ? result[0] : null;
   },
 
-  create({ usuario_id, tipo_id, titulo = null, mensaje }) {
-    const { lastInsertRowid } = db.prepare(sql.insert).run(usuario_id, tipo_id, titulo, mensaje);
-    return this.findById(lastInsertRowid);
+  findByUsuario(usuarioId) {
+    const rows = db.prepare(sql.selectByUsuario).all(usuarioId);
+    return formatNotificaciones(rows);
   },
 
-  marcarLeida(id) {
-    db.prepare(sql.marcarLeido).run(id);
-    return { id, leido: true };
+  create({ tipo_id, titulo, mensaje, usuarios = [] }) {
+    const creado_en = DateFormatter.toLocalSQLDatetime();
+    const { lastInsertRowid: notificacion_id } = db.prepare(sql.insert).run(tipo_id, titulo,
+                                                                            mensaje, creado_en);
+    for (const usuario_id of usuarios) {
+      db.prepare(sql.insertUsuario).run(notificacion_id, usuario_id);
+    }
+    return this.findById(notificacion_id);
+  },
+
+  marcarLeida(notificacion_id, usuario_id) {
+    console.log({ notificacion_id, usuario_id });
+    
+    db.prepare(sql.marcarLeido).run(notificacion_id, usuario_id);
+    return { notificacion_id, usuario_id, leido: true };
   },
 
   marcarTodasLeidas(usuario_id) {
@@ -93,8 +117,8 @@ export const Notificacion = {
     return { usuario_id, leidas: true };
   },
 
-  delete(id) {
-    db.prepare(sql.delete).run(id);
-    return { deleted: true };
+  disable(id) {
+    db.prepare(sql.disable).run(id);
+    return { disabled: true };
   }
 };

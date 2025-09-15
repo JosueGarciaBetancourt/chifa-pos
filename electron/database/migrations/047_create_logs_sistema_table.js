@@ -4,11 +4,11 @@ export function up(db) {
     CREATE TABLE IF NOT EXISTS logs_sistema (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
-      accion TEXT NOT NULL,                      -- Ejemplo: 'crear', 'actualizar', 'eliminar', 'login'
-      modulo TEXT NOT NULL,                      -- Ejemplo: 'usuarios', 'pedidos', 'inventario'
-      descripcion TEXT,                          -- Detalle del cambio o acción realizada
+      accion_id INTEGER NOT NULL REFERENCES acciones_sistema(id),
+      modulo_id INTEGER NOT NULL REFERENCES modulos_sistema(id),
+      descripcion TEXT,
       fecha_hora DATETIME NOT NULL,
       dispositivo_id INTEGER REFERENCES dispositivos(id) ON DELETE SET NULL
-    );
+    );  
   `).run();
 }

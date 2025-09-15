@@ -6,7 +6,8 @@ export function up(db) {
       tipo_id INTEGER NOT NULL REFERENCES tipos_notificaciones(id) ON DELETE CASCADE,
       titulo TEXT,
       mensaje TEXT NOT NULL,
-      creado_en DATETIME NOT NULL
+      creado_en DATETIME NOT NULL,
+      activo BOOLEAN NOT NULL DEFAULT 1
     );
   `).run();
 }

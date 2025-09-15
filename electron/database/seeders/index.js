@@ -1,9 +1,12 @@
 import { seed as seedEmpresaLocal } from './empresa_localSeeder.js';
 import { seed as seedSedeLocal } from './sede_localSeeder.js';
+import { seed as seedModulosSistema} from './modulos_sistemaSeeder.js';
+import { seed as seedAccionesSistema } from './acciones_sistemaSeeder.js';
 import { seed as seedRoles } from './rolesSeeder.js';
 import { seed as seedPermisos } from './permisosSeeder.js';
 import { seed as seedRolesPermisos } from './roles_permisosSeeder.js';
 import { seed as seedUsuarios } from './usuariosSeeder.js';
+import { seed as seedUsuariosPermisos } from './usuarios_permisosSeeder.js';
 import { seed as seedJornadasLaborales } from './jornadas_laboralesSeeder.js';
 import { seed as seeedCategoriasProductos } from './categorias_ProductosSeeder.js';
 import { seed as seedProductos } from './productosSeeder.js';
@@ -47,6 +50,8 @@ import { seed as seedLogsSistema } from './logs_sistemaSeeder.js';
 export function seed(db) {
   seedEmpresaLocal(db);
   seedSedeLocal(db);
+  seedModulosSistema(db);
+  seedAccionesSistema(db);
   seedRoles(db);
   seedPermisos(db);
   seedRolesPermisos(db);

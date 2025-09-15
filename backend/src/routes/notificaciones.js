@@ -11,13 +11,13 @@ notificacionesRouter.route("/usuario/:usuarioId")
   .get(notificacionesController.getNotificacionesByUsuario);
 
 notificacionesRouter.route("/:id/leer")
-  .put(notificacionesController.marcarLeida);
+  .patch(notificacionesController.marcarLeida);
 
 notificacionesRouter.route("/usuario/:usuarioId/leer-todas")
-  .put(notificacionesController.marcarTodasLeidas);
+  .patch(notificacionesController.marcarTodasLeidas);
 
 notificacionesRouter.route("/:id")
   .get(notificacionesController.getNotificacionById)
-  .delete(notificacionesController.deleteNotificacion);
+  .delete(notificacionesController.disableNotificacion);
 
 export default notificacionesRouter;

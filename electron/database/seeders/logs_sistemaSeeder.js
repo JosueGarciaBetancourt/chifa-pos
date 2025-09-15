@@ -5,21 +5,21 @@ export function seed(db) {
     INSERT INTO logs_sistema (
       id,
       usuario_id,
-      accion,
-      modulo,
+      accion_id,
+      modulo_id,
       descripcion,
-      fecha_hora,
-      dispositivo_id
+      dispositivo_id,
+      fecha_hora
     )
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
   const logs_sistema = [
-    [1, 1, 'login', 'usuarios', 'Inicio de sesión del administrador.', '2025-07-11 08:00:00', 1],
-    [2, 2, 'crear', 'pedidos', 'El mozo creó el pedido #1005.', '2025-07-11 08:10:00', 3],
-    [3, 3, 'actualizar', 'inventario', 'Reposición de stock para "arroz jazmín" (de 2kg a 5kg).', '2025-07-11 08:20:00', 2],
-    [4, 4, 'eliminar', 'clientes', 'Cliente con ID 55 eliminado por error.', '2025-07-11 09:00:00', 1],
-    [5, 2, 'crear', 'reservas', 'Reserva realizada para mesa 4 a las 20:00h.', '2025-07-11 09:15:00', 3]
+    [1, 1, 1, 1, 'Inicio de sesión del administrador en caja.', 1, '2025-07-11 08:00:00'], 
+    [2, 2, 3, 3, 'El mozo creó el pedido #1005.', 3, '2025-07-11 08:10:00'], 
+    [3, 3, 4, 4, 'Reposición de stock para "arroz jazmín" (de 2kg a 5kg).', 2, '2025-07-11 08:20:00'], 
+    [4, 4, 5, 4, 'Producto con ID 55 eliminado del inventario.', 1, '2025-07-11 09:00:00'], 
+    [5, 2, 3, 5, 'Delivery creado para pedido #1005, dirección: Av. Siempre Viva 742.', 3, '2025-07-11 09:15:00']
   ];
 
   const insertMany = db.transaction((logs) => {

@@ -1,7 +1,7 @@
-import { LogSistema } from '../../../electron/database/models/logSistema.js';
+import { LogSistema } from '../../../electron/database/models/LogSistema.js';
 
-export const logSistemaController = {
-  getAll: async (req, res) => {
+export const logsSistemaController = {
+  getLogsSistema: async (req, res) => {
     try {
       const logs = await LogSistema.selectAll();
       res.json(logs);
@@ -10,7 +10,7 @@ export const logSistemaController = {
     }
   },
 
-  getByUsuario: async (req, res) => {
+  getLogsByUsuario: async (req, res) => {
     try {
       const logs = await LogSistema.findByUsuario(req.params.usuarioId);
       res.json(logs);
@@ -19,7 +19,7 @@ export const logSistemaController = {
     }
   },
 
-  create: async (req, res) => {
+  createLog: async (req, res) => {
     try {
       await LogSistema.create(req.body);
       res.status(201).json({ message: 'Log creado correctamente' });
@@ -28,7 +28,7 @@ export const logSistemaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteLog: async (req, res) => {
     try {
       await LogSistema.delete(req.params.id);
       res.status(204).end();

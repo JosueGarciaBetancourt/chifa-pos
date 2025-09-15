@@ -1,4 +1,5 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
 const db = connection();
 
 const sql = Object.freeze({
@@ -23,8 +24,8 @@ const sql = Object.freeze({
     SELECT * FROM logs_sistema WHERE usuario_id = ? ORDER BY fecha_hora DESC
   `,
   insert: `
-    INSERT INTO logs_sistema (usuario_id, accion, modulo, descripcion, dispositivo_id)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO logs_sistema (usuario_id, accion, modulo, descripcion, dispositivo_id, fecha_hora)
+    VALUES (?, ?, ?, ?, ?, ?)
   `,
   delete: `
     DELETE FROM logs_sistema WHERE id = ?
@@ -69,7 +70,8 @@ export const LogSistema = {
    * Crea un nuevo registro de log
    */
   create({ usuario_id = null, accion, modulo, descripcion = null, dispositivo_id = null }) {
-    db.prepare(sql.insert).run(usuario_id, accion, modulo, descripcion, dispositivo_id);
+    const fecha_hora = DateFormatter.toLocalSQLDatetime();
+    db.prepare(sql.insert).run(usuario_id, accion, modulo, descripcion, dispositivo_id, fecha_hora);
     return { created: true };
   },
 

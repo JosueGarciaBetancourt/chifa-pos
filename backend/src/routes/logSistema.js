@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { logSistemaController } from "../controllers/logSistema.controller.js";
+import { logsSistemaController } from "../controllers/logsSistema.controller.js";
 
-const router = Router();
+const logsSistemaRouter = Router();
 
-router.route("/")
-  .get(logSistemaController.getAll)
-  .post(logSistemaController.create);
+logsSistemaRouter.route("/")
+  .get(logsSistemaController.getLogsSistema)
+  .post(logsSistemaController.createLog);
 
-router.route("/usuario/:usuarioId")
-  .get(logSistemaController.getByUsuario);
+logsSistemaRouter.route("/usuario/:usuarioId")
+  .get(logsSistemaController.getLogsByUsuario);
 
-router.route("/:id")
-  .delete(logSistemaController.delete);
+logsSistemaRouter.route("/:id")
+  .delete(logsSistemaController.deleteLog);
 
-export default router;
+export default logsSistemaRouter;

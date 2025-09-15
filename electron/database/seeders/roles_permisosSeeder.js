@@ -7,34 +7,81 @@ export function seed(db) {
   `);
 
   const roles_permisos = [
-    // admin → solo permiso "all"
-    [1, 1, 1],
+    // ===============================
+    // ADMIN → todos los permisos
+    // ===============================
+    ...Array.from({ length: 24 }, (_, i) => [i + 1, 1, i + 1]),
 
-    // supervisor → todos menos "all"
-    [2, 2, 2],
-    [3, 2, 3],
-    [4, 2, 4],
-    [5, 2, 5],
-    [6, 2, 6],
-    [7, 2, 7],
+    // ===============================
+    // SUPERVISOR → todos excepto eliminar
+    // (es decir: no incluye los permisos con acción "eliminar")
+    // ===============================
+    [25, 2, 1],  // caja - ver
+    [26, 2, 2],  // caja - crear
+    [27, 2, 3],  // caja - actualizar
 
-    // cajero → caja, pedidos, reportes
-    [8, 3, 2],
-    [9, 3, 4],
-    [10, 3, 7],
+    [28, 2, 5],  // cocina - ver
+    [29, 2, 6],  // cocina - crear
+    [30, 2, 7],  // cocina - actualizar
 
-    // cocinero → cocina, pedidos
-    [11, 4, 3],
-    [12, 4, 4],
+    [31, 2, 9],  // pedidos - ver
+    [32, 2, 10], // pedidos - crear
+    [33, 2, 11], // pedidos - actualizar
 
-    // mozo → pedidos, delivery
-    [13, 5, 4],
-    [14, 5, 6]
+    [34, 2, 13], // inventario - ver
+    [35, 2, 14], // inventario - crear
+    [36, 2, 15], // inventario - actualizar
+
+    [37, 2, 17], // delivery - ver
+    [38, 2, 18], // delivery - crear
+    [39, 2, 19], // delivery - actualizar
+
+    [40, 2, 21], // reportes - ver
+    [41, 2, 22], // reportes - exportar
+    [42, 2, 23], // reportes - imprimir
+    [43, 2, 24], // reportes - notificar
+
+    // ===============================
+    // CAJERO → caja, pedidos, reportes (solo ver/exportar)
+    // ===============================
+    [44, 3, 1],  // caja - ver
+    [45, 3, 2],  // caja - crear
+    [46, 3, 3],  // caja - actualizar
+
+    [47, 3, 9],  // pedidos - ver
+    [48, 3, 10], // pedidos - crear
+
+    [49, 3, 21], // reportes - ver
+    [50, 3, 22], // reportes - exportar
+
+    // ===============================
+    // COCINERO → cocina, pedidos
+    // ===============================
+    [51, 4, 5],  // cocina - ver
+    [52, 4, 6],  // cocina - crear
+    [53, 4, 7],  // cocina - actualizar
+
+    [54, 4, 9],  // pedidos - ver
+    [55, 4, 11], // pedidos - actualizar
+
+    // ===============================
+    // MOZO → pedidos, delivery
+    // ===============================
+    [56, 5, 9],  // pedidos - ver
+    [57, 5, 10], // pedidos - crear
+    [58, 5, 11], // pedidos - actualizar
+    [59, 5, 12], // pedidos - eliminar
+
+    // Delivery
+    [60, 5, 17], // delivery - ver
+    [61, 5, 18], // delivery - crear
+    [62, 5, 19], // delivery - actualizar
+    [63, 5, 20] // delivery - eliminar
   ];
 
-  const insertMany = db.transaction((items) => {
-    for (const item of items) {
-      stmt.run(item);
+  const insertMany = db.transaction((roles_permisos) => {
+    for (const rp of roles_permisos) {
+      stmt.run(rp);
     }
   });
 
