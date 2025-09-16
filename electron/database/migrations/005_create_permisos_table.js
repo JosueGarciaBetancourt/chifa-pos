@@ -6,6 +6,7 @@ export function up(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       modulo_id INTEGER NOT NULL REFERENCES modulos_sistema(id),
       accion_id INTEGER NOT NULL REFERENCES acciones_sistema(id),
+      codigo TEXT NOT NULL,
       UNIQUE(modulo_id, accion_id)
     );
   `).run();

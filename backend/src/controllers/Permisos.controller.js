@@ -20,27 +20,13 @@ export const permisosController = {
     }
   },
 
-  getPermisosActive: async (req, res) => {
-    try {
-      const permisos = await Permiso.selectActive();
-      res.json(permisos || []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  getPermisosInactive: async (req, res) => {
-    try {
-      const permisos = await Permiso.selectInactive();
-      res.json(permisos || []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
   createPermiso: async (req, res) => {
     try {
-      const nuevoPermiso = await Permiso.create(req.body);
+      const { modulo_id, accion_id } = req.body;
+      if (!modulo_id || !accion_id) {
+        return res.status(400).json({ error: 'modulo_id y accion_id son requeridos' });
+      }
+      const nuevoPermiso = await Permiso.create({ modulo_id, accion_id });
       res.status(201).json(nuevoPermiso);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -56,24 +42,6 @@ export const permisosController = {
       res.json(permisoActualizado);
     } catch (error) {
       res.status(400).json({ error: error.message });
-    }
-  },
-
-  disablePermiso: async (req, res) => {
-    try {
-      await Permiso.disable(req.params.id);
-      res.status(200).json({ disabled: true });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  enablePermiso: async (req, res) => {
-    try {
-      const permisoEnabled = await Permiso.enable(req.params.id);
-      res.status(200).json(permisoEnabled);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
     }
   },
 

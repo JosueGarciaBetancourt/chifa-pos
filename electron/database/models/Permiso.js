@@ -1,41 +1,28 @@
 import { connection } from '../connection.js';
+import { ModuloSistema } from '../../../electron/database/models/ModuloSistema.js';
+import { AccionSistema } from '../../../electron/database/models/AccionSistema.js';
+
 const db = connection();
 
 const sql = Object.freeze({
   selectAll: `
-    SELECT id, nombre 
+    SELECT *
     FROM permisos
     ORDER BY id ASC
   `,
   selectById: `
-    SELECT * 
+    SELECT *
     FROM permisos 
     WHERE id = ?
   `,
-  selectActive: `
-    SELECT *
-    FROM permisos
-    WHERE activo = 1
-  `,
-  selectInactive: `
-    SELECT *
-    FROM permisos
-    WHERE activo = 0
-  `,
   insert: `
-    INSERT INTO permisos (nombre) 
-    VALUES (?)
+    INSERT INTO permisos (modulo_id, accion_id, codigo) 
+    VALUES (?, ?, ?)
   `,
   update: `
     UPDATE permisos 
-    SET nombre = ? 
+    SET modulo_id = ?, accion_id = ?, codigo = ?
     WHERE id = ?
-  `,
-  disable: `
-    UPDATE permisos SET activo = 0 WHERE id = ? AND activo = 1
-  `,
-  enable: `
-    UPDATE permisos SET activo = 1 WHERE id = ? AND activo = 0
   `,
   delete: `
     DELETE FROM permisos 
@@ -52,36 +39,35 @@ export const Permiso = {
     return db.prepare(sql.selectById).get(id);
   },
 
-  selectActive() {
-    return db.prepare(sql.selectActive).all();
-  },
+  create({ modulo_id, accion_id }) {
+    const modulo = ModuloSistema.findById(modulo_id);
+    const accion = AccionSistema.findById(accion_id);
 
-  selectInactive() {
-    return db.prepare(sql.selectInactive).all();
-  },
+    if (!modulo) throw new Error(`Módulo no encontrado (id=${modulo_id})`);
+    if (!accion) throw new Error(`Acción no encontrada (id=${accion_id})`);
 
-  create({ nombre }) {
-    const { lastInsertRowid } = db.prepare(sql.insert).run(nombre);
+    const codigo = `${modulo?.nombre}.${accion?.nombre}`;
+
+    const { lastInsertRowid } = db.prepare(sql.insert).run(modulo_id, accion_id, codigo);
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { nombre }) {
-    db.prepare(sql.update).run(nombre, id);
+  update(id, { modulo_id, accion_id }) {
+    const modulo = ModuloSistema.findById(modulo_id);
+    const accion = AccionSistema.findById(accion_id);
+
+    if (!modulo) throw new Error(`Módulo no encontrado (id=${modulo_id})`);
+    if (!accion) throw new Error(`Acción no encontrada (id=${accion_id})`);
+
+    const codigo = `${modulo?.nombre}.${accion?.nombre}`;  
+
+    db.prepare(sql.update).run(modulo_id, accion_id, codigo, id);
     return this.findById(id);
   },
 
-  disable(id) {
-    db.prepare(sql.disable).run(id);
-    return;
-  },
-
-  enable(id) {
-    db.prepare(sql.enable).run(id);
-    return this.findById(id);
-  },
-  
   delete(id) {
     db.prepare(sql.delete).run(id);
     return { deleted: true };
   }
 };
+
