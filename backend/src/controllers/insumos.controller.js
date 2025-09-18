@@ -1,4 +1,4 @@
-import { Insumo } from "../../../electron/database/models/insumo.js";
+import { Insumo } from "../../../electron/database/models/Insumo.js";
 
 export const insumosController = {
   getInsumos: async (req, res) => {

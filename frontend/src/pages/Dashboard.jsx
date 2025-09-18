@@ -4,32 +4,14 @@ import { BarChart2, Clock, Users, Package, ShoppingCart, Utensils, Tablet, Truck
 import productosUnifiedService from '../services/productosUnifiedService';
 
 export default function Dashboard() {
-  console.log(window.electronAPI);
+  //console.log(window.electronAPI.productos);
 
   const navigate = useNavigate();
 
-  /* useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const productosData = await productosUnifiedService.getProductos();
-    
-        if (Array.isArray(productosData)) {
-          alert(`✅ ${productosData.length} productos recibidos`);
-        } else {
-          console.error("❌ productosData no es un array:", productosData);
-        }
-      } catch (error) {
-        console.error('Error al obtener productos:', error);
-      }
-    };
-  
-    fetchProductos();
-  }, []); */
-  
   const handleProbarApi = async () => {
     try {
       const productosData = await productosUnifiedService.getProductos();
-      console.log('[✔️ Unified API OK] Productos:', productosData);
+      console.log('[✔️] Productos:', productosData);
       alert(`✅ ${productosData.length} productos recibidos`);
     } catch (error) {
       alert('❌ Error al obtener productos');

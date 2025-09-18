@@ -20,6 +20,15 @@ export const jornadasLaboralesController = {
     }
   },
 
+  getJornadaLaboralIniciadaPorUsuarioId: async (req, res) => {
+    try {
+      const jornada = await JornadaLaboral.findIniciadaPorUsuario(req.params.usuarioId);
+      res.json(jornada || []);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
   createJornadaLaboral: async (req, res) => {
     try {
       const nuevaJornada = await JornadaLaboral.create(req.body);
@@ -39,15 +48,6 @@ export const jornadasLaboralesController = {
       res.json(jornadaFinalizada);
     } catch (error) {
       res.status(400).json({ error: error.message });
-    }
-  },
-
-  getJornadaLaboralIniciadaPorUsuarioId: async (req, res) => {
-    try {
-      const jornada = await JornadaLaboral.findIniciadaPorUsuario(req.params.usuarioId);
-      res.json(jornada || []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
     }
   },
 

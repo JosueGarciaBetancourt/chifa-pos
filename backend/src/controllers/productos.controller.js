@@ -1,4 +1,4 @@
-import { Producto } from "../../../electron/database/models/producto.js";
+import { Producto } from "../../../electron/database/models/Producto.js";
 
 export const productosController = {
   getProductos: async (req, res) => {

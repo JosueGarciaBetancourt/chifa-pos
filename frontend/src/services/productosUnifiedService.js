@@ -2,45 +2,143 @@ import productosApi from './api/productosApi';
 import isElectron from '../utils/isElectron';
 
 const productosUnifiedService = {
+  // Obtener todos los productos
   getProductos: async () => {
-    if (isElectron()) {
-      try {
-        const productos = await window.electronAPI.getProductos();
-
-        return productos;
-      } catch (error) {
-        console.error('❌ Error usando Electron API:', error);
-        throw error;
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.getProductos();
+      } else {
+        return await productosApi.getProductos();
       }
-    } else {
-      try {
-        const productos = await productosApi.getProductos();
-        return productos;
-      } catch (error) {
-        console.error('❌ Error usando API web:', error);
-        throw error;
-      }
+    } catch (error) {
+      console.error('❌ Error obteniendo productos:', error);
+      throw error;
     }
   },
 
+  // Buscar productos por nombre
   buscarProductosPorNombre: async (nombre) => {
-    if (isElectron()) {
-      try {
-        const productos = await window.electronAPI.buscarProductosPorNombre(nombre);
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.buscarProductosPorNombre(nombre);
+      } else {
+        return await productosApi.buscarProductosPorNombre(nombre);
+      }
+    } catch (error) {
+      console.error('❌ Error buscando productos por nombre:', error);
+      throw error;
+    }
+  },
 
-        return productos;
-      } catch (error) {
-        console.error('❌ Error usando Electron API:', error);
-        throw error;
+  // Obtener productos activos
+  getProductosActivos: async () => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.getProductosActivos();
+      } else {
+        return await productosApi.getProductosActivos();
       }
-    } else {
-      try {
-        const productos = await api.get(`/api/productos/buscarPorNombre?search=${encodeURIComponent(nombre)}`);
-        return productos;
-      } catch (error) {
-        console.error('❌ Error usando API web:', error);
-        throw error;
+    } catch (error) {
+      console.error('❌ Error obteniendo productos activos:', error);
+      throw error;
+    }
+  },
+
+  // Obtener productos inactivos
+  getProductosInactivos: async () => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.getProductosInactivos();
+      } else {
+        return await productosApi.getProductosInactivos();
       }
+    } catch (error) {
+      console.error('❌ Error obteniendo productos inactivos:', error);
+      throw error;
+    }
+  },
+
+  // Obtener producto por id
+  getProductoById: async (id) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.getProductoById(id);
+      } else {
+        return await productosApi.getProductoById(id);
+      }
+    } catch (error) {
+      console.error(`❌ Error obteniendo producto con id ${id}:`, error);
+      throw error;
+    }
+  },
+
+  // Crear producto
+  createProducto: async (producto) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.createProducto(producto);
+      } else {
+        return await productosApi.createProducto(producto);
+      }
+    } catch (error) {
+      console.error('❌ Error creando producto:', error);
+      throw error;
+    }
+  },
+
+  // Actualizar producto
+  updateProducto: async (id, producto) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.updateProducto(id, producto);
+      } else {
+        return await productosApi.updateProducto(id, producto);
+      }
+    } catch (error) {
+      console.error(`❌ Error actualizando producto con id ${id}:`, error);
+      throw error;
+    }
+  },
+
+  // Eliminar producto
+  deleteProducto: async (id) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.deleteProducto(id);
+      } else {
+        return await productosApi.deleteProducto(id);
+      }
+    } catch (error) {
+      console.error(`❌ Error eliminando producto con id ${id}:`, error);
+      throw error;
+    }
+  },
+
+  // Deshabilitar producto
+  disableProducto: async (id) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.disableProducto(id);
+      } else {
+        return await productosApi.disableProducto(id);
+      }
+    } catch (error) {
+      console.error(`❌ Error deshabilitando producto con id ${id}:`, error);
+      throw error;
+    }
+  },
+
+  // Habilitar producto
+  enableProducto: async (id) => {
+    try {
+      if (isElectron()) {
+        return await window.electronAPI.productos.enableProducto(id);
+      } else {
+        return await productosApi.enableProducto(id);
+      }
+    } catch (error) {
+      console.error(`❌ Error habilitando producto con id ${id}:`, error);
+      throw error;
     }
   }
 };

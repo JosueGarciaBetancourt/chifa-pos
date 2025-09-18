@@ -1,4 +1,4 @@
-import { EmpresaLocal } from '../../../electron/database/models/empresaLocal.js';
+import { EmpresaLocal } from '../../../electron/database/models/EmpresaLocal.js';
 
 export const empresaLocalController = {
   getEmpresaLocalAll: async (req, res) => {
