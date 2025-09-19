@@ -27,7 +27,7 @@ export function estadosDetallesPedidosHandlers() {
     try {
       return await EstadoDetallePedido.searchByName(name) || [];
     } catch (error) {
-      console.error("[IPC ERROR searchByName]", error);
+      console.error("[IPC ERROR searchEstadosDetallesPedidosByName]", error);
       return { error: error.message, data: [] };
     }
   });

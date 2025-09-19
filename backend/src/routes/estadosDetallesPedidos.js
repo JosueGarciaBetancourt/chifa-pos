@@ -7,8 +7,8 @@ estadosDetallesPedidosRouter.route("/")
   .get(estadosDetallesPedidosController.getEstadosDetallesPedidos)
   .post(estadosDetallesPedidosController.createEstadoDetallePedido);
 
-estadosDetallesPedidosRouter.route('/searchByName')
-  .get(estadosDetallesPedidosController.searchByName);
+estadosDetallesPedidosRouter.route('/searchEstadosDetallesPedidosByName')
+  .get(estadosDetallesPedidosController.searchEstadosDetallesPedidosByName);
 
 estadosDetallesPedidosRouter.route("/:id")
   .get(estadosDetallesPedidosController.getEstadoDetallePedidoById)

@@ -7,8 +7,8 @@ tiposComprobantesRouter.route("/")
   .get(tiposComprobantesController.getTiposComprobantes)
   .post(tiposComprobantesController.createTipoComprobante);
 
-tiposComprobantesRouter.route('/searchByName')
-  .get(tiposComprobantesController.searchByName);
+tiposComprobantesRouter.route('/searchTiposComprobantesByName')
+  .get(tiposComprobantesController.searchTiposComprobantesByName);
   
 tiposComprobantesRouter.route("/:id")
   .get(tiposComprobantesController.getTipoComprobanteById)

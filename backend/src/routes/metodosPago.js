@@ -7,8 +7,8 @@ metodosPagoRouter.route("/")
   .get(metodosPagoController.getMetodosPago)
   .post(metodosPagoController.createMetodoPago);
 
-metodosPagoRouter.route('/searchByName')
-  .get(metodosPagoController.searchByName);
+metodosPagoRouter.route('/searchMetodosPagoByName')
+  .get(metodosPagoController.searchMetodosPagoByName);
 
 metodosPagoRouter.route("/:id")
   .get(metodosPagoController.getMetodoPagoById)

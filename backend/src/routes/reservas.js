@@ -14,7 +14,7 @@ reservasRouter.route("/cliente/:clienteId")
   .get(reservasController.getReservasByCliente);
 
 reservasRouter.route("/:id/estado")
-  .patch(reservasController.updateEstado);
+  .patch(reservasController.updateEstadoDeReserva);
 
 reservasRouter.route("/:id")
   .get(reservasController.getReservaById)

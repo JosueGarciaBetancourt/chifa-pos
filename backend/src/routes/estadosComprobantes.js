@@ -7,8 +7,8 @@ estadosComprobantesRouter.route("/")
   .get(estadosComprobantesController.getEstadosComprobantes)
   .post(estadosComprobantesController.createEstadoComprobante);
 
-estadosComprobantesRouter.route('/searchByName')
-  .get(estadosComprobantesController.searchByName);
+estadosComprobantesRouter.route('/searchEstadosComprobantesByName')
+  .get(estadosComprobantesController.searchEstadosComprobantesByName);
 
 estadosComprobantesRouter.route("/:id")
   .get(estadosComprobantesController.getEstadoComprobanteById)

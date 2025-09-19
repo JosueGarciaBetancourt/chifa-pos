@@ -45,7 +45,7 @@ export const comprobantesVentaController = {
     }
   },
 
-  updateEstado: async (req, res) => {
+  updateEstadoDeComprobanteVenta: async (req, res) => {
     try {
       const comprobanteVenta = await ComprobanteVenta.updateEstado(req.params.id, req.body.estado_id);
       res.json(comprobanteVenta);
@@ -54,7 +54,7 @@ export const comprobantesVentaController = {
     }
   },
 
-  updateXML: async (req, res) => {
+  updateXMLComprobanteVenta: async (req, res) => {
     try {
       const comprobanteVenta = await ComprobanteVenta.updateXML(req.params.id, req.body.xml_base64);
       res.json(comprobanteVenta);

@@ -24,21 +24,21 @@ export function insumosProveedoresHandlers() {
   });
 
   // Obtener relaciones por insumo
-  ipcMain.handle("getByInsumo", async (event, insumoId) => {
+  ipcMain.handle("getInsumosProveedoresByInsumo", async (event, insumoId) => {
     try {
       return (await InsumoProveedor.findByInsumo(insumoId)) || [];
     } catch (error) {
-      console.error("[IPC ERROR getByInsumo]", error);
+      console.error("[IPC ERROR getInsumosProveedoresByInsumo]", error);
       return { error: error.message, data: [] };
     }
   });
 
   // Obtener relaciones por proveedor
-  ipcMain.handle("getByProveedor", async (event, proveedorId) => {
+  ipcMain.handle("getInsumosProveedoresByProveedor", async (event, proveedorId) => {
     try {
       return (await InsumoProveedor.findByProveedor(proveedorId)) || [];
     } catch (error) {
-      console.error("[IPC ERROR getByProveedor]", error);
+      console.error("[IPC ERROR getInsumosProveedoresByProveedor]", error);
       return { error: error.message, data: [] };
     }
   });

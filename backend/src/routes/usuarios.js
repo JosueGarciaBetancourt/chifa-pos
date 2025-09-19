@@ -16,8 +16,8 @@ usuariosRouter.route('/inactive')
 usuariosRouter.route("/dni/:dni")
   .get(usuariosController.getUsuarioByDni);
 
-usuariosRouter.route('/searchByUsername')
-  .get(usuariosController.searchByUsername);
+usuariosRouter.route('/searchUsuariosByUsername')
+  .get(usuariosController.searchUsuariosByUsername);
 
 usuariosRouter.route("/:id")
   .get(usuariosController.getUsuarioById)

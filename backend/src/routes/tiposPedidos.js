@@ -7,8 +7,8 @@ tiposPedidosRouter.route("/")
   .get(tiposPedidosController.getTiposPedidos)
   .post(tiposPedidosController.createTipoPedido);
 
-tiposPedidosRouter.route("/searchByName")
-  .get(tiposPedidosController.searchByName);
+tiposPedidosRouter.route("/searchTiposPedidosByName")
+  .get(tiposPedidosController.searchTiposPedidosByName);
 
 tiposPedidosRouter.route("/:id")
   .get(tiposPedidosController.getTipoPedidoById)

@@ -8,7 +8,7 @@ detallesPedidosRouter.route("/pedido/:pedidoId")
   .post(detallesPedidosController.createDetallePedido);
 
 detallesPedidosRouter.route("/:id/estado")
-  .patch(detallesPedidosController.updateEstado);
+  .patch(detallesPedidosController.updateEstadoDeDetallePedido);
 
 detallesPedidosRouter.route("/:id")
   .put(detallesPedidosController.updateDetallePedido)

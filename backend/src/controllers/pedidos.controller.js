@@ -119,7 +119,7 @@ export const pedidosController = {
     }
   },
 
-  updateEstado: async (req, res) => {
+  updateEstadoDePedido: async (req, res) => {
     try {
       const pedidoActualizado = await Pedido.updateEstado(
         req.params.id, 

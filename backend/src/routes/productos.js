@@ -7,8 +7,8 @@ productosRouter.route('/')
   .get(productosController.getProductos)
   .post(productosController.createProducto);
 
-productosRouter.route('/searchByName')
-  .get(productosController.searchByName);
+productosRouter.route('/searchProductosByName')
+  .get(productosController.searchProductosByName);
 
 productosRouter.route('/active')
   .get(productosController.getProductosActive);

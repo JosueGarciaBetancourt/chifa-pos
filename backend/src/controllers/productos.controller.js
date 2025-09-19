@@ -10,7 +10,7 @@ export const productosController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchProductosByName: async (req, res) => {
     try {
       const productos = await Producto.searchByName(req.query.nombre);
       res.json(productos || []);

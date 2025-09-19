@@ -28,7 +28,7 @@ export function comprasInsumosProveedoresHandlers() {
     try {
       return (await CompraInsumoProveedor.findByInsumo(insumoId)) || [];
     } catch (error) {
-      console.error("[IPC ERROR getByInsumo]", error);
+      console.error("[IPC ERROR getComprasInsumosProveedoresByInsumo]", error);
       return { error: error.message, data: [] };
     }
   });
@@ -38,7 +38,7 @@ export function comprasInsumosProveedoresHandlers() {
     try {
       return (await CompraInsumoProveedor.findByProveedor(proveedorId)) || [];
     } catch (error) {
-      console.error("[IPC ERROR getByProveedor]", error);
+      console.error("[IPC ERROR getComprasInsumosProveedoresByProveedor]", error);
       return { error: error.message, data: [] };
     }
   });

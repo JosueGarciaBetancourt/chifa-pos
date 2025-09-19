@@ -20,7 +20,7 @@ export const estadosDetallesPedidosController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchEstadosDetallesPedidosByName: async (req, res) => {
       try {
         const estadosDetallesPedidos = await EstadoDetallePedido.searchByName(req.query.name);
         res.json(estadosDetallesPedidos || []);

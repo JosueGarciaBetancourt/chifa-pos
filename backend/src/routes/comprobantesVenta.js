@@ -15,9 +15,9 @@ comprobantesVentaRouter.route("/:id")
   .delete(comprobantesVentaController.deleteComprobanteVenta);
 
 comprobantesVentaRouter.route("/:id/estado")
-  .patch(comprobantesVentaController.updateEstado);
+  .patch(comprobantesVentaController.updateEstadoDeComprobanteVenta);
 
 comprobantesVentaRouter.route("/:id/xml")
-  .patch(comprobantesVentaController.updateXML);
+  .patch(comprobantesVentaController.updateXMLComprobanteVenta);
 
 export default comprobantesVentaRouter;

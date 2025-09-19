@@ -20,7 +20,7 @@ export const tiposComprobantesController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchTiposComprobantesByName: async (req, res) => {
       try {
         const estadosComprobantes = await TipoComprobante.searchByName(req.query.name);
         res.json(estadosComprobantes || []);

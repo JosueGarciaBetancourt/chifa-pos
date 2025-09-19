@@ -20,7 +20,7 @@ export const tiposPedidosController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchTiposPedidosByName: async (req, res) => {
     try {
       const tipo = await TipoPedido.searchByName(req.query.name);
       if (!tipo) return res.status(404).json({ error: 'Tipo de pedido no encontrado' });

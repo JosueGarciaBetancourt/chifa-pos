@@ -20,7 +20,7 @@ export const estadosMesasController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchEstadoMesaByName: async (req, res) => {
     try {
       const estado = await EstadoMesa.searchByName(req.query.name);
       if (!estado) return res.status(404).json({ error: 'Estado de mesa no encontrado' });

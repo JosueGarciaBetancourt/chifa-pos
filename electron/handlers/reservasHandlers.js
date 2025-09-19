@@ -54,11 +54,11 @@ export function reservasHandlers() {
   });
 
   // Actualizar estado de una reserva
-  ipcMain.handle("updateEstadoReserva", async (event, id, estado) => {
+  ipcMain.handle("updateEstadoDeReserva", async (event, id, estado) => {
     try {
       return await Reserva.updateEstado(id, estado);
     } catch (error) {
-      console.error("[IPC ERROR updateEstadoReserva]", error);
+      console.error("[IPC ERROR updateEstadoDeReserva]", error);
       return { error: error.message };
     }
   });

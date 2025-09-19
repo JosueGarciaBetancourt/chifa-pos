@@ -20,7 +20,7 @@ export const insumosProveedoresController = {
     }
   },
 
-  getByInsumo: async (req, res) => {
+  getInsumosProveedoresByInsumo: async (req, res) => {
     try {
       const relaciones = await InsumoProveedor.findByInsumo(req.params.insumoId);
       res.json(relaciones);
@@ -29,7 +29,7 @@ export const insumosProveedoresController = {
     }
   },
 
-  getByProveedor: async (req, res) => {
+  getInsumosProveedoresByProveedor: async (req, res) => {
     try {
       const relaciones = await InsumoProveedor.findByProveedor(req.params.proveedorId);
       res.json(relaciones);

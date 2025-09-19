@@ -52,7 +52,7 @@ export const usuariosController = {
   },
 
   // Obtener usuarios por username
-  searchByUsername: async (req, res) => {
+  searchUsuariosByUsername: async (req, res) => {
     try {
       const usuarios = await Usuario.searchByUsername(req.query.username);
       res.json(usuarios || []);
@@ -111,18 +111,6 @@ export const usuariosController = {
       res.status(204).end();
     } catch (error) {
       res.status(500).json({ error: error.message });
-    }
-  },
-
-  // Actualizar contraseña
-  changePassword: async (req, res) => {
-    try {
-      const { password } = req.body;
-      if (!password) return res.status(400).json({ error: 'La contraseña es obligatoria' });
-      const updated = await Usuario.update(req.params.id, { password });
-      res.json({ message: 'Contraseña actualizada correctamente' });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
     }
   }
 };

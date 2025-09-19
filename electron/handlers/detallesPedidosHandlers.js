@@ -23,11 +23,11 @@ export function detallesPedidosHandlers() {
   });
 
   // Actualizar estado de un detalle
-  ipcMain.handle("updateSoloEstado", async (event, id, estado_id) => {
+  ipcMain.handle("updateEstadoDeDetallePedido", async (event, id, estado_id) => {
     try {
       return await DetallePedido.updateEstado(id, estado_id);
     } catch (error) {
-      console.error("[IPC ERROR updateEstado]", error);
+      console.error("[IPC ERROR updateEstadoDeDetallePedido]", error);
       return { error: error.message };
     }
   });

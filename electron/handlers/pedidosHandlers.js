@@ -118,11 +118,11 @@ export function pedidosHandlers() {
   });
 
   // Actualizar estado del pedido
-  ipcMain.handle("updateEstado", async (event, id, estado_id) => {
+  ipcMain.handle("updateEstadoDePedido", async (event, id, estado_id) => {
     try {
       return await Pedido.updateEstado(id, estado_id);
     } catch (error) {
-      console.error("[IPC ERROR updateEstado]", error);
+      console.error("[IPC ERROR updateEstadoDePedido]", error);
       return { error: error.message };
     }
   });

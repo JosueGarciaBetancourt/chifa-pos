@@ -32,7 +32,7 @@ pedidosRouter.route("/cotizacion/:cotizacionId")
   .get(pedidosController.getPedidoByCotizacionId);
 
 pedidosRouter.route("/:id/estado")
-  .patch(pedidosController.updateEstado);
+  .patch(pedidosController.updateEstadoDePedido);
 
 pedidosRouter.route("/:id")
   .get(pedidosController.getPedidoById)

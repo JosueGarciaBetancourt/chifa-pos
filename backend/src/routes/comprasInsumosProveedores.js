@@ -8,10 +8,10 @@ comprasInsumosProveedoresRouter.route("/")
   .post(comprasInsumosProveedoresController.createCompraInsumoProveedor);
 
 comprasInsumosProveedoresRouter.route("/insumo/:insumoId")
-  .get(comprasInsumosProveedoresController.getByInsumo);
+  .get(comprasInsumosProveedoresController.getComprasInsumosProveedoresByInsumo);
 
 comprasInsumosProveedoresRouter.route("/proveedor/:proveedorId")
-  .get(comprasInsumosProveedoresController.getByProveedor);
+  .get(comprasInsumosProveedoresController.getComprasInsumosProveedoresByProveedor);
 
 comprasInsumosProveedoresRouter.route("/:id")
   .get(comprasInsumosProveedoresController.getCompraInsumoProveedorById)

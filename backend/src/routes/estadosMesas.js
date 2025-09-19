@@ -7,8 +7,8 @@ estadosMesasRouter.route("/")
   .get(estadosMesasController.getEstadosMesas)
   .post(estadosMesasController.createEstadoMesa);
 
-estadosMesasRouter.route("/searchByName")
-  .get(estadosMesasController.searchByName);
+estadosMesasRouter.route("/searchEstadoMesaByName")
+  .get(estadosMesasController.searchEstadoMesaByName);
 
 estadosMesasRouter.route("/:id")
   .get(estadosMesasController.getEstadoMesaById)

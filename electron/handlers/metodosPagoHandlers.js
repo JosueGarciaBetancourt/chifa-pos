@@ -27,7 +27,7 @@ export function metodosPagoHandlers() {
     try {
       return await MetodoPago.searchByName(name) || [];
     } catch (error) {
-      console.error("[IPC ERROR searchByName]", error);
+      console.error("[IPC ERROR searchMetodosPagoByName]", error);
       return { error: error.message, data: [] };
     }
   });

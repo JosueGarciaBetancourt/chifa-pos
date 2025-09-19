@@ -20,7 +20,7 @@ export const metodosPagoController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchMetodosPagoByName: async (req, res) => {
       try {
         const metodosPago = await MetodoPago.searchByName(req.query.name);
         res.json(metodosPago || []);

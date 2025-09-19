@@ -27,7 +27,7 @@ export function tiposComprobantesHandlers() {
     try {
       return await TipoComprobante.searchByName(name) || [];
     } catch (error) {
-      console.error("[IPC ERROR searchByNameTipoComprobante]", error);
+      console.error("[IPC ERROR searchTiposComprobantesByName]", error);
       return { error: error.message, data: [] };
     }
   });

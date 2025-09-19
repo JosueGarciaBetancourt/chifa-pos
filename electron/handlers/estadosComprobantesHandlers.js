@@ -27,7 +27,7 @@ export function estadosComprobantesHandlers() {
     try {
       return await EstadoComprobante.searchByName(name) || [];
     } catch (error) {
-      console.error("[IPC ERROR searchByNameEstadoComprobante]", error);
+      console.error("[IPC ERROR searchEstadosComprobantesByName]", error);
       return { error: error.message, data: [] };
     }
   });

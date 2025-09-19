@@ -47,7 +47,7 @@ export const reservasController = {
     }
   },
 
-  updateEstado: async (req, res) => {
+  updateEstadoDeReserva: async (req, res) => {
     try {
       const reservaActualizada = await Reserva.updateEstado(
         req.params.id, 

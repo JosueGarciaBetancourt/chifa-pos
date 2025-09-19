@@ -20,7 +20,7 @@ export const estadosPedidosController = {
     }
   },
 
-  searchByName: async (req, res) => {
+  searchEstadosPedidosByName: async (req, res) => {
     try {
       const estado = await EstadoPedido.searchByName(req.query.name);
       if (!estado) return res.status(404).json({ error: 'Estado de detalle de pedido no encontrado' });

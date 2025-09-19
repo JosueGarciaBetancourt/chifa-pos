@@ -106,17 +106,4 @@ export function usuariosHandlers() {
       return { error: error.message, deleted: false };
     }
   });
-
-  ipcMain.handle('changePassword', async (event, id, password) => {
-    try {
-      if (!password) {
-        throw new Error('La contraseña es obligatoria');
-      }
-      await Usuario.update(id, { password });
-      return { message: 'Contraseña actualizada correctamente' };
-    } catch (error) {
-      console.error('[IPC ERROR changeUsuarioPassword]', error);
-      return { error: error.message };
-    }
-  });
 }

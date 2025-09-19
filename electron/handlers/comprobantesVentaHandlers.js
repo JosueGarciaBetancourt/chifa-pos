@@ -50,11 +50,11 @@ export function comprobantesVentaHandlers() {
   });
 
   // Actualizar estado del comprobante
-  ipcMain.handle("updateEstadoComprobanteVenta", async (event, id, estado_id) => {
+  ipcMain.handle("updateEstadoDeComprobanteVenta", async (event, id, estado_id) => {
     try {
       return await ComprobanteVenta.updateEstado(id, estado_id);
     } catch (error) {
-      console.error("[IPC ERROR updateEstadoComprobanteVenta]", error);
+      console.error("[IPC ERROR updateEstadoDeComprobanteVenta]", error);
       return { error: error.message };
     }
   });
