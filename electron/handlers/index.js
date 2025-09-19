@@ -12,25 +12,60 @@ import { jornadasLaboralesHandlers } from './jornadasLaboralesHandlers.js';
 import { productosHandlers } from './productosHandlers.js';
 import { tiposInsumosHandlers } from './tiposInsumosHandlers.js';
 import { insumosHandlers } from './insumosHandlers.js';
+import { recetasHandlers } from './recetasHandlers.js';
+import { clientesHandlers } from './clientesHandlers.js';
+import { cotizacionesHandlers } from './cotizacionesHandlers.js';
+import { estadosMesasHandlers } from './estadosMesasHandlers.js';
+import { mesasHandlers } from './mesasHandlers.js';
+import { tiposPedidosHandlers } from './tiposPedidosHandlers.js';
+import { estadosPedidosHandlers } from './estadosPedidosHandlers.js';
+import { pedidosHandlers } from './pedidosHandlers.js';
+import { estadosDetallesPedidosHandlers } from './estadosDetallesPedidosHandlers.js';
+import { detallesPedidosHandlers } from './detallesPedidosHandlers.js';
+import { metodosPagoHandlers } from './metodosPagoHandlers.js';
+import { estadosComprobantesHandlers } from './estadosComprobantesHandlers.js';
+import { tiposComprobantesHandlers } from './tiposComprobantesHandlers.js';
+import { comprobantesVentaHandlers } from './comprobantesVentaHandlers.js';
+import { reservasHandlers } from './reservasHandlers.js';
+import { inventarioMovimientosHandlers } from './inventarioMovimientosHandlers.js';
+import { proveedoresHandlers } from './proveedoresHandlers.js';
+import { insumosProveedoresHandlers } from './insumosProveedoresHandlers.js';
+import { comprasInsumosProveedoresHandlers } from './comprasInsumosProveedoresHandlers.js';
 
-/**
- * Registra todos los handlers IPC disponibles.
- * @param {Database} db - Instancia de conexión a la base de datos
- */
-export function registerAllIpcHandlers(db) {
-  empresaLocalHandlers(db);
-  sedeLocalHandlers(db);
-  modulosSistemaHandlers(db);
-  accionesSistemaHandlers(db);
-  permisosHandlers(db);
-  rolesHandlers(db);
-  rolesPermisosHandlers(db);  
-  usuariosHandlers(db);
-  usuariosPermisosHandlers(db);
-  categoriasProductosHandlers(db);
-  jornadasLaboralesHandlers(db);
-  productosHandlers(db);
-  tiposInsumosHandlers(db);
 
-  insumosHandlers(db);
+export function registerAllIpcHandlers() {
+  empresaLocalHandlers();
+  sedeLocalHandlers();
+  modulosSistemaHandlers();
+  accionesSistemaHandlers();
+  permisosHandlers();
+  rolesHandlers();
+  rolesPermisosHandlers();  
+  usuariosHandlers();
+  usuariosPermisosHandlers();
+  categoriasProductosHandlers();
+  jornadasLaboralesHandlers();
+  productosHandlers();
+  tiposInsumosHandlers();
+  insumosHandlers();
+  recetasHandlers();
+  clientesHandlers();
+  cotizacionesHandlers();
+  estadosMesasHandlers();
+  mesasHandlers();
+  tiposPedidosHandlers();
+  estadosPedidosHandlers();
+  pedidosHandlers();
+  estadosDetallesPedidosHandlers();
+  detallesPedidosHandlers();
+  metodosPagoHandlers();
+  estadosComprobantesHandlers();
+  tiposComprobantesHandlers();
+  comprobantesVentaHandlers();
+  reservasHandlers();
+  inventarioMovimientosHandlers();
+  proveedoresHandlers();
+  insumosProveedoresHandlers();
+  comprasInsumosProveedoresHandlers();
+
 }

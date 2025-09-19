@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 import { Rol } from '../database/models/Rol.js';
 import { Rol_Permiso } from '../database/models/Rol_Permiso.js';
 
-export function rolesPermisosHandlers(db) {
+export function rolesPermisosHandlers() {
   ipcMain.handle('getPermisosByRolId', async (event, rolId) => {
     try {
       const rol = await Rol.findById(rolId);

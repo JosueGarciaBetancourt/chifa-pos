@@ -1,4 +1,4 @@
-import { Mesa } from '../../../electron/database/models/mesa.js';
+import { Mesa } from '../../../electron/database/models/Mesa.js';
 
 export const mesasController = {
   getMesas: async (req, res) => {

@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { SedeLocal } from '../database/models/SedeLocal.js';
 
-export function sedeLocalHandlers(db) {
+export function sedeLocalHandlers() {
   ipcMain.handle('getSedeLocalAll', () => {
     try {
       return SedeLocal.selectAll() || [];

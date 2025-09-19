@@ -1,4 +1,4 @@
-import { InventarioMovimiento } from '../../../electron/database/models/inventarioMovimiento.js';
+import { InventarioMovimiento } from '../../../electron/database/models/InventarioMovimiento.js';
 
 export const inventarioMovimientosController = {
   getInventarioMovimientos: async (req, res) => {

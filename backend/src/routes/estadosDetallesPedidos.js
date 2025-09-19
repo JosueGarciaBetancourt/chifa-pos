@@ -12,7 +12,7 @@ estadosDetallesPedidosRouter.route('/searchByName')
 
 estadosDetallesPedidosRouter.route("/:id")
   .get(estadosDetallesPedidosController.getEstadoDetallePedidoById)
-  .put(estadosDetallesPedidosController.updateDetallePedido)
+  .put(estadosDetallesPedidosController.updateEstadoDetallePedido)
   .delete(estadosDetallesPedidosController.deleteEstadoDetallePedido);
 
 export default estadosDetallesPedidosRouter;

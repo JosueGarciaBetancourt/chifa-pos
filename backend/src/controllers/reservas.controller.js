@@ -1,4 +1,4 @@
-import { Reserva } from '../../../electron/database/models/reserva.js';
+import { Reserva } from '../../../electron/database/models/Reserva.js';
 
 export const reservasController = {
   getReservas: async (req, res) => {

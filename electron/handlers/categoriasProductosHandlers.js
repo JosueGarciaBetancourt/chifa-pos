@@ -2,7 +2,7 @@
 import { ipcMain } from 'electron';
 import { CategoriaProducto } from '../database/models/CategoriaProducto.js';
 
-export function categoriasProductosHandlers(db) {
+export function categoriasProductosHandlers() {
   ipcMain.handle('getCategoriasProductos', async () => {
     try {
       return await CategoriaProducto.selectAll() || [];

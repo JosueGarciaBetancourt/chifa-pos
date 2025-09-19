@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { ModuloSistema } from '../database/models/ModuloSistema.js';
 
-export function modulosSistemaHandlers(db) {
+export function modulosSistemaHandlers() {
   ipcMain.handle('getModulosSistema', () => {
     try {
       return ModuloSistema.selectAll() || [];

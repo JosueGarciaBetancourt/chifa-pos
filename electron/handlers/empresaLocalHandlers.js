@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { EmpresaLocal } from '../database/models/EmpresaLocal.js';
 
-export function empresaLocalHandlers(db) {
+export function empresaLocalHandlers() {
   ipcMain.handle('getEmpresaLocalAll', () => {
     try {
       return EmpresaLocal.selectAll() || [];

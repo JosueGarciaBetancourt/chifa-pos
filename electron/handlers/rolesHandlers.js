@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { Rol } from '../database/models/Rol.js';
 
-export function rolesHandlers(db) {
+export function rolesHandlers() {
   ipcMain.handle('getRoles', () => {
     try {
       return Rol.selectAll() || [];

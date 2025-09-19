@@ -2,7 +2,7 @@
 import { ipcMain } from 'electron';
 import { UsuarioPermiso } from '../database/models/UsuarioPermiso.js';
 
-export function usuariosPermisosHandlers(db) {
+export function usuariosPermisosHandlers() {
   ipcMain.handle('getUsuariosPermisos', async () => {
     try {
       return await UsuarioPermiso.selectAll() || [];

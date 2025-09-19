@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { AccionSistema } from '../database/models/AccionSistema.js';
 
-export function accionesSistemaHandlers(db) {
+export function accionesSistemaHandlers() {
   ipcMain.handle('getAccionesSistema', () => {
     try {
       return AccionSistema.selectAll() || [];

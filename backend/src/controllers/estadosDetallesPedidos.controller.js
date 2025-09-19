@@ -38,7 +38,7 @@ export const estadosDetallesPedidosController = {
     }
   },
 
-  updateDetallePedido: async (req, res) => {
+  updateEstadoDetallePedido: async (req, res) => {
     try {
       const estadoActualizado = await EstadoDetallePedido.update(
         req.params.id, 

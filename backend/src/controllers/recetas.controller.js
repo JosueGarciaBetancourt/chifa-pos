@@ -1,6 +1,6 @@
-import { Receta } from '../../../electron/database/models/receta.js';
+import { Receta } from '../../../electron/database/models/Receta.js';
 
-export const recetaController = {
+export const recetasController = {
   getRecetasByProductoId: async (req, res) => {
     try {
       const recetas = await Receta.findByProductoId(req.params.productoId);

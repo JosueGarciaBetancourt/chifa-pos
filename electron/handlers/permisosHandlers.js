@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { Permiso } from '../database/models/Permiso.js';
 
-export function permisosHandlers(db) {
+export function permisosHandlers() {
   ipcMain.handle('getPermisos', () => {
     try {
       return Permiso.selectAll() || [];

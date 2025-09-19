@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { Usuario } from '../database/models/Usuario.js';
 
-export function usuariosHandlers(db) {
+export function usuariosHandlers() {
   ipcMain.handle('getUsuarios', async () => {
     try {
       return await Usuario.selectAll();

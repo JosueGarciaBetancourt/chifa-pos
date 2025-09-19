@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import { JornadaLaboral } from '../database/models/JornadaLaboral.js';
 
-export function jornadasLaboralesHandlers(db) {
+export function jornadasLaboralesHandlers() {
   ipcMain.handle('getJornadasLaborales', async () => {
     try {
       return await JornadaLaboral.selectAll() || [];

@@ -1,31 +1,31 @@
 import { Router } from "express";
-import { recetaController } from "../controllers/receta.controller.js";
+import { recetasController } from "../controllers/recetas.controller.js";
 
 const recetasRouter = Router();
 
 recetasRouter.route("/")
-  .post(recetaController.createReceta);
+  .post(recetasController.createReceta);
 
 recetasRouter.route("/producto/:productoId")
-  .get(recetaController.getRecetasByProductoId)
+  .get(recetasController.getRecetasByProductoId)
 
 recetasRouter.route("/insumo/:insumoId")
-  .get(recetaController.getRecetasByInsumoId);
+  .get(recetasController.getRecetasByInsumoId);
 
 recetasRouter.route('/productos/active')
-  .get(recetaController.getRecetasByProductosActive);
+  .get(recetasController.getRecetasByProductosActive);
 
 recetasRouter.route('/productos/inactive')
-  .get(recetaController.getRecetasByProductosInactive);
+  .get(recetasController.getRecetasByProductosInactive);
 
 recetasRouter.route('/insumos/active')
-  .get(recetaController.getRecetasByInsumosActive);
+  .get(recetasController.getRecetasByInsumosActive);
 
 recetasRouter.route('/insumos/inactive')
-  .get(recetaController.getRecetasByInsumosInactive);
+  .get(recetasController.getRecetasByInsumosInactive);
 
 recetasRouter.route("/producto/:productoId/insumo/:insumoId")
-  .put(recetaController.updateReceta)
-  .delete(recetaController.deleteReceta);
+  .put(recetasController.updateReceta)
+  .delete(recetasController.deleteReceta);
 
 export default recetasRouter;
