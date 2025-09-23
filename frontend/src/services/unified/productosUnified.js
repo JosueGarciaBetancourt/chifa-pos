@@ -1,7 +1,7 @@
-import productosApi from './api/productosApi';
-import isElectron from '../utils/isElectron';
+import productosApi from '../api/productosApi';
+import isElectron from '../../utils/isElectron';
 
-const productosUnifiedService = {
+const productosUnified = {
   // Obtener todos los productos
   getProductos: async () => {
     try {
@@ -143,4 +143,4 @@ const productosUnifiedService = {
   }
 };
 
-export default productosUnifiedService;
+export default productosUnified;

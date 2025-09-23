@@ -1,5 +1,5 @@
-import tiposInsumosApi from './api/tiposInsumosApi';
-import isElectron from '../utils/isElectron';
+import tiposInsumosApi from '../api/tiposInsumosApi';
+import isElectron from '../../utils/isElectron';
 
 const tiposInsumosUnifiedService = {
   getTiposInsumos: async () => {

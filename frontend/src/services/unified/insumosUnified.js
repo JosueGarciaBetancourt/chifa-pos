@@ -1,7 +1,7 @@
-import insumosApi from './api/insumosApi';
-import isElectron from '../utils/isElectron';
+import insumosApi from '../api/insumosApi';
+import isElectron from '../../utils/isElectron';
 
-const insumosUnifiedService = {
+const insumosUnified = {
   getInsumos: async () => {
     if (isElectron()) {
       try {
@@ -23,4 +23,4 @@ const insumosUnifiedService = {
   }
 };
 
-export default insumosUnifiedService;
+export default insumosUnified;

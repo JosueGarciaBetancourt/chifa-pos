@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart2, Clock, Users, Package, ShoppingCart, Utensils, Tablet, Truck, Box, BarChart } from 'lucide-react';
-import productosUnifiedService from '../services/productosUnifiedService';
+import productosUnified from '../services/unified/productosUnified';
 
 export default function Dashboard() {
   //console.log(window.electronAPI.productos);
@@ -10,7 +10,7 @@ export default function Dashboard() {
 
   const handleProbarApi = async () => {
     try {
-      const productosData = await productosUnifiedService.getProductos();
+      const productosData = await productosUnified.getProductos();
       console.log('[✔️] Productos:', productosData);
       alert(`✅ ${productosData.length} productos recibidos`);
     } catch (error) {

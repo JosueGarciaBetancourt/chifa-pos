@@ -15,7 +15,7 @@ const productosApi = {
   // Buscar productos por nombre (query ?nombre=)
   buscarProductosPorNombre: async (nombre) => {
     try {
-      const response = await api.get('/api/productos/searchByName', {
+      const response = await api.get('/api/productos/searchProductosByName', {
         params: { nombre }
       });
       return response.data;

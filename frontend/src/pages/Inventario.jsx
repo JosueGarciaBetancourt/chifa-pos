@@ -5,8 +5,8 @@ import LowStockAlert from '../components/features/inventario/LowStockAlert';
 import InventoryFilters from '../components/features/inventario/InventoryFilters';
 import InventoryGrid from '../components/features/inventario/InventoryGrid';
 import InventoryItemDetail from '../components/features/inventario/InventoryItemDetail';
-import insumosUnifiedService from '../services/insumosUnifiedService';
-import tiposInsumosUnifiedService from '../services/tiposInsumosUnifiedService';
+import insumosUnified from '../services/unified/insumosUnified';
+import tiposInsumosUnified from '../services/unified/tiposInsumosUnified';
 
 const Inventario = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -20,7 +20,7 @@ const Inventario = () => {
     const fetchData = async () => {
       try {
         // Obtener tipos de insumos
-        const tipos = await tiposInsumosUnifiedService.getTiposInsumos();
+        const tipos = await tiposInsumosUnified.getTiposInsumos();
         if (!Array.isArray(tipos)) {
           console.warn('⚠️ tiposInsumos no es un array:', tipos);
           setTipos(['Todos']);
@@ -30,7 +30,7 @@ const Inventario = () => {
         }
 
         // Obtener insumos
-        const insumos = await insumosUnifiedService.getInsumos();
+        const insumos = await insumosUnified.getInsumos();
         if (!Array.isArray(insumos)) {
           console.warn('⚠️ insumos no es un array:', insumos);
           setInventoryData([]);
