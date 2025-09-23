@@ -14,7 +14,7 @@ productosRouter.route('/active')
   .get(productosController.getProductosActive);
 
 productosRouter.route('/inactive')
-  .get(productosController.getProductosNoActive);
+  .get(productosController.getProductosInactive);
     
 productosRouter.route('/:id')
   //.all(validateObjectId(Epic))

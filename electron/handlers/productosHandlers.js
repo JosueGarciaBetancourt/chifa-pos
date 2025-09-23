@@ -30,11 +30,11 @@ export function productosHandlers() {
     }
   });
 
-  ipcMain.handle("getProductosNoActive", async () => {
+  ipcMain.handle("getProductosInactive", async () => {
     try {
       return await Producto.selectNoActive() || [];
     } catch (error) {
-      console.error("[IPC ERROR getProductosNoActive]", error);
+      console.error("[IPC ERROR getProductosInactive]", error);
       return { error: error.message, data: [] };
     }
   });

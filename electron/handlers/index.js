@@ -31,6 +31,17 @@ import { inventarioMovimientosHandlers } from './inventarioMovimientosHandlers.j
 import { proveedoresHandlers } from './proveedoresHandlers.js';
 import { insumosProveedoresHandlers } from './insumosProveedoresHandlers.js';
 import { comprasInsumosProveedoresHandlers } from './comprasInsumosProveedoresHandlers.js';
+import { tiposGastosHandlers } from './tiposGastosHandlers.js';
+import { gastosHandlers } from './gastosHandlers.js';
+import { cajasHandlers } from './cajasHandlers.js';
+import { movimientosCajaHandlers } from './movimientosCajaHandlers.js';
+import { dispositivosHandlers } from './dispositivosHandlers.js';
+import { tiposReportesHandlers } from './tiposReportesHandlers.js';
+import { reportesHandlers } from './reportesHandlers.js';
+import { tiposNotificacionesHandlers } from './tiposNotificacionesHandlers.js';
+import { notificacionesHandlers } from './notificacionesHandlers.js';
+import { logsSistemaHandlers } from './logsSistemaHandlers.js';
+
 
 
 export function registerAllIpcHandlers() {
@@ -67,5 +78,14 @@ export function registerAllIpcHandlers() {
   proveedoresHandlers();
   insumosProveedoresHandlers();
   comprasInsumosProveedoresHandlers();
-
-}
+  tiposGastosHandlers();
+  gastosHandlers();
+  cajasHandlers();
+  movimientosCajaHandlers();
+  dispositivosHandlers();
+  tiposReportesHandlers();
+  reportesHandlers();
+  tiposNotificacionesHandlers();
+  notificacionesHandlers();
+  logsSistemaHandlers();
+} 

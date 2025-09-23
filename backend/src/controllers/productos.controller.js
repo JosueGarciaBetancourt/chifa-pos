@@ -28,7 +28,7 @@ export const productosController = {
     }
   },
 
-  getProductosNoActive: async (req, res) => {
+  getProductosInactive: async (req, res) => {
     try {
       const productos = await Producto.selectNoActive();
       res.json(productos);
