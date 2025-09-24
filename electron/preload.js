@@ -344,6 +344,7 @@ const ipcChannels = {
     "getResumenCaja",
     "abrirCaja",
     "cerrarCaja",
+    "ingresoCaja",
     "egresoCaja",
     "updateMovimientoCaja",
     "deleteMovimientoCaja",
@@ -390,6 +391,9 @@ const ipcChannels = {
     "getLogsByUsuario",
     "createLog",
     "deleteLog",
+  ],
+  inventario: [
+    "getInventarioDetallado",
   ],
 };
 

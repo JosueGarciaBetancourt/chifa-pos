@@ -17,6 +17,7 @@ const baseSelect = `
       'id', i.id,
       'nombre', i.nombre,
       'tipo_id', i.tipo_id,
+      'tipo_nombre', ti.nombre,
       'unidad_medida', i.unidad_medida,
       'stock_actual', i.stock_actual,
       'stock_minimo', i.stock_minimo
@@ -43,6 +44,7 @@ const baseSelect = `
   FROM compras_insumos_proveedores cip
   JOIN insumos_proveedores ip ON cip.insumo_proveedor_id = ip.id
   JOIN insumos i ON ip.insumo_id = i.id
+  JOIN tipos_insumos ti ON i.tipo_id = ti.id
   JOIN proveedores p ON ip.proveedor_id = p.id
   LEFT JOIN usuarios u ON cip.usuario_id = u.id
 `;

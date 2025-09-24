@@ -5,7 +5,7 @@ const tiposInsumosUnifiedService = {
   getTiposInsumos: async () => {
     if (isElectron()) {
       try {
-        const tiposInsumos = await window.electronAPI.getTiposInsumos();
+        const tiposInsumos = await window.electronAPI.tiposInsumos.getTiposInsumos();
         return tiposInsumos;
       } catch (error) {
         console.error('❌ Error usando Electron API:', error);

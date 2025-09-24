@@ -10,7 +10,7 @@ movimientosCajaRouter.route("/")
 movimientosCajaRouter.route("/:id")
   .get(movimientosCajaController.getMovimientoCajaById)
   .put(movimientosCajaController.updateMovimientoCaja)
-  .delete(movimientosCajaController.delete);
+  .delete(movimientosCajaController.deleteMovimientoCaja);
 
 movimientosCajaRouter.route("/jornada/:jornadaId")
   .get(movimientosCajaController.getMovimientosCajaByJornada);

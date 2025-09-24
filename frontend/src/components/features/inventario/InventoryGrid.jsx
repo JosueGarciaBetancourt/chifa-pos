@@ -16,7 +16,7 @@ const InventoryGrid = ({ inventoryData, onItemClick, updateStock }) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {inventoryData.map((item) => (
         <InventoryCard
-          key={item.id}
+          key={item.insumo_proveedor_id}
           item={item}
           onItemClick={onItemClick}
           updateStock={updateStock}

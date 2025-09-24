@@ -41,6 +41,7 @@ import notificacionesRouter from './notificaciones.js';
 import tiposReportesRouter from './tiposReportes.js';
 import reportesRouter from './reportes.js';
 import logsSistemaRouter from './logSistema.js';
+import inventarioRouter from './inventario.js';
 
 export default [
   { path: '/api/empresaLocal', router: empresaLocalRouter },
@@ -86,5 +87,7 @@ export default [
   { path: '/api/reportes', router: reportesRouter },
   { path: '/api/tiposNotificaciones', router: tiposNotificacionesRouter },
   { path: '/api/notificaciones', router: notificacionesRouter },
-  { path: '/api/logsSistema', router: logsSistemaRouter }
+  { path: '/api/logsSistema', router: logsSistemaRouter },
+  { path: '/api/inventario', router: inventarioRouter }
+
 ];

@@ -337,7 +337,7 @@ export const movimientosCajaController = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteMovimientoCaja: async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = MovimientoCaja.delete(parseInt(id));

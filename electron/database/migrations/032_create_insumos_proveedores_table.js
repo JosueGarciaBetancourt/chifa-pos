@@ -4,8 +4,10 @@ export function up(db) {
     CREATE TABLE IF NOT EXISTS insumos_proveedores (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       insumo_id INTEGER NOT NULL REFERENCES insumos(id) ON DELETE CASCADE,
+      descripcion TEXT, -- descripción del modelo, marca u otro de este proveedor específico
       proveedor_id INTEGER NOT NULL REFERENCES proveedores(id) ON DELETE CASCADE,
       costo_unitario_pactado REAL NOT NULL,
+      stock_por_proveedor REAL DEFAULT 0,
       observaciones TEXT,
       UNIQUE(insumo_id, proveedor_id)
     );

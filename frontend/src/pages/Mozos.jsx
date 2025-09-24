@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSocket from "../hooks/useSocket";
-import productosUnifiedService from "../services/productosUnifiedService";
+import productosUnified from "../services/unified/productosUnified";
 
 const mesas = Array.from({ length: 13 }, (_, i) => ({
   id: i + 1,
@@ -28,7 +28,7 @@ export default function TabletMozo() {
     const fetchProductos = async () => {
       try {
         setLoading(true);
-        const productosData = await productosUnifiedService.getProductos();
+        const productosData = await productosUnified.getProductos();
 
         if (!productosData || productosData.length === 0) {
           setProductos([

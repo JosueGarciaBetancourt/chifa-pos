@@ -5,8 +5,9 @@ import LowStockAlert from '../components/features/inventario/LowStockAlert';
 import InventoryFilters from '../components/features/inventario/InventoryFilters';
 import InventoryGrid from '../components/features/inventario/InventoryGrid';
 import InventoryItemDetail from '../components/features/inventario/InventoryItemDetail';
-import insumosUnified from '../services/unified/insumosUnified';
+import inventarioUnified from '../services/unified/inventarioUnified';
 import tiposInsumosUnified from '../services/unified/tiposInsumosUnified';
+
 
 const Inventario = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -14,45 +15,25 @@ const Inventario = () => {
   const [selectedTipo, setSelectedTipo] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [inventoryData, setInventoryData] = useState([]);
-  const [tipos, setTipos] = useState(['Todos']); // Inicializa con "Todos"
+  const [tipos, setTipos] = useState(['Todos']); // Siempre tener "Todos"
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener tipos de insumos
-        const tipos = await tiposInsumosUnified.getTiposInsumos();
-        if (!Array.isArray(tipos)) {
-          console.warn('⚠️ tiposInsumos no es un array:', tipos);
-          setTipos(['Todos']);
+        // Obtener los tipos de insumos
+        const tiposDB = await tiposInsumosUnified.getTiposInsumos();
+        if (Array.isArray(tiposDB)) {
+          const nombresTipos = tiposDB.map(tipo => tipo.nombre);
+          setTipos(['Todos', ...nombresTipos]);
         } else {
-          const tiposDB = tipos.map(tipo => tipo.nombre);
-          setTipos(['Todos', ...tiposDB]);
+          console.warn('⚠️ tiposInsumos no es un array:', tiposDB);
+          setTipos(['Todos']);
         }
 
-        // Obtener insumos
-        const insumos = await insumosUnified.getInsumos();
-        if (!Array.isArray(insumos)) {
-          console.warn('⚠️ insumos no es un array:', insumos);
-          setInventoryData([]);
-          return;
-        }
-
-        /* 
-          id: row.id,
-          nombre: row.nombre,
-          unidad: row.unidad_medida,
-          stock_actual: row.stock_actual,
-          stock_minimo: row.stock_minimo,
-          costo: row.costo,
-          tipo: {
-            id: row.tipo_id,
-            nombre: row.tipo_nombre,
-            descripcion: row.tipo_descripcion
-          }
-        */
-        setInventoryData(insumos);
+        const inventario = await inventarioUnified.getInventarioDetallado();
+        setInventoryData(inventario);
       } catch (error) {
-        console.error('❌ Error inesperado al cargar inventario:', error);
+        console.error('❌ Error al cargar inventario:', error);
       }
     };
 
@@ -72,12 +53,12 @@ const Inventario = () => {
   const updateStock = (id, change) => {
     setInventoryData(prev =>
       prev.map(item => {
-        if (item.id === id) {
-          const newStock = Math.max(0, item.stock_actual + change);
+        if (item.insumo_proveedor_id === id) {
+          const newStock = Math.max(0, (item.stock_disponible_proveedor || 0) + change);
           return {
             ...item,
             stock_actual: newStock,
-            status: newStock < item.stock_minimo ? 'Stock Bajo' : 'Stock OK'
+            status: newStock < (item.stock_minimo_general || 0) ? 'Stock Bajo' : 'Stock OK',
           };
         }
         return item;
@@ -86,17 +67,20 @@ const Inventario = () => {
   };
 
   const filteredData = inventoryData.filter(item => {
-    const matchesTipo = selectedTipo === 'Todos' || item.tipo?.nombre.toLowerCase().trim() === selectedTipo.toLowerCase().trim();
-    const matchesSearch = item.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesTipo =
+      selectedTipo === 'Todos' ||
+      (item.tipo_nombre || '').toLowerCase().trim() === selectedTipo.toLowerCase().trim();
+    const matchesSearch = item.tipo_nombre.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTipo && matchesSearch;
   });
 
   const totalProductos = inventoryData.length;
   const lowStockItems = inventoryData.filter(item => item.stock_actual < item.stock_minimo);
-  const totalTipos = tipos.length - 1; // No contar "Todos"
-  const inventoryValue = inventoryData.reduce((total, item) => {
-    return total + (item.stock_actual * item.costo);
-  }, 0);
+  const totalTipos = tipos.length - 1; // excluir "Todos"
+  const inventoryValue = inventoryData.reduce(
+    (total, item) => total + (item.stock_actual || 0) * (item.costo_unitario_pactado || 0),
+    0
+  );
 
   return (
     <div className="min-h-screen bg-gray-100">

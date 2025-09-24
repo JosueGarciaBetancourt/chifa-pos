@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import productosUnifiedService from '../services/productosUnifiedService';
+import productosUnified from '../services/unified/productosUnified';
 
 const VentaForm = () => {
 
@@ -11,7 +11,7 @@ const VentaForm = () => {
 
   const buscarProducto = async () => {
     try {
-      const resultados = await productosUnifiedService.buscarProductosPorNombre(busqueda);
+      const resultados = await productosUnified.buscarProductosPorNombre(busqueda);
       console.log("BD buscarProductosPorNombre:", resultados);
       setProductos(resultados);
     } catch (error) {

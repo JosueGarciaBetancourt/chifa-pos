@@ -4,7 +4,7 @@ const movimientosCajaApi = {
   // =================== CONSULTAS GENERALES ===================
   getMovimientosCaja: async () => {
     try {
-      const response = await api.get('/api/movimientos-caja');
+      const response = await api.get('/api/movimientosCaja');
       return response.data;
     } catch (error) {
       console.error('Error obteniendo movimientos de caja:', error);
@@ -14,7 +14,7 @@ const movimientosCajaApi = {
 
   getMovimientoCajaById: async (id) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/${id}`);
+      const response = await api.get(`/api/movimientosCaja/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo movimiento de caja con id ${id}:`, error);
@@ -24,7 +24,7 @@ const movimientosCajaApi = {
 
   getMovimientosCajaByJornada: async (jornadaId) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/jornada/${jornadaId}`);
+      const response = await api.get(`/api/movimientosCaja/jornada/${jornadaId}`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo movimientos de caja para jornada ${jornadaId}:`, error);
@@ -34,7 +34,7 @@ const movimientosCajaApi = {
 
   getMovimientosCajaByUsuario: async (usuarioId) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/usuario/${usuarioId}`);
+      const response = await api.get(`/api/movimientosCaja/usuario/${usuarioId}`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo movimientos de caja para usuario ${usuarioId}:`, error);
@@ -44,7 +44,7 @@ const movimientosCajaApi = {
 
   getMovimientosCajaByCaja: async (cajaId) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/caja/${cajaId}`);
+      const response = await api.get(`/api/movimientosCaja/caja/${cajaId}`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo movimientos de caja para caja ${cajaId}:`, error);
@@ -54,7 +54,7 @@ const movimientosCajaApi = {
 
   getMovimientosCajaByTipo: async (tipo) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/tipo/${tipo}`);
+      const response = await api.get(`/api/movimientosCaja/tipo/${tipo}`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo movimientos de caja de tipo ${tipo}:`, error);
@@ -65,7 +65,7 @@ const movimientosCajaApi = {
   // =================== CONSULTAS DE ESTADO ===================
   getEstadoCaja: async (cajaId) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/caja/${cajaId}/estado`);
+      const response = await api.get(`/api/movimientosCaja/caja/${cajaId}/estado`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo estado de caja ${cajaId}:`, error);
@@ -75,7 +75,7 @@ const movimientosCajaApi = {
 
   getResumenCaja: async (cajaId) => {
     try {
-      const response = await api.get(`/api/movimientos-caja/caja/${cajaId}/resumen`);
+      const response = await api.get(`/api/movimientosCaja/caja/${cajaId}/resumen`);
       return response.data;
     } catch (error) {
       console.error(`Error obteniendo resumen de caja ${cajaId}:`, error);
@@ -86,7 +86,7 @@ const movimientosCajaApi = {
   // =================== ACCIONES ===================
   abrirCaja: async (data) => {
     try {
-      const response = await api.post('/api/movimientos-caja/abrir', data);
+      const response = await api.post('/api/movimientosCaja/abrir', data);
       return response.data;
     } catch (error) {
       console.error('Error abriendo caja:', error);
@@ -96,7 +96,7 @@ const movimientosCajaApi = {
 
   ingresoCaja: async (data) => {
     try {
-      const response = await api.post('/api/movimientos-caja/ingreso', data);
+      const response = await api.post('/api/movimientosCaja/ingreso', data);
       return response.data;
     } catch (error) {
       console.error('Error registrando ingreso en caja:', error);
@@ -106,7 +106,7 @@ const movimientosCajaApi = {
 
   egresoCaja: async (data) => {
     try {
-      const response = await api.post('/api/movimientos-caja/egreso', data);
+      const response = await api.post('/api/movimientosCaja/egreso', data);
       return response.data;
     } catch (error) {
       console.error('Error registrando egreso en caja:', error);
@@ -116,7 +116,7 @@ const movimientosCajaApi = {
 
   cerrarCaja: async (data) => {
     try {
-      const response = await api.post('/api/movimientos-caja/cerrar', data);
+      const response = await api.post('/api/movimientosCaja/cerrar', data);
       return response.data;
     } catch (error) {
       console.error('Error cerrando caja:', error);
@@ -126,7 +126,7 @@ const movimientosCajaApi = {
 
   updateMovimientoCaja: async (id, movimiento) => {
     try {
-      const response = await api.put(`/api/movimientos-caja/${id}`, movimiento);
+      const response = await api.put(`/api/movimientosCaja/${id}`, movimiento);
       return response.data;
     } catch (error) {
       console.error(`Error actualizando movimiento de caja con id ${id}:`, error);
@@ -136,7 +136,7 @@ const movimientosCajaApi = {
 
   deleteMovimientoCaja: async (id) => {
     try {
-      const response = await api.delete(`/api/movimientos-caja/${id}`);
+      const response = await api.delete(`/api/movimientosCaja/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error eliminando movimiento de caja con id ${id}:`, error);

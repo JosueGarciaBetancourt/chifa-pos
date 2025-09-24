@@ -41,6 +41,7 @@ import { reportesHandlers } from './reportesHandlers.js';
 import { tiposNotificacionesHandlers } from './tiposNotificacionesHandlers.js';
 import { notificacionesHandlers } from './notificacionesHandlers.js';
 import { logsSistemaHandlers } from './logsSistemaHandlers.js';
+import { inventarioHandlers } from './inventarioHandlers.js';
 
 
 
@@ -88,4 +89,5 @@ export function registerAllIpcHandlers() {
   tiposNotificacionesHandlers();
   notificacionesHandlers();
   logsSistemaHandlers();
+  inventarioHandlers();
 } 
