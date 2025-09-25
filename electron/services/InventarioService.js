@@ -15,7 +15,6 @@ export class InventarioService {
                 
                 -- Stock específico por proveedor
                 ip.stock_por_proveedor as stock_actual,
-                ip.stock_por_proveedor as stock_disponible_proveedor,
                 
                 -- Información del insumo-proveedor
                 ip.id as insumo_proveedor_id,

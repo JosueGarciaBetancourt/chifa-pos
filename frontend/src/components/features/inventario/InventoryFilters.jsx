@@ -29,7 +29,7 @@ const InventoryFilters = ({
             <button
               key={tipo}
               onClick={() => setSelectedTipo(tipo)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                 selectedTipo === tipo
                   ? 'bg-purple-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'

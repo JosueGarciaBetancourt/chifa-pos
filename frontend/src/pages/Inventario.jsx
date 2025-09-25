@@ -1,3 +1,4 @@
+// 1. Inventario.jsx (componente principal)
 import React, { useState, useEffect } from 'react';
 import InventoryHeader from '../components/features/inventario/InventoryHeader';
 import InventoryStats from '../components/features/inventario/InventoryStats';
@@ -8,14 +9,13 @@ import InventoryItemDetail from '../components/features/inventario/InventoryItem
 import inventarioUnified from '../services/unified/inventarioUnified';
 import tiposInsumosUnified from '../services/unified/tiposInsumosUnified';
 
-
 const Inventario = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [view, setView] = useState('list');
   const [selectedTipo, setSelectedTipo] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [inventoryData, setInventoryData] = useState([]);
-  const [tipos, setTipos] = useState(['Todos']); // Siempre tener "Todos"
+  const [tipos, setTipos] = useState(['Todos']);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,15 +50,17 @@ const Inventario = () => {
     setSelectedItem(null);
   };
 
-  const updateStock = (id, change) => {
+  const updateStock = (insumoProveedorId, change) => {
     setInventoryData(prev =>
       prev.map(item => {
-        if (item.insumo_proveedor_id === id) {
-          const newStock = Math.max(0, (item.stock_disponible_proveedor || 0) + change);
+        if (item.insumo_proveedor_id === insumoProveedorId) {
+          const newStock = Math.max(0, (item.stock_actual || 0) + change);
           return {
             ...item,
             stock_actual: newStock,
-            status: newStock < (item.stock_minimo_general || 0) ? 'Stock Bajo' : 'Stock OK',
+            // Recalcular estado basado en stock mínimo general
+            estado_stock: newStock <= (item.stock_minimo_general || 0) ? 'Stock Bajo' : 
+                         newStock <= ((item.stock_minimo_general || 0) * 1.5) ? 'Stock Medio' : 'Stock OK',
           };
         }
         return item;
@@ -70,15 +72,18 @@ const Inventario = () => {
     const matchesTipo =
       selectedTipo === 'Todos' ||
       (item.tipo_nombre || '').toLowerCase().trim() === selectedTipo.toLowerCase().trim();
-    const matchesSearch = item.tipo_nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = (item.insumo_nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (item.descripcion || '').toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTipo && matchesSearch;
   });
 
   const totalProductos = inventoryData.length;
-  const lowStockItems = inventoryData.filter(item => item.stock_actual < item.stock_minimo);
+  const lowStockItems = inventoryData.filter(item => 
+    item.estado_stock === 'Stock Bajo' || item.estado_stock === 'Stock Crítico'
+  );
   const totalTipos = tipos.length - 1; // excluir "Todos"
   const inventoryValue = inventoryData.reduce(
-    (total, item) => total + (item.stock_actual || 0) * (item.costo_unitario_pactado || 0),
+    (total, item) => total + (item.valor_stock_proveedor || 0),
     0
   );
 
@@ -124,3 +129,4 @@ const Inventario = () => {
 };
 
 export default Inventario;
+
