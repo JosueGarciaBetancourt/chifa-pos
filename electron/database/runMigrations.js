@@ -44,7 +44,9 @@ import { up as upReportes } from './migrations/043_create_reportes_table.js';
 import { up as upTiposNotificaciones } from './migrations/044_create_tipos_notificaciones_table.js';
 import { up as upNotificaciones } from './migrations/045_create_notificaciones_table.js';
 import { up as upNotificacionesUsuarios } from './migrations/046_create_notificaciones_usuarios_table.js';
-import { up as upLogsSistema } from './migrations/047_create_logs_sistema_table.js';
+import { up as upLogsSistema } from './migrations/047_create_logs_sistema_table copy.js';
+import { up as upInventarioDetalladoView } from './migrations/100_create_inventario_detallado_view.js';
+
 
 import { DateFormatter } from './utils/dateFormatter.js';
 
@@ -112,7 +114,8 @@ export async function runMigrations(db) {
     { name: '044_create_tipos_notificaciones_table', fn: upTiposNotificaciones },
     { name: '045_create_notificaciones_table', fn: upNotificaciones },
     { name: '046_create_notificaciones_usuarios_table', fn: upNotificacionesUsuarios },
-    { name: '047_create_logs_sistema_table', fn: upLogsSistema }
+    { name: '047_create_logs_sistema_table', fn: upLogsSistema },
+    { name: '100_create_inventario_detallado_view', fn: upInventarioDetalladoView },
   ];
 
   for (const migration of migrations) {

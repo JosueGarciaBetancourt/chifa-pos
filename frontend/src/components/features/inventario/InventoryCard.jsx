@@ -43,7 +43,7 @@ const GroupedCard = ({ item: insumoGroup, onItemClick, updateStock }) => {
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center space-x-2 hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors"
+                className="flex items-center space-x-2 hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors cursor-pointer"
               >
                 {isExpanded ? (
                   <ChevronDown className="w-5 h-5 text-gray-500" />
