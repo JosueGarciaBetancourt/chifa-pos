@@ -1,4 +1,5 @@
 import { connection } from '../connection.js';
+import { DateFormatter } from '../utils/dateFormatter.js';
 const db = connection();
 
 // SELECT enriquecido con joins
@@ -27,8 +28,8 @@ const sql = Object.freeze({
   selectByUsuario: `${baseSelect} WHERE m.usuario_id = ? ORDER BY m.fecha_hora DESC`,
   insert: `
     INSERT INTO inventario_movimientos (
-      insumo_id, tipo, cantidad, usuario_id, pedido_id
-    ) VALUES (?, ?, ?, ?, ?)
+      insumo_id, tipo, cantidad, usuario_id, pedido_id, fecha_hora
+    ) VALUES (?, ?, ?, ?, ?, ?)
   `,
   delete: `
     DELETE FROM inventario_movimientos
@@ -76,12 +77,14 @@ export const InventarioMovimiento = {
   },
 
   create({ insumo_id, tipo, cantidad, usuario_id, pedido_id = null }) {
+    const fecha_hora = DateFormatter.toLocalSQLDatetime()
     const { lastInsertRowid } = db.prepare(sql.insert).run(
       insumo_id,
       tipo,
       cantidad,
       usuario_id,
-      pedido_id
+      pedido_id,
+      fecha_hora
     );
     return this.findById(lastInsertRowid);
   },

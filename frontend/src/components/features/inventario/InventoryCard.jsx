@@ -26,13 +26,13 @@ const GroupedCard = ({ item: insumoGroup, onItemClick, updateStock }) => {
   const stockMinimo = insumoGroup.proveedores[0]?.stock_minimo_general || 0;
   
   // Determinar estado general del grupo
-  const getGroupStatus = () => {
-    if (totalStock <= stockMinimo) return { label: 'Stock Bajo', color: 'bg-red-50 text-red-700 border-red-200' };
-    if (totalStock <= stockMinimo * 1.5) return { label: 'Stock Medio', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' };
-    return { label: 'Stock OK', color: 'bg-green-50 text-green-700 border-green-200' };
-  };
+  // const getGroupStatus = () => {
+  //   if (totalStock <= stockMinimo) return { label: 'Stock Bajo', color: 'bg-red-50 text-red-700 border-red-200' };
+  //   if (totalStock <= stockMinimo * 1.5) return { label: 'Stock Medio', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' };
+  //   return { label: 'Stock OK', color: 'bg-green-50 text-green-700 border-green-200' };
+  // };
 
-  const groupStatus = getGroupStatus();
+  // const groupStatus = getGroupStatus();
 
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
@@ -63,9 +63,9 @@ const GroupedCard = ({ item: insumoGroup, onItemClick, updateStock }) => {
           </div>
           
           <div className="flex flex-col items-end space-y-2">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${groupStatus.color}`}>
+            {/* <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${groupStatus.color}`}>
               {groupStatus.label}
-            </span>
+            </span> */}
             <span className="text-xs text-gray-500">
               {insumoGroup.unidad_medida}
             </span>
@@ -74,12 +74,12 @@ const GroupedCard = ({ item: insumoGroup, onItemClick, updateStock }) => {
 
         {/* Resumen del grupo */}
         <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100">
+          {/* <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100">
             <p className="text-xs text-gray-600 font-medium mb-1">Stock Total</p>
             <p className="text-xl font-bold text-blue-700">
               {totalStock} <span className="text-sm font-normal">{insumoGroup.unidad_medida}</span>
             </p>
-          </div>
+          </div> */}
           <div className="p-3 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100">
             <p className="text-xs text-gray-600 font-medium mb-1">Stock Mínimo</p>
             <p className="text-xl font-bold text-gray-700">

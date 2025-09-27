@@ -11,8 +11,12 @@ export function up(db) {
         i.unidad_medida,
         i.stock_minimo as stock_minimo_general,
         
-        -- Stock específico por proveedor
-        ip.stock_por_proveedor as stock_actual,
+        -- Stock actual calculado en base a compras (ajusta si tienes tabla de movimientos)
+        COALESCE((
+          SELECT SUM(cip.cantidad)
+          FROM compras_insumos_proveedores cip
+          WHERE cip.insumo_proveedor_id = ip.id
+        ), 0) as stock_actual,
         
         -- Información del insumo-proveedor
         ip.id as insumo_proveedor_id,
@@ -64,7 +68,11 @@ export function up(db) {
          WHERE cip.insumo_proveedor_id = ip.id) as total_cantidad_comprada,
         
         -- Valor del stock de este proveedor específico
-        ip.stock_por_proveedor * COALESCE(
+        COALESCE((
+          SELECT SUM(cip.cantidad)
+          FROM compras_insumos_proveedores cip 
+          WHERE cip.insumo_proveedor_id = ip.id
+        ), 0) * COALESCE(
             (SELECT cip.costo_unitario_real 
              FROM compras_insumos_proveedores cip 
              WHERE cip.insumo_proveedor_id = ip.id
@@ -75,9 +83,21 @@ export function up(db) {
         
         -- Estado del stock (basado en stock mínimo general)
         CASE 
-            WHEN ip.stock_por_proveedor <= (i.stock_minimo * 0.5) THEN 'Stock Crítico'
-            WHEN ip.stock_por_proveedor <= i.stock_minimo THEN 'Stock Bajo' 
-            WHEN ip.stock_por_proveedor <= (i.stock_minimo * 1.5) THEN 'Stock Medio'
+            WHEN COALESCE((
+              SELECT SUM(cip.cantidad)
+              FROM compras_insumos_proveedores cip 
+              WHERE cip.insumo_proveedor_id = ip.id
+            ), 0) <= (i.stock_minimo * 0.5) THEN 'Stock Crítico'
+            WHEN COALESCE((
+              SELECT SUM(cip.cantidad)
+              FROM compras_insumos_proveedores cip 
+              WHERE cip.insumo_proveedor_id = ip.id
+            ), 0) <= i.stock_minimo THEN 'Stock Bajo' 
+            WHEN COALESCE((
+              SELECT SUM(cip.cantidad)
+              FROM compras_insumos_proveedores cip 
+              WHERE cip.insumo_proveedor_id = ip.id
+            ), 0) <= (i.stock_minimo * 1.5) THEN 'Stock Medio'
             ELSE 'Stock OK'
         END as estado_stock,
         
@@ -110,13 +130,21 @@ export function up(db) {
         
         -- Rotación (cuántas veces se ha comprado vs stock actual)
         CASE 
-            WHEN ip.stock_por_proveedor > 0 
+            WHEN COALESCE((
+              SELECT SUM(cip.cantidad)
+              FROM compras_insumos_proveedores cip 
+              WHERE cip.insumo_proveedor_id = ip.id
+            ), 0) > 0
             THEN ROUND(
                 COALESCE(
                     (SELECT SUM(cip.cantidad) 
                      FROM compras_insumos_proveedores cip 
                      WHERE cip.insumo_proveedor_id = ip.id), 0
-                ) / ip.stock_por_proveedor, 2
+                ) / COALESCE((
+                  SELECT SUM(cip.cantidad)
+                  FROM compras_insumos_proveedores cip 
+                  WHERE cip.insumo_proveedor_id = ip.id
+                ), 1), 2
             )
             ELSE 0
         END as rotacion_stock

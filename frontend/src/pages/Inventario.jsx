@@ -95,12 +95,12 @@ const Inventario = () => {
           <>
             <InventoryStats
               totalProductos={totalProductos}
-              lowStockCount={lowStockItems.length}
+              // lowStockCount={lowStockItems.length}
               totalTipos={totalTipos}
               inventoryValue={inventoryValue}
             />
 
-            <LowStockAlert items={lowStockItems} />
+            {/* <LowStockAlert items={lowStockItems} /> */}
 
             <InventoryFilters
               tipos={tipos}

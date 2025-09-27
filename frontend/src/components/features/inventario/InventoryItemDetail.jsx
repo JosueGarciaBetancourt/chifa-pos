@@ -31,11 +31,11 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
                 <span className="text-gray-600">{item.proveedor}</span>
               </div>
             </div>
-            <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+            {/* <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
               isLowStock ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
             }`}>
               {isLowStock ? 'Stock Bajo' : 'Stock OK'}
-            </span>
+            </span> */}
           </div>
 
           {/* Details Grid */}
@@ -121,7 +121,7 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
       </div>
 
       {/* Stock Status Warning */}
-      {isLowStock && (
+      {/* {isLowStock && (
         <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-center space-x-2 mb-2">
             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -132,7 +132,7 @@ const InventoryItemDetail = ({ item, onBack, updateStock }) => {
             Se recomienda realizar un pedido al proveedor.
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

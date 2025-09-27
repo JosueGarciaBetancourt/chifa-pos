@@ -1,3 +1,4 @@
+// database/models/InsumosProveedores.js
 import { connection } from '../connection.js';
 const db = connection();
 
@@ -10,7 +11,6 @@ const baseSelect = `
 
     i.nombre AS insumo_nombre,
     i.unidad_medida AS insumo_unidad_medida,
-    i.stock_actual AS insumo_stock_actual,
     i.stock_minimo AS insumo_stock_minimo,
 
     ti.nombre AS tipo_nombre,
@@ -29,7 +29,6 @@ const baseSelect = `
   JOIN insumos i ON ip.insumo_id = i.id
   JOIN tipos_insumos ti ON i.tipo_id = ti.id
   JOIN proveedores p ON ip.proveedor_id = p.id
-  JOIN compras_insumos p ON ip.proveedor_id = p.id
 `;
 
 const sql = Object.freeze({
@@ -60,7 +59,6 @@ function formatInsumoProveedor(row) {
       nombre: row.insumo_nombre,
       tipo: row.tipo_nombre,
       unidad_medida: row.insumo_unidad_medida,
-      stock_actual: row.insumo_stock_actual,
       stock_minimo: row.insumo_stock_minimo
     },
     proveedor: {
@@ -112,8 +110,8 @@ export const InsumoProveedor = {
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { costo_unitario_pactado, observaciones }) {
-    db.prepare(sql.update).run(costo_unitario_pactado, observaciones, id);
+  update(id, { descripcion, costo_unitario_pactado, observaciones }) {
+    db.prepare(sql.update).run(descripcion, costo_unitario_pactado, observaciones, id);
     return this.findById(id);
   },
 

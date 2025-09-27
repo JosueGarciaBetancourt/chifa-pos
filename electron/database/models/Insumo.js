@@ -11,7 +11,6 @@ const baseSelect = `
     t.nombre AS tipo_nombre,
     t.descripcion AS tipo_descripcion,
     i.unidad_medida,
-    i.stock_actual,
     i.stock_minimo,
     i.activo
   FROM insumos i
@@ -24,12 +23,12 @@ const sql = Object.freeze({
   selectActive: `${baseSelect} WHERE i.activo = 1`,
   selectInactive: `${baseSelect} WHERE i.activo = 0`,
   insert: `
-    INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_actual, stock_minimo)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO insumos (nombre, tipo_id, unidad_medida, stock_minimo)
+    VALUES (?, ?, ?, ?)
   `,
   update: `
     UPDATE insumos
-    SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?
+    SET nombre = ?, tipo_id = ?, unidad_medida = ?, stock_minimo = ?
     WHERE id = ?
   `,
   disable: `
@@ -49,7 +48,6 @@ function formatInsumo(row) {
     id: row.id,
     nombre: row.nombre,
     unidad: row.unidad_medida,
-    stock_actual: row.stock_actual,
     stock_minimo: row.stock_minimo,
     tipo: {
       id: row.tipo_id,
@@ -78,16 +76,16 @@ export const Insumo = {
     return db.prepare(sql.selectInactive).all().map(formatInsumo);
   },
 
-  create({ nombre, tipo_id, unidad_medida, stock_actual = 0, stock_minimo = 0 }) {
+  create({ nombre, tipo_id, unidad_medida, stock_minimo = 0 }) {
     const { lastInsertRowid } = db.prepare(sql.insert).run(
-      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo
+      nombre, tipo_id, unidad_medida, stock_minimo
     );
     return this.findById(lastInsertRowid);
   },
 
-  update(id, { nombre, tipo_id, unidad_medida, stock_actual, stock_minimo }) {
+  update(id, { nombre, tipo_id, unidad_medida, stock_minimo }) {
     db.prepare(sql.update).run(
-      nombre, tipo_id, unidad_medida, stock_actual, stock_minimo, id
+      nombre, tipo_id, unidad_medida, stock_minimo, id
     );
     return this.findById(id);
   },

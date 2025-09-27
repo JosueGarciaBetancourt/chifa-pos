@@ -1,7 +1,7 @@
 import React from 'react';
 import { Package, AlertTriangle, ShoppingBag, DollarSign } from 'lucide-react';
-
-const InventoryStats = ({ totalProductos, lowStockCount, totalTipos, inventoryValue }) => {
+// const InventoryStats = ({ totalProductos, lowStockCount, totalTipos, inventoryValue })
+const InventoryStats = ({ totalProductos, totalTipos, inventoryValue }) => {
   const stats = [
     {
       title: "Total Productos",
@@ -9,12 +9,12 @@ const InventoryStats = ({ totalProductos, lowStockCount, totalTipos, inventoryVa
       color: "blue",
       icon: Package
     },
-    {
-      title: "Stock Bajo",
-      value: lowStockCount,
-      color: "red",
-      icon: AlertTriangle
-    },
+    // {
+    //   title: "Stock Bajo",
+    //   value: lowStockCount,
+    //   color: "red",
+    //   icon: AlertTriangle
+    // },
     {
       title: "Tipos",
       value: totalTipos,
